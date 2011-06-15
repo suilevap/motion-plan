@@ -10,6 +10,7 @@ FileStruct::FileStruct(char* fileName)
 	_buffer = NULL;
 	_size = 0;
 	Name = fileName;
+	GetBuffer();
 }
 
 FileStruct::~FileStruct(void)

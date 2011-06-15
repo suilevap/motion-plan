@@ -150,16 +150,17 @@ public:
 		}
 	}
 
-	static Map<int>* LoadFrom(std::string data, std::vector<Point>* specialPoints)
+	static Map<int>* LoadFrom(std::string &data, std::vector<Point>* specialPoints)
 	{
-		int width = data.find('\n');
-		int height = data.length() / width;
+		
+		int width = data.find("\r\n");
+		int height = (data.length()+2) / (width + 2);
 		Map<int>* map = new Map<int>(width, height, 1);
 		int index = 0;
 		int cell;
 		for (int i = 0; i < width; i++)
 		{
-			for (int k = 0; k < width; k++)
+			for (int k = 0; k < height; k++)
 			{
 				if (data[index] =='#')
 				{
@@ -187,7 +188,7 @@ public:
 				map->SetCell(i,k, cell);
 				index++;
 			}
-			index++;
+			index+=2;
 		}
 
 		return map;

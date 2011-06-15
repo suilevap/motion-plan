@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MotionPlan"
 	ProjectGUID="{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
 	RootNamespace="MotionPlan"
@@ -206,6 +206,10 @@
 			</File>
 			<File
 				RelativePath=".\PathFinding.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PathPoint.cpp"
 				>
 			</File>
 			<File

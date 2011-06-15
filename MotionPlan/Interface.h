@@ -9,7 +9,7 @@
 
 	//public:
 		//static 
-			DllExport char* Action();
+			DllExport char* Action(char * map);
 
 	//};
 

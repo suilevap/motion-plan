@@ -4,7 +4,7 @@ class FileStruct
 {
 private:
 	char * _buffer;
-	char * _deviceBuffer;
+
 	size_t _size;
 
 	size_t LoadFile(char * path, char * & buffer);

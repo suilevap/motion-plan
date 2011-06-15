@@ -12,9 +12,9 @@
 char * data 
 	= "..#\n1.2\n###";
 
-char* Action()
+char* Action(char * map)
 {
-	std::string d = data;
+	std::string d = map;
 	std::vector<Point> points;
 	Map<int>* m = Map<int>::LoadFrom(d, &points);
 

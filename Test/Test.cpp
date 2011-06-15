@@ -7,7 +7,11 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	char * result = Action();
+	FileStruct f("\\maps\\map0.txt");
+	FileStruct f2(".\\maps\\map0.txt");
+	FileStruct f3(".\\map0.txt");
+	FileStruct f4("map0.txt");
+	char * result = Action(f.GetBuffer());
 	printf(result);
 	return 0;
 }

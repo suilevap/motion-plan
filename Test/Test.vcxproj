@@ -68,6 +68,9 @@
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)*.txt" "$(TargetDir)maps" /e /y /i /r</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -112,9 +115,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="map1.txt">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(PrepareForRunDependsOn)</Command>
-    </CustomBuild>
+    <None Include="map0.txt" />
+    <None Include="maps\map0.txt" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

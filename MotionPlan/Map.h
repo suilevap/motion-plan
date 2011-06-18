@@ -156,19 +156,29 @@ public:
 		int width = data.find("\r\n");
 		int height = (data.length()+2) / (width + 2);
 		Map<int>* map = new Map<int>(width, height, 1);
+		specialPoints->resize(10);
 		int index = 0;
 		int cell;
-		for (int i = 0; i < width; i++)
+		for (int k = 0; k < height; k++)
 		{
-			for (int k = 0; k < height; k++)
+			for (int i = 0; i < width; i++)
 			{
-				if (data[index] =='#')
+				char symbol=data[index];
+				if (symbol =='#')
 				{
 					cell = 0;
 				}
 				else
 				{
 					cell = 1;
+				}
+				if ((symbol>='0') && (symbol<='9'))
+				{
+					int idx = (int)(symbol-'0');
+					Point point;
+					point.X = i;
+					point.Y = k;
+					(*specialPoints)[idx]=point;
 				}
 				/*if (data[index] =='0')
 				{

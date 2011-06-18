@@ -1,18 +1,20 @@
 #pragma once
+#ifndef _PathFinder_h_
+#define _PathFinder_h_
+
 #include <vector>
 //#include <tuple>
 #include "Map.h"
 #include "PathPoint.h"
 #include "Point.h"
+#include "CellQueue.h"
 
-using namespace std;
+//using namespace std;
 //using namespace std::tr1;
 
-typedef priority_queue<PathPoint,vector<PathPoint>,less<vector<PathPoint>::value_type>> cellQueue;
-
-class PathFinding
+class PathFinder
 {
-private:
+private:	
 	Map<int>* _map;
 	Map<float>* _mapDist;
 	Map<int>* _mapParent;
@@ -24,14 +26,17 @@ private:
 	//int XYToDir(int x, int y);
 	//float ComputeCost(int x0, int y0, int x1, int y1);
 	//float GetParentDist(int x, int y);
-	bool CheckNeighbor(int index, int dx, int dy, cellQueue* queue);
+	bool CheckNeighbor(int index, int dx, int dy, CellQueue* queue);
 	float GetStepDistance(int index, int dx, int dy);
 	float GetEstimateDistance(int index);
 	bool CheckCell(int index, float curDist);
-	vector<Point> ExtractPath();
-public:
-	PathFinding(Map<int>* map);
-	~PathFinding(void);
+	std::vector<Point> ExtractPath();
 
-	vector<Point> Find(int x, int y, int goalX, int goalY);
+public:
+	PathFinder(Map<int>* map);
+	~PathFinder();
+
+	std::vector<Point> Find(int x, int y, int goalX, int goalY);
 };
+
+#endif //_PathFinder_h_

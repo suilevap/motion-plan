@@ -2,28 +2,28 @@
 #include <queue>
 #include <algorithm>
 
-#include "PathFinding.h"
+#include "PathFinder.h"
 
-PathFinding::PathFinding(Map<int>* map)
+PathFinder::PathFinder(Map<int>* map)
 {
 	_map = map;
 	_mapDist = new Map<float>(map->GetWidth(), map->GetHeight());
 	_mapParent = new Map<int>(map->GetWidth(), map->GetHeight());
 }
 
-PathFinding::~PathFinding(void)
+PathFinder::~PathFinder(void)
 {
 	delete _mapDist;
 	delete _mapParent;
 }
 
-vector<Point> PathFinding::Find(int x, int y, int goalX, int goalY)
+std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 {
 	_goalX = goalX;
 	_goalY = goalY;
 	_start = _map->GetCellIndex(x, y);
 	_goal = _map->GetCellIndex(_goalX, _goalY);
-	cellQueue* queue = new cellQueue();
+	CellQueue* queue = new CellQueue();
 	PathPoint point;
 	point.Index = _start;
 	point.Rank = 0;
@@ -57,7 +57,7 @@ vector<Point> PathFinding::Find(int x, int y, int goalX, int goalY)
 
 	delete queue;
 
-	vector<Point> result;
+	std::vector<Point> result;
 	if (pathFound)
 	{
 		result = ExtractPath();
@@ -65,11 +65,11 @@ vector<Point> PathFinding::Find(int x, int y, int goalX, int goalY)
 	return result;
 }
 
-vector<Point> PathFinding::ExtractPath()
+std::vector<Point> PathFinder::ExtractPath()
 {
 	Point point;
 	
-	vector<Point> result;
+	std::vector<Point> result;
 	int pos = _goal;
 	
 	result.push_back(_map->GetCellPoint(_goal));
@@ -83,7 +83,7 @@ vector<Point> PathFinding::ExtractPath()
 	return result;
 }
 
-bool PathFinding::CheckNeighbor(int index, int dx, int dy, cellQueue* queue)
+bool PathFinder::CheckNeighbor(int index, int dx, int dy, CellQueue* queue)
 {
 	bool result;
 	float curDist= _mapDist->GetCell(index);
@@ -100,12 +100,12 @@ bool PathFinding::CheckNeighbor(int index, int dx, int dy, cellQueue* queue)
 	return result;
 }
 
-float PathFinding::GetEstimateDistance(int index)
+float PathFinder::GetEstimateDistance(int index)
 {
 	return 0;
 }
 
-float PathFinding::GetStepDistance(int index, int dx, int dy)
+float PathFinder::GetStepDistance(int index, int dx, int dy)
 {
 	float result;
 	if ((dx!=0)&&(dy!=0))
@@ -120,7 +120,7 @@ float PathFinding::GetStepDistance(int index, int dx, int dy)
 }
 
 
-bool PathFinding::CheckCell(int index, float curDist)
+bool PathFinder::CheckCell(int index, float curDist)
 {
 	bool result = false;
 	if (_map->GetCell(index) !=0)
@@ -134,21 +134,21 @@ bool PathFinding::CheckCell(int index, float curDist)
 	return result;
 }
 
-//void PathFinding::DirToXY(int dir, int* x, int* y)
+//void PathFinder::DirToXY(int dir, int* x, int* y)
 //{
 //	*x = dir & 0x03 - 1;
 //	*y = (dir>>2) & 0x03 - 1;
 //}
-//int PathFinding::XYToDir(int x, int y)
+//int PathFinder::XYToDir(int x, int y)
 //{
 //	return (x+1)|((y+1)<<2);
 //}
 
-//float PathFinding::ComputeCost(int x0, int y0, int x1, int y1)
+//float PathFinder::ComputeCost(int x0, int y0, int x1, int y1)
 //{
 //	
 //}
-//float PathFinding::GetParentDist(int x, int y)
+//float PathFinder::GetParentDist(int x, int y)
 //{
 //
 //	return 0;//_mapDist->GetCell(_mapParent->GetCell(x, y)

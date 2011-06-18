@@ -205,7 +205,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PathFinding.cpp"
+				RelativePath=".\PathFinder.cpp"
 				>
 			</File>
 			<File
@@ -239,6 +239,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\CellQueue.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Interface.h"
 				>
 			</File>
@@ -247,7 +251,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PathFinding.h"
+				RelativePath=".\PathFinder.h"
 				>
 			</File>
 			<File

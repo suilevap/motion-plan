@@ -52,8 +52,8 @@ public:
 	inline Point GetCellPoint(int index)
 	{
 		Point p;
-		p.X = index / _width;
-		p.Y = index % _width;
+		p.X = index / _width - _border;
+		p.Y = index % _width - _border;
 		return p;
 	}
 
@@ -126,15 +126,15 @@ public:
 	{
 		int w = GetWidth();
 		int h = GetHeight();
-
 		for (int k = 0; k < h; k++)
 		{
 			for (int i =0; i < w; i++)
 			{
-				printf("%d",(int)GetCell(i , k));
+				printf("%2d",(int)GetCell(i , k));
 			}
 			printf("\n");
 		}
+		printf("========================\n");
 	}
 
 	static Map<int>* LoadFrom(std::string &data, std::vector<Point>* specialPoints)

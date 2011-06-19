@@ -32,6 +32,9 @@ std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 	bool pathFound = false;
 	while (!queue->empty() && !pathFound)
 	{
+		//only for test
+		_mapDist->ToOutput();
+
 		point = queue->top();
 		queue->pop();
 		int index = point.Index;
@@ -78,7 +81,7 @@ std::vector<Point> PathFinder::ExtractPath()
 		pos = _mapParent->GetCell(pos);
 		result.push_back(_map->GetCellPoint(pos));
 	}
-	result.push_back(_map->GetCellPoint(_start));
+	
 	reverse(result.begin(), result.end());
 	return result;
 }
@@ -92,6 +95,9 @@ bool PathFinder::CheckNeighbor(int index, int dx, int dy, CellQueue* queue)
 	result = CheckCell(newIndex, dist);
 	if (result)
 	{
+		_mapParent->SetCell(newIndex, index);
+		_mapDist->SetCell(newIndex, dist);
+
 		PathPoint point;
 		point.Index = newIndex;
 		point.Rank = dist + GetEstimateDistance(newIndex);
@@ -125,9 +131,9 @@ bool PathFinder::CheckCell(int index, float curDist)
 	bool result = false;
 	if (_map->GetCell(index) !=0)
 	{
-		if (_mapDist->GetCell(index) > curDist)
-		{
-			_mapDist->SetCell(index, curDist);
+		float d = _mapDist->GetCell(index);
+		if ((d==0) || (_mapDist->GetCell(index) > curDist))
+		{			
 			result = true;
 		}
 	}

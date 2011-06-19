@@ -23,18 +23,31 @@ protected:
 	{
 		return _border;
 	}
+	void InitMap(int width, int height, int border)
+	{
+		_border = border;
+		_width = width + _border * 2;
+		_height = height + _border * 2;
+		int size = _width*_height;
+		_map = new CellType[size];
+		memset(_map, 0, sizeof(_map[0])*size);
+	}
 
 public:
-	//Map(int width, int height);
-	//~Map(void);
+	Map(int width, int height)
+	{
+		InitMap(width, height, 1);
+	}
 
-	//CellType GetCell(int x, int y);
+	Map(int width, int height, int border)
+	{
+		InitMap(width, height, border);
+	}
 
-	//void SetCell(int x, int y, CellType cell);
-	//void SetCellRegion(int x, int y, CellType cell, int width, int height);
-	//void SetCellRhomb(int x, int y, CellType cell, int r);
-	//int GetWidth();
-	//int GetHeight();
+	Map(Map<CellType>* map)		
+	{
+		InitMap(map->GetWidth(), map->GetHeight(), map->GetBorder());
+	}
 
 	inline Point GetCellPoint(int index)
 	{
@@ -59,32 +72,6 @@ public:
 	{
 		return _map[index] ;
 	}
-
-	Map(int width, int height, int border)
-	{
-		_border = border;
-		_width = width + _border * 2;
-		_height = height + _border * 2;
-		_map = new CellType[_width*_height];
-	}
-
-	Map(Map<CellType>* map)
-		:this(map->GetWidth(), map->GetHeight(), map->GetBorder())
-	{
-		/*_border = map->GetBorder();
-		_width =  map->GetWidth() + _border * 2;
-		_height = map->GetHeight() + _border * 2;
-		_map = new CellType[_width*_height];*/
-	}
-
-	Map(int width, int height)
-	{
-		_border = 1;
-		_width = width;
-		_height = height;
-		_map = new CellType[_width*_height];
-	}
-
 
 	~Map(void)
 	{
@@ -140,11 +127,11 @@ public:
 		int w = GetWidth();
 		int h = GetHeight();
 
-		for (int i =0; i < w; i++)
+		for (int k = 0; k < h; k++)
 		{
-			for (int k = 0; k < h; k++)
+			for (int i =0; i < w; i++)
 			{
-				printf("%d",GetCell(i , k));
+				printf("%d",(int)GetCell(i , k));
 			}
 			printf("\n");
 		}

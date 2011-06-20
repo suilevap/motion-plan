@@ -66,7 +66,7 @@ public:
 		int y1 = p1 / _width;
 		int x2 = p2 % _width;
 		int y2 = p2 / _width;
-		result = DistanceEvaluator::EuclideanDistance(x1, y1, x2, y2);
+		result = DistanceEvaluator::EuclideanDistance(x1, y1, x2, y2);//DistanceEvaluator::EuclideanDistance(x1, y1, x2, y2);
 		return result;
 	}
 

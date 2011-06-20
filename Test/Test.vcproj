@@ -210,6 +210,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\map1.txt"
+			>
+		</File>
+		<File
 			RelativePath=".\ReadMe.txt"
 			>
 		</File>

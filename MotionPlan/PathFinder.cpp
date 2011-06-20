@@ -2,6 +2,7 @@
 #include <queue>
 #include <algorithm>
 
+#include "DistanceEvaluator.h"
 #include "PathFinder.h"
 
 PathFinder::PathFinder(Map<int>* map)
@@ -34,7 +35,7 @@ std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 	while (!queue->empty() && !pathFound)
 	{
 		//only for test
-		_mapDist->ToOutput();
+		//_mapDist->ToOutput();
 
 		point = queue->top();
 		queue->pop();
@@ -57,6 +58,8 @@ std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 		else
 		{
 			pathFound = true;
+			//only for test
+			_mapDist->ToOutput();
 		}
 	}
 
@@ -109,7 +112,8 @@ bool PathFinder::CheckNeighbor(int index, float curDist, int dx, int dy, CellQue
 
 float PathFinder::GetEstimateDistance(int index)
 {
-	return _map->GetEvclDist(index, _goal);
+	Point p = _map->GetCellPoint(index);
+	return DistanceEvaluator::EuclideanDistance<float>(p.X, p.Y, _goalX, _goalY);
 }
 
 float PathFinder::GetStepDistance(int index, int dx, int dy)

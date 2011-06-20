@@ -7,7 +7,7 @@
 class CellQueue: public std::priority_queue<
 							PathPoint,
 							std::vector<PathPoint>,
-							std::less<std::vector<PathPoint>::value_type>>
+							std::greater<std::vector<PathPoint>::value_type>>
 {
 
 };

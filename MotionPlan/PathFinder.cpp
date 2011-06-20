@@ -23,6 +23,7 @@ std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 	_goalY = goalY;
 	_start = _map->GetCellIndex(x, y);
 	_goal = _map->GetCellIndex(_goalX, _goalY);
+	 _mapParent->SetCell(_start, _start);
 	CellQueue* queue = new CellQueue();
 	PathPoint point;
 	point.Index = _start;
@@ -40,17 +41,18 @@ std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 		int index = point.Index;
 		if (index != _goal)
 		{
-			CheckNeighbor(index, -1, -1, queue);
-			CheckNeighbor(index,  0, -1, queue);
-			CheckNeighbor(index,  1, -1, queue);
+			float curDist= _mapDist->GetCell(index);
 
-			CheckNeighbor(index, -1,  0, queue);
-			CheckNeighbor(index,  0,  0, queue);
-			CheckNeighbor(index,  1,  0, queue);
+			CheckNeighbor(index, curDist, -1, -1, queue);
+			CheckNeighbor(index, curDist,  0, -1, queue);
+			CheckNeighbor(index, curDist,  1, -1, queue);
 
-			CheckNeighbor(index, -1,  1, queue);
-			CheckNeighbor(index,  0,  1, queue);
-			CheckNeighbor(index,  1,  1, queue);
+			CheckNeighbor(index, curDist, -1,  0, queue);
+			CheckNeighbor(index, curDist,  1,  0, queue);
+
+			CheckNeighbor(index, curDist, -1,  1, queue);
+			CheckNeighbor(index, curDist,  0,  1, queue);
+			CheckNeighbor(index, curDist,  1,  1, queue);
 		}
 		else
 		{
@@ -86,10 +88,9 @@ std::vector<Point> PathFinder::ExtractPath()
 	return result;
 }
 
-bool PathFinder::CheckNeighbor(int index, int dx, int dy, CellQueue* queue)
+bool PathFinder::CheckNeighbor(int index, float curDist, int dx, int dy, CellQueue* queue)
 {
 	bool result;
-	float curDist= _mapDist->GetCell(index);
 	int newIndex = _map->GetCellIndex(index, dx, dy);
 	float dist = curDist + GetStepDistance(index, dx , dy);
 	result = CheckCell(newIndex, dist);
@@ -108,7 +109,7 @@ bool PathFinder::CheckNeighbor(int index, int dx, int dy, CellQueue* queue)
 
 float PathFinder::GetEstimateDistance(int index)
 {
-	return 0;
+	return _map->GetEvclDist(index, _goal);
 }
 
 float PathFinder::GetStepDistance(int index, int dx, int dy)
@@ -132,7 +133,7 @@ bool PathFinder::CheckCell(int index, float curDist)
 	if (_map->GetCell(index) !=0)
 	{
 		float d = _mapDist->GetCell(index);
-		if ((d==0) || (_mapDist->GetCell(index) > curDist))
+		if ((_mapParent->GetCell(index) == 0) || (d > curDist))
 		{			
 			result = true;
 		}

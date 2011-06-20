@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Point.h"
+#include "DistanceEvaluator.h"
 
 
 //typedef float CellType;
@@ -52,20 +53,32 @@ public:
 	inline Point GetCellPoint(int index)
 	{
 		Point p;
-		p.X = index / _width - _border;
-		p.Y = index % _width - _border;
+		p.X = index % _width - _border;
+		p.Y = index / _width - _border;
 		return p;
+	}
+
+	inline float GetEvclDist(int p1, int p2)
+	{
+		float result;
+		
+		int x1 = p1 % _width;
+		int y1 = p1 / _width;
+		int x2 = p2 % _width;
+		int y2 = p2 / _width;
+		result = DistanceEvaluator::EuclideanDistance(x1, y1, x2, y2);
+		return result;
 	}
 
 
 	inline int GetCellIndex(int x, int y)
 	{
-		return (x + _border) * _width + (y + _border) ;
+		return (x + _border) + (y + _border) * _width ;
 	}
 
 	inline int GetCellIndex(int index, int dx, int dy)
 	{
-		return index + dx*_width + dy ;
+		return index + dy * _width + dx ;
 	}
 
 	inline CellType GetCell(int index)
@@ -130,7 +143,7 @@ public:
 		{
 			for (int i =0; i < w; i++)
 			{
-				printf("%2d",(int)GetCell(i , k));
+				printf("%3d",(int)GetCell(i , k));
 			}
 			printf("\n");
 		}

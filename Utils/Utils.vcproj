@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="Utils"
 	ProjectGUID="{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}"
 	RootNamespace="Utils"
@@ -165,6 +165,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ObjectIdPool.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -192,6 +196,10 @@
 			>
 			<File
 				RelativePath=".\FileStruct.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ObjectIdPool.h"
 				>
 			</File>
 			<File

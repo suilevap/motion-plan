@@ -49,6 +49,11 @@ public:
 	{
 		InitMap(map->GetWidth(), map->GetHeight(), map->GetBorder());
 	}
+	
+	~Map(void)
+	{
+		delete[] _map;
+	}
 
 	inline Point GetCellPoint(int index)
 	{
@@ -56,6 +61,12 @@ public:
 		p.X = index % _width - _border;
 		p.Y = index / _width - _border;
 		return p;
+	}
+
+	inline void GetD(int index1, int index2, int* dx, int* dy)
+	{
+		*dx = (index2 % _width) - (index1 % _width );
+		*dy = (index2 / _width) - (index1 / _width) ;
 	}
 
 	inline float GetEvclDist(int p1, int p2)
@@ -70,7 +81,6 @@ public:
 		return result;
 	}
 
-
 	inline int GetCellIndex(int x, int y)
 	{
 		return (x + _border) + (y + _border) * _width ;
@@ -84,11 +94,6 @@ public:
 	inline CellType GetCell(int index)
 	{
 		return _map[index] ;
-	}
-
-	~Map(void)
-	{
-		delete[] _map;
 	}
 
 	inline CellType GetCell(int x, int y)
@@ -143,7 +148,38 @@ public:
 		{
 			for (int i =0; i < w; i++)
 			{
+				//printf("%3d",(int)( (int)(GetCell(i , k)*10 )%100 ));
 				printf("%3d",(int)GetCell(i , k));
+			}
+			printf("\n");
+		}
+		printf("========================\n");
+	}
+	void ToOutputField()
+	{
+		const char * presentation = "\\|/-.-/|\\";
+		int w = GetWidth();
+		int h = GetHeight();
+		for (int k = 0; k < h; k++)
+		{
+			for (int i =0; i < w; i++)
+			{
+				int dx;
+				int dy;
+				int ind1 = (int)GetCell(i , k);
+				int ind2 = GetCellIndex(i, k);
+				GetD(ind1, ind2, &dx, &dy);
+				char s;
+				if (ind1 != 0)
+				{
+					s = presentation[(dx+1)+(dy+1)*3];
+				}
+				else
+				{
+					s = '.';
+				}
+				printf("%c", s);
+				//printf("%3d",(dx+1)*10+(dy+1));
 			}
 			printf("\n");
 		}
@@ -155,7 +191,7 @@ public:
 		
 		int width = data.find("\r\n");
 		int height = (data.length()+2) / (width + 2);
-		Map<int>* map = new Map<int>(width, height, 1);
+		Map<int>* map = new Map<int>(width, height);
 		specialPoints->resize(10);
 		int index = 0;
 		int cell;
@@ -180,21 +216,6 @@ public:
 					point.Y = k;
 					(*specialPoints)[idx]=point;
 				}
-				/*if (data[index] =='0')
-				{
-					Point point;
-					point.X = i;
-					point.Y = i;
-					specialPoints->
-				}
-				if (data[index] =='1')
-				{
-					Point point;
-					point.X = i;
-					point.Y = i;
-					specialPoints->insert(1,point);
-				}*/
-
 				map->SetCell(i,k, cell);
 				index++;
 			}

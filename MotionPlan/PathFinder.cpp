@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include <math.h>
 #include <queue>
 #include <algorithm>
 
@@ -36,29 +37,29 @@ std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 	{
 		//only for test
 		//_mapDist->ToOutput();
+		//_mapParent->ToOutputField();
 
 		point = queue->top();
 		queue->pop();
 		int index = point.Index;
 		if (index != _goal)
 		{
-			float curDist= _mapDist->GetCell(index);
+			CheckNeighbor(index, -1, -1, queue);
+			CheckNeighbor(index,  0, -1, queue);
+			CheckNeighbor(index,  1, -1, queue);
 
-			CheckNeighbor(index, curDist, -1, -1, queue);
-			CheckNeighbor(index, curDist,  0, -1, queue);
-			CheckNeighbor(index, curDist,  1, -1, queue);
+			CheckNeighbor(index, -1,  0, queue);
+			CheckNeighbor(index,  1,  0, queue);
 
-			CheckNeighbor(index, curDist, -1,  0, queue);
-			CheckNeighbor(index, curDist,  1,  0, queue);
-
-			CheckNeighbor(index, curDist, -1,  1, queue);
-			CheckNeighbor(index, curDist,  0,  1, queue);
-			CheckNeighbor(index, curDist,  1,  1, queue);
+			CheckNeighbor(index, -1,  1, queue);
+			CheckNeighbor(index,  0,  1, queue);
+			CheckNeighbor(index,  1,  1, queue);
 		}
 		else
 		{
 			pathFound = true;
 			//only for test
+			_mapParent->ToOutputField();
 			_mapDist->ToOutput();
 		}
 	}
@@ -91,11 +92,11 @@ std::vector<Point> PathFinder::ExtractPath()
 	return result;
 }
 
-bool PathFinder::CheckNeighbor(int index, float curDist, int dx, int dy, CellQueue* queue)
+bool PathFinder::CheckNeighbor(int index, int dx, int dy, CellQueue* queue)
 {
 	bool result;
 	int newIndex = _map->GetCellIndex(index, dx, dy);
-	float dist = curDist + GetStepDistance(index, dx , dy);
+	float dist = GetDistance(index, dx , dy);
 	result = CheckCell(newIndex, dist);
 	if (result)
 	{
@@ -116,17 +117,38 @@ float PathFinder::GetEstimateDistance(int index)
 	return DistanceEvaluator::EuclideanDistance<float>(p.X, p.Y, _goalX, _goalY);
 }
 
-float PathFinder::GetStepDistance(int index, int dx, int dy)
+float PathFinder::GetDistance(int index, int dx, int dy)
 {
 	float result;
+	float stepD;
 	if ((dx!=0)&&(dy!=0))
 	{
-		result = 1.41f;
+		stepD = sqrt(2.0f);
 	}
 	else
 	{
-		result = 1.0f;
+		stepD = 1.0f;
 	}
+
+	//trick
+	int parentDx;
+	int parentDy;
+	int parentIndex = _mapParent->GetCell(index);
+	if (parentIndex != index)
+	{
+		_map->GetD(parentIndex, index, &parentDx,&parentDy);
+		//diagonal
+		if ((dx + dy + parentDx + parentDy) % 2 == 1)
+		{
+			int cell = _map->GetCellIndex(index, dx - parentDx, dy - parentDy);
+			if (cell != 0)
+			{
+				stepD = sqrt(2.0f*2.0f + 1.0f);
+				index = parentIndex;
+			}
+		}
+	}
+	result = _mapDist->GetCell(index) + stepD;
 	return result;
 }
 

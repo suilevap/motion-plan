@@ -13,7 +13,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//FileStruct f4("map0.txt");
 	//FileStruct f5("e:\\code\\aigamedev\\motion-plan\\Debug\\maps\\map0.txt");
 
-	FileStruct f("map1.txt");
+	FileStruct f("map2.txt");
 
 	char * result = Action(f.GetBuffer());
 	printf(result);

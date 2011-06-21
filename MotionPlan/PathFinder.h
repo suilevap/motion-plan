@@ -26,8 +26,8 @@ private:
 	//int XYToDir(int x, int y);
 	//float ComputeCost(int x0, int y0, int x1, int y1);
 	//float GetParentDist(int x, int y);
-	bool CheckNeighbor(int index, float curDist, int dx, int dy, CellQueue* queue);
-	float GetStepDistance(int index, int dx, int dy);
+	bool CheckNeighbor(int index, int dx, int dy, CellQueue* queue);
+	float GetDistance(int index, int dx, int dy);
 	float GetEstimateDistance(int index);
 	bool CheckCell(int index, float curDist);
 	std::vector<Point> ExtractPath();

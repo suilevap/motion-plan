@@ -55,7 +55,7 @@ public:
 		delete[] _map;
 	}
 
-	inline Point GetCellPoint(int index)
+	virtual Point GetCellPoint(int index)
 	{
 		Point p;
 		p.X = index % _width - _border;
@@ -81,7 +81,7 @@ public:
 		return result;
 	}
 
-	inline int GetCellIndex(int x, int y)
+	virtual int GetCellIndex(int x, int y)
 	{
 		return (x + _border) + (y + _border) * _width ;
 	}

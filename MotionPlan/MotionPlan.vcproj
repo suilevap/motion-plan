@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MotionPlan"
 	ProjectGUID="{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
 	RootNamespace="MotionPlan"
@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\Utils"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MOTIONPLAN_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -163,6 +164,10 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}"
+			RelativePathToProject=".\Utils\Utils.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -206,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\MotionPlan.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Path.cpp"
 				>
 			</File>
 			<File
@@ -260,6 +269,10 @@
 			</File>
 			<File
 				RelativePath=".\Map.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Path.h"
 				>
 			</File>
 			<File

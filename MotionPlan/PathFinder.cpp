@@ -19,7 +19,7 @@ PathFinder::~PathFinder(void)
 	delete _mapParent;
 }
 
-std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
+Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 {
 	_goalX = goalX;
 	_goalY = goalY;
@@ -66,15 +66,19 @@ std::vector<Point> PathFinder::Find(int x, int y, int goalX, int goalY)
 
 	delete queue;
 
-	std::vector<Point> result;
+	Path* result;
 	if (pathFound)
 	{
 		result = ExtractPath();
 	}
+	else
+	{
+		result = Path::Empty();
+	}
 	return result;
 }
 
-std::vector<Point> PathFinder::ExtractPath()
+Path* PathFinder::ExtractPath()
 {
 	Point point;
 	
@@ -89,7 +93,8 @@ std::vector<Point> PathFinder::ExtractPath()
 	}
 	
 	reverse(result.begin(), result.end());
-	return result;
+	Path* path = new Path(result);
+	return path;
 }
 
 bool PathFinder::CheckNeighbor(int index, int dx, int dy, CellQueue* queue)

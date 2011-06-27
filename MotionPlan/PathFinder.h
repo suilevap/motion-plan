@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "PathPoint.h"
 #include "Point.h"
+#include "Path.h"
 #include "CellQueue.h"
 
 //using namespace std;
@@ -30,13 +31,13 @@ private:
 	float GetDistance(int index, int dx, int dy);
 	float GetEstimateDistance(int index);
 	bool CheckCell(int index, float curDist);
-	std::vector<Point> ExtractPath();
+	Path* ExtractPath();
 
 public:
 	PathFinder(Map<int>* map);
 	~PathFinder();
 
-	std::vector<Point> Find(int x, int y, int goalX, int goalY);
+	Path* Find(int x, int y, int goalX, int goalY);
 };
 
 #endif //_PathFinder_h_

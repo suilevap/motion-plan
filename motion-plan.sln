@@ -7,6 +7,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcproj", 
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionPlan", "MotionPlan\MotionPlan.vcproj", "{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1} = {E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcproj", "{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}"
 EndProject

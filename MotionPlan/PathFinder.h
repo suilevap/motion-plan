@@ -32,6 +32,7 @@ private:
 	float GetEstimateDistance(int index);
 	bool CheckCell(int index, float curDist);
 	Path* ExtractPath();
+	void Step(int index, CellQueue* queue);
 
 public:
 	PathFinder(Map<int>* map);

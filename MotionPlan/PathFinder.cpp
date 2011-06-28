@@ -44,23 +44,14 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 		int index = point.Index;
 		if (index != _goal)
 		{
-			CheckNeighbor(index, -1, -1, queue);
-			CheckNeighbor(index,  0, -1, queue);
-			CheckNeighbor(index,  1, -1, queue);
-
-			CheckNeighbor(index, -1,  0, queue);
-			CheckNeighbor(index,  1,  0, queue);
-
-			CheckNeighbor(index, -1,  1, queue);
-			CheckNeighbor(index,  0,  1, queue);
-			CheckNeighbor(index,  1,  1, queue);
+			Step(index, queue);
 		}
 		else
 		{
 			pathFound = true;
 			//only for test
-			_mapParent->ToOutputField();
-			_mapDist->ToOutput();
+			//_mapParent->ToOutputField();
+			//_mapDist->ToOutput();
 		}
 	}
 
@@ -76,6 +67,20 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 		result = Path::Empty();
 	}
 	return result;
+}
+
+void PathFinder::Step(int index, CellQueue* queue)
+{
+	CheckNeighbor(index, -1, -1, queue);
+	CheckNeighbor(index,  0, -1, queue);
+	CheckNeighbor(index,  1, -1, queue);
+
+	CheckNeighbor(index, -1,  0, queue);
+	CheckNeighbor(index,  1,  0, queue);
+
+	CheckNeighbor(index, -1,  1, queue);
+	CheckNeighbor(index,  0,  1, queue);
+	CheckNeighbor(index,  1,  1, queue);
 }
 
 Path* PathFinder::ExtractPath()

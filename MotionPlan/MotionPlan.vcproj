@@ -176,10 +176,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\DistanceEvaluator.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\dllmain.cpp"
 				>
 				<FileConfiguration
@@ -305,6 +301,10 @@
 		<Filter
 			Name="Inline Files"
 			>
+			<File
+				RelativePath=".\DistanceEvaluator.inl"
+				>
+			</File>
 			<File
 				RelativePath=".\Map.inl"
 				>

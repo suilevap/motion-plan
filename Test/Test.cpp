@@ -17,6 +17,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	char * result = Action(f.GetBuffer());
 	printf(result);
+	getchar();	
 	return 0;
 }
 

@@ -1,3 +1,7 @@
+#ifndef UTILS_OBJECTIDPOOL_H_
+#error "Include from ObjectIdPoll.h only."
+#else
+
 template<class T>
 ObjectIdPool<T>::ObjectIdPool(void)
 {
@@ -65,3 +69,5 @@ bool ObjectIdPool<T>::Free(int id)
 	}
 	return isSucceed;
 }
+
+#endif

@@ -16,7 +16,7 @@ void Map<CellType>::InitMap(int width, int height, int border)
 	_height = height + _border * 2;
 	int size = _width*_height;
 	_map = new CellType[size];
-	memset(_map, 0, sizeof(_map[0])*size);
+	Clear(0,1);
 }
 
 template<class CellType>
@@ -32,9 +32,10 @@ Map<CellType>::Map(int width, int height, int border)
 }
 
 template<class CellType>
-Map<CellType>::Map(Map<CellType>* map)		
+template<class T>
+Map<CellType>::Map(Map<T>* map)		
 {
-	InitMap(map->GetWidth(), map->GetHeight(), map->GetBorder());
+	InitMap(map->GetWidth(), map->GetHeight(), 1);
 }
 
 template<class CellType>
@@ -73,7 +74,7 @@ inline float Map<CellType>::GetEvclDist(int p1, int p2)
 }
 
 template<class CellType>
-int Map<CellType>::GetCellIndex(int x, int y)
+inline int Map<CellType>::GetCellIndex(int x, int y)
 {
 	return (x + _border) + (y + _border) * _width ;
 }
@@ -127,11 +128,40 @@ inline int Map<CellType>::GetWidth()
 }
 
 template<class CellType>
-int Map<CellType>::GetHeight()
+inline int Map<CellType>::GetHeight()
 {
 	return _height - _border * 2;
 }
 
+template<class CellType>
+void Map<CellType>::Clear(CellType value, CellType valueBorder)
+{
+	int size = _width*_height;
+	int sizeCell = sizeof(_map[0]);
+	memset(_map, value, sizeCell*size);
+	if (value != valueBorder)
+	{
+		for (int i = 0; i < _height; ++i)
+		{
+			for (int k = 0; k < _border; ++k)
+			{
+				_map[i * _width + k] = valueBorder;
+				_map[i * _width + _width - k - 1] = valueBorder;
+			}
+		}
+		for (int k = _border; k < _width - _border; ++k)
+		{
+			for (int i = 0; i < _border; ++i)
+			{
+				_map[i * _width + k] = valueBorder;
+				_map[(_height - i - 1) * _width + k] = valueBorder;
+			}
+		}
+
+	}
+}
+
+//only for test!!
 template<class CellType>
 void Map<CellType>::ToOutput()
 {
@@ -197,11 +227,11 @@ Map<int>* Map<CellType>::LoadFrom(std::string &data, std::vector<Point>* special
 			char symbol=data[index];
 			if (symbol =='#')
 			{
-				cell = 0;
+				cell = 1;
 			}
 			else
 			{
-				cell = 1;
+				cell = 0;
 			}
 			if ((symbol>='0') && (symbol<='9'))
 			{

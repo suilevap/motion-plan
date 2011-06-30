@@ -276,10 +276,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ScaledMap.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -297,10 +293,6 @@
 			</File>
 			<File
 				RelativePath=".\Map.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\ScaledMap.inl"
 				>
 			</File>
 		</Filter>

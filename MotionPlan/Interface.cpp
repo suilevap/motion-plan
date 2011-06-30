@@ -50,7 +50,7 @@ double CreateMap(double width, double height, double cellSize)
 	int height2 = static_cast<int>(height);
 	int cellSize2 = static_cast<int>(cellSize);
 
-	Map<int>* map = new ScaledMap<int>(width2, height2, cellSize2);
+	Map<int>* map = new Map<int>(width2, height2);
 	int result = _maps.Add(map);
 
 	return static_cast<double>(result);
@@ -177,7 +177,7 @@ double DestroyPath(double pathIndex)
 
 void TestGmInterface()
 {
-	int cellSize = 10;
+	int cellSize = 1;
 	double map = CreateMap(10*cellSize,10*cellSize,cellSize);
 	SetCellMap(map, 4*cellSize, 4*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 4*cellSize, 1);

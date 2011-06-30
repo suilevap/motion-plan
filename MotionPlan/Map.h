@@ -22,16 +22,16 @@ private:
 	int _border;
 
 protected:
-	inline int GetBorder();
 	void InitMap(int width, int height, int border);
-
+	int GetBorder();
 public:
 	Map(int width, int height);
 	Map(int width, int height, int border);
-	Map(Map<CellType>* map);
+	template<class T>
+	Map(Map<T>* map);
 	~Map(void);
 
-	virtual Point GetCellPoint(int index);
+	Point GetCellPoint(int index);
 	void GetD(int index1, int index2, int* dx, int* dy);
 	float GetEvclDist(int p1, int p2);
 	virtual int GetCellIndex(int x, int y);
@@ -43,6 +43,8 @@ public:
 	void SetCellRegion(int x, int y, CellType cell, int width, int height);
 	int GetWidth();
 	int GetHeight();
+
+	void Clear(CellType value, CellType valueBorder);
 
 	void ToOutput();
 	void ToOutputField();

@@ -9,8 +9,8 @@
 PathFinder::PathFinder(Map<int>* map)
 {
 	_map = map;
-	_mapDist = new Map<float>(map->GetWidth(), map->GetHeight());
-	_mapParent = new Map<int>(map->GetWidth(), map->GetHeight());
+	_mapDist = new Map<float>(map);
+	_mapParent = new Map<int>(map);
 }
 
 PathFinder::~PathFinder(void)
@@ -21,6 +21,9 @@ PathFinder::~PathFinder(void)
 
 Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 {
+	_mapDist->Clear(0, 0);
+	_mapParent->Clear(0, 0);
+
 	_goalX = goalX;
 	_goalY = goalY;
 	_start = _map->GetCellIndex(x, y);
@@ -50,8 +53,8 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 		{
 			pathFound = true;
 			//only for test
-			//_mapParent->ToOutputField();
-			//_mapDist->ToOutput();
+			_mapParent->ToOutputField();
+			_mapDist->ToOutput();
 		}
 	}
 
@@ -166,7 +169,7 @@ float PathFinder::GetDistance(int index, int dx, int dy)
 bool PathFinder::CheckCell(int index, float curDist)
 {
 	bool result = false;
-	if (_map->GetCell(index) !=0)
+	if (_map->GetCell(index) == 0)
 	{
 		float d = _mapDist->GetCell(index);
 		if ((_mapParent->GetCell(index) == 0) || (d > curDist))
@@ -177,22 +180,3 @@ bool PathFinder::CheckCell(int index, float curDist)
 	return result;
 }
 
-//void PathFinder::DirToXY(int dir, int* x, int* y)
-//{
-//	*x = dir & 0x03 - 1;
-//	*y = (dir>>2) & 0x03 - 1;
-//}
-//int PathFinder::XYToDir(int x, int y)
-//{
-//	return (x+1)|((y+1)<<2);
-//}
-
-//float PathFinder::ComputeCost(int x0, int y0, int x1, int y1)
-//{
-//	
-//}
-//float PathFinder::GetParentDist(int x, int y)
-//{
-//
-//	return 0;//_mapDist->GetCell(_mapParent->GetCell(x, y)
-//}

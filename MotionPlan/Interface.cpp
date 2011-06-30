@@ -44,94 +44,167 @@ char* Action(char * map)
 }
 
 
-int CreateMap(int width, int height, float cellSize)
+double CreateMap(double width, double height, double cellSize)
 {
-	Map<int>* map = new ScaledMap<int>(width, height, cellSize);
+	int width2 = static_cast<int>(width);
+	int height2 = static_cast<int>(height);
+	int cellSize2 = static_cast<int>(cellSize);
+
+	Map<int>* map = new ScaledMap<int>(width2, height2, cellSize2);
 	int result = _maps.Add(map);
-	return result;
+
+	return static_cast<double>(result);
 }
 
-int SetCellMap(int mapIndex, int x, int y, int cell)
+double SetCellMap(double mapIndex, double x, double y, double cell)
 {
-	Map<int>* map = _maps.Get(mapIndex);
-	map->SetCell(x, y, cell);
+	int mapIndex2 = static_cast<int>(mapIndex);
+	int x2 = static_cast<int>(x);
+	int y2 = static_cast<int>(y);
+	int cell2 = static_cast<int>(cell);
+
+	Map<int>* map = _maps.Get(mapIndex2);
+	map->SetCell(x2, y2, cell2);
+
 	return cell;
 }
 
-int GetCellMap(int mapIndex, int x, int y)
+double GetCellMap(double mapIndex, double x, double y)
 {
-	Map<int>* map = _maps.Get(mapIndex);
-	int result = map->GetCell(x, y);
+	int mapIndex2 = static_cast<int>(mapIndex);
+	int x2 = static_cast<int>(x);
+	int y2 = static_cast<int>(y);
+
+	Map<int>* map = _maps.Get(mapIndex2);
+	int result = map->GetCell(x2, y2);
+	return static_cast<double>(result);
+}
+
+double DestroyMap(double mapIndex)
+{
+	int mapIndex2 = static_cast<int>(mapIndex);
+	double result = _maps.Free(mapIndex2) ? 1.0 : 0.0;
 	return result;
 }
 
-int DestroyMap(int mapIndex)
+double CreatePathFinder(double mapIndex)
 {
-	return _maps.Free(mapIndex) ? 1 : 0;
-}
+	int mapIndex2 = static_cast<int>(mapIndex);
 
-int CreatePathFinders(int mapIndex)
-{
 	int result = -1;
-	Map<int>* map = _maps.Get(mapIndex);
+	Map<int>* map = _maps.Get(mapIndex2);
 	if (map != NULL)
 	{
 		PathFinder* pathFinder = new PathFinder(map);
 		result = _pathFinders.Add(pathFinder);
 	}
-	return result;
+	return static_cast<double>(result);
 }
-int FindPath(int pathFinderIndex, int x, int y, int goalX, int goalY)
+
+double FindPath(double pathFinderIndex, double x, double y, double goalX, double goalY)
 {
+	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
+	int x2 = static_cast<int>(x);
+	int y2 = static_cast<int>(y);
+	int goalX2 = static_cast<int>(goalX);
+	int goalY2 = static_cast<int>(goalY);
+
 	int result = -1;
-	PathFinder* pathFinder = _pathFinders.Get(pathFinderIndex);
+	PathFinder* pathFinder = _pathFinders.Get(pathFinderIndex2);
 	if (pathFinder != NULL)
 	{
-		Path* path = pathFinder->Find(x, y, goalX, goalY);
+		Path* path = pathFinder->Find(x2, y2, goalX2, goalY2);
 		result = _paths.Add(path);
 	}
+	return static_cast<double>(result);
+}
+double DestroyPathFinder(double pathFinderIndex)
+{
+	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
+
+	double result = _paths.Free(pathFinderIndex2)? 1.0: 0.0;
 	return result;
 }
-int DestroyPathFinders(int pathFinderIndex)
-{
-	return _paths.Free(pathFinderIndex)? 1: 0;
-}
 
-int GetXPath(int pathIndex, int n)
+double GetXPath(double pathIndex, double n)
 {
+	int pathIndex2 = static_cast<int>(pathIndex);
+	int n2 = static_cast<int>(n);
+
 	int result = -1;
-	Path* path = _paths.Get(pathIndex);
+	Path* path = _paths.Get(pathIndex2);
 	if (path!= NULL)
 	{
-		Point p = path->GetPoint(n);
+		Point p = path->GetPoint(n2);
 		result = p.X;
 	}
-	return result;
+	return static_cast<double>(result);
 }
-int GetYPath(int pathIndex, int n)
+double GetYPath(double pathIndex, double n)
 {
+	int pathIndex2 = static_cast<int>(pathIndex);
+	int n2 = static_cast<int>(n);
+
 	int result = -1;
-	Path* path = _paths.Get(pathIndex);
+	Path* path = _paths.Get(pathIndex2);
 	if (path!= NULL)
 	{
-		Point p = path->GetPoint(n);
+		Point p = path->GetPoint(n2);
 		result = p.Y;
 	}
-	return result;
+	return static_cast<double>(result);
 }
 
-int GetNPath(int pathIndex)
+double GetNPath(double pathIndex)
 {
+	int pathIndex2 = static_cast<int>(pathIndex);
+
 	int result = -1;
-	Path* path = _paths.Get(pathIndex);
+	Path* path = _paths.Get(pathIndex2);
 	if (path!= NULL)
 	{
 		result = path->Count();
 	}
-	return result;
+	return static_cast<double>(result);
 }
 
-int DestroyPath(int pathIndex)
+double DestroyPath(double pathIndex)
 {
-	return _paths.Free(pathIndex)? 1: 0;
+	int pathIndex2 = static_cast<int>(pathIndex);
+
+	return _paths.Free(pathIndex2)? 1.0: 0.0;
+}
+
+void TestGmInterface()
+{
+	int cellSize = 10;
+	double map = CreateMap(10*cellSize,10*cellSize,cellSize);
+	SetCellMap(map, 4*cellSize, 4*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 4*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 5*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 6*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 7*cellSize, 1);
+	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
+
+	double pathFinder = CreatePathFinder(map);
+	
+	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, 8.0*cellSize, 3.0*cellSize);
+	double n = static_cast<int>(GetNPath(path));
+
+	ScaledMap<int> m(10*cellSize,10*cellSize, cellSize);
+	for (double i = 0; i < n; ++i)
+	{
+		int x = static_cast<int>(GetXPath(path, i));
+		int y = static_cast<int>(GetYPath(path, i));
+		m.SetCell(x, y, static_cast<int>(i)+1);
+	}
+	m.ToOutput();
+
+
+	Map<int>* map2 = _maps.Get(map);
+	map2->ToOutput();
+
+	DestroyMap(map);
+	DestroyPathFinder(pathFinder);
+	DestroyPath(path);
 }

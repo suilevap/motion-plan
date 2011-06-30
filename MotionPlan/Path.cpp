@@ -23,7 +23,7 @@ Path* Path::Empty()
 Point Path::GetPoint(int index)
 {
 	Point result;
-	if ((index<_points.size()) && (index > 0))
+	if ((index<_points.size()) && (index >= 0))
 	{
 		result = _points[index];
 	}

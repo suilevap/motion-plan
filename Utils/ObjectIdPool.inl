@@ -37,7 +37,7 @@ int ObjectIdPool<T>::Add(T* obj)
 	else
 	{
 		_items.push_back(obj);
-		index = _items.size();
+		index = _items.size()-1;
 	}
 	return index;
 }

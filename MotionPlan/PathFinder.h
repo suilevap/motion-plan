@@ -23,16 +23,16 @@ private:
 	int _goalY;
 	int _goal;
 	int _start;
+	CellQueue* _queue;
 	//void DirToXY(int dir, int* x, int* y);
 	//int XYToDir(int x, int y);
 	//float ComputeCost(int x0, int y0, int x1, int y1);
 	//float GetParentDist(int x, int y);
-	bool CheckNeighbor(int index, int dx, int dy, CellQueue* queue);
+	bool CheckNeighbor(int index, int dx, int dy);
 	float GetDistance(int index, int dx, int dy);
 	float GetEstimateDistance(int index);
-	bool CheckCell(int index, float curDist);
 	Path* ExtractPath();
-	void Step(int index, CellQueue* queue);
+	void Step(int index);
 
 public:
 	PathFinder(Map<int>* map);

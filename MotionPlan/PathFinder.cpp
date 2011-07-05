@@ -23,31 +23,32 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 {
 	_mapDist->Clear(0, 0);
 	_mapParent->Clear(0, 0);
+	_queue = new CellQueue();
 
 	_goalX = goalX;
 	_goalY = goalY;
 	_start = _map->GetCellIndex(x, y);
 	_goal = _map->GetCellIndex(_goalX, _goalY);
 	 _mapParent->SetCell(_start, _start);
-	CellQueue* queue = new CellQueue();
+
 	PathPoint point;
 	point.Index = _start;
 	point.Rank = 0;
-	queue->push(point);
+	_queue->push(point);
 
 	bool pathFound = false;
-	while (!queue->empty() && !pathFound)
+	while (!_queue->empty() && !pathFound)
 	{
 		//only for test
 		//_mapDist->ToOutput();
 		//_mapParent->ToOutputField();
 
-		point = queue->top();
-		queue->pop();
+		point = _queue->top();
+		_queue->pop();
 		int index = point.Index;
 		if (index != _goal)
 		{
-			Step(index, queue);
+			Step(index);
 		}
 		else
 		{
@@ -58,7 +59,7 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 		}
 	}
 
-	delete queue;
+	delete _queue;
 
 	Path* result;
 	if (pathFound)
@@ -72,18 +73,18 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 	return result;
 }
 
-void PathFinder::Step(int index, CellQueue* queue)
+void PathFinder::Step(int index)
 {
-	CheckNeighbor(index, -1, -1, queue);
-	CheckNeighbor(index,  0, -1, queue);
-	CheckNeighbor(index,  1, -1, queue);
+	CheckNeighbor(index, -1, -1);
+	CheckNeighbor(index,  0, -1);
+	CheckNeighbor(index,  1, -1);
 
-	CheckNeighbor(index, -1,  0, queue);
-	CheckNeighbor(index,  1,  0, queue);
+	CheckNeighbor(index, -1,  0);
+	CheckNeighbor(index,  1,  0);
 
-	CheckNeighbor(index, -1,  1, queue);
-	CheckNeighbor(index,  0,  1, queue);
-	CheckNeighbor(index,  1,  1, queue);
+	CheckNeighbor(index, -1,  1);
+	CheckNeighbor(index,  0,  1);
+	CheckNeighbor(index,  1,  1);
 }
 
 Path* PathFinder::ExtractPath()
@@ -105,21 +106,26 @@ Path* PathFinder::ExtractPath()
 	return path;
 }
 
-bool PathFinder::CheckNeighbor(int index, int dx, int dy, CellQueue* queue)
+bool PathFinder::CheckNeighbor(int index, int dx, int dy)
 {
-	bool result;
+	bool result = false;
 	int newIndex = _map->GetCellIndex(index, dx, dy);
-	float dist = GetDistance(index, dx , dy);
-	result = CheckCell(newIndex, dist);
-	if (result)
+	if (_map->GetCell(newIndex) == 0)
 	{
-		_mapParent->SetCell(newIndex, index);
-		_mapDist->SetCell(newIndex, dist);
+		float dist = GetDistance(index, dx , dy);
 
-		PathPoint point;
-		point.Index = newIndex;
-		point.Rank = dist + GetEstimateDistance(newIndex);
-		queue->push(point);
+		if ((_mapParent->GetCell(newIndex) == 0) 
+			|| (_mapDist->GetCell(newIndex) > dist))
+		{
+			_mapParent->SetCell(newIndex, index);
+			_mapDist->SetCell(newIndex, dist);
+
+			PathPoint point;
+			point.Index = newIndex;
+			point.Rank = dist + GetEstimateDistance(newIndex);
+			_queue->push(point);
+			result = true;
+		}
 	}
 	return result;
 }
@@ -166,17 +172,4 @@ float PathFinder::GetDistance(int index, int dx, int dy)
 }
 
 
-bool PathFinder::CheckCell(int index, float curDist)
-{
-	bool result = false;
-	if (_map->GetCell(index) == 0)
-	{
-		float d = _mapDist->GetCell(index);
-		if ((_mapParent->GetCell(index) == 0) || (d > curDist))
-		{			
-			result = true;
-		}
-	}
-	return result;
-}
 

@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include "Map.h"
-#include "ScaledMap.h"
 #include "Point.h"
 #include "PathPoint.h"
 #include "PathFinder.h"
@@ -191,7 +190,7 @@ void TestGmInterface()
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, 8.0*cellSize, 3.0*cellSize);
 	double n = static_cast<int>(GetNPath(path));
 
-	ScaledMap<int> m(10*cellSize,10*cellSize, cellSize);
+	Map<int> m(10*cellSize,10*cellSize, cellSize);
 	for (double i = 0; i < n; ++i)
 	{
 		int x = static_cast<int>(GetXPath(path, i));

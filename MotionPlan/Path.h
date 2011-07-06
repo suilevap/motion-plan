@@ -1,6 +1,7 @@
 #pragma once
-#include <vector>;
-#include "Point.h";
+
+#include <vector>
+#include "Point.h"
 
 class Path
 {

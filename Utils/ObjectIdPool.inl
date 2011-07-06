@@ -12,7 +12,10 @@ ObjectIdPool<T>::~ObjectIdPool(void)
 {
 	for (int i = 0; i < _items.size(); ++i) 
 	{
-		delete _items[i];
+		if (_items[i] != NULL)
+		{
+			delete _items[i];
+		}
 	}
 }
 

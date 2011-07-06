@@ -199,11 +199,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Scalable.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Transformable.h"
 				>
 			</File>
 		</Filter>
@@ -212,6 +220,14 @@
 			>
 			<File
 				RelativePath=".\ObjectIdPool.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\Scalable.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\Transformable.inl"
 				>
 			</File>
 		</Filter>

@@ -159,7 +159,7 @@ double GetXPath(double pathIndex, double n)
 	if (path!= NULL)
 	{
 		Point point = path->GetPoint(n2);
-		result = p->Transform(point.X);
+		result = p->Transform(point.X+0.5);
 	}
 	return static_cast<double>(result);
 }
@@ -174,7 +174,7 @@ double GetYPath(double pathIndex, double n)
 	if (path!= NULL)
 	{
 		Point point = path->GetPoint(n2);
-		result = p->Transform(point.Y);
+		result = p->Transform(point.Y+0.5);
 	}
 	return static_cast<double>(result);
 }

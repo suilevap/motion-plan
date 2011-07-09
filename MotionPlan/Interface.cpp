@@ -233,3 +233,8 @@ void TestGmInterface()
 	DestroyPathFinder(pathFinder);
 	DestroyPath(path);
 }
+
+double Test()
+{
+	return 8;
+}

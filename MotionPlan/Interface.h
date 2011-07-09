@@ -1,4 +1,4 @@
-#define DllExport   __declspec( dllexport ) 
+#define DllExport extern "C" __declspec( dllexport ) 
 
 DllExport double CreateMap(double width, double height, double cellSize);
 DllExport double SetCellMap(double mapIndex, double x, double y, double cell);
@@ -16,7 +16,7 @@ DllExport double DestroyPath(double pathIndex);
 
 DllExport void TestGmInterface();
 
-
+DllExport double Test();
 
 //extern "C"
 //{

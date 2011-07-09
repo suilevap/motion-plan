@@ -12,7 +12,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//char * result = Action(f.GetBuffer());
 	//printf(result);
-	TestGmInterface();
+	for (int i=0; i < 10000; i++)
+	{
+		TestGmInterface();
+		if (i%100 == 0)
+		{
+			printf("%3d\n",i);
+		}
+	}
 	getchar();	
 	return 0;
 }

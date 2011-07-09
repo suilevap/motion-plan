@@ -54,8 +54,8 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 		{
 			pathFound = true;
 			//only for test
-			_mapParent->ToOutputField();
-			_mapDist->ToOutput();
+			//_mapParent->ToOutputField();
+			//_mapDist->ToOutput();
 		}
 	}
 

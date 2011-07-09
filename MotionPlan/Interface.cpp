@@ -16,7 +16,6 @@
 #include "Transformable.h"
 #include "Scalable.h"
 
-
 ObjectIdPool<Transformable<Map<int>>> _maps;
 ObjectIdPool<Transformable<PathFinder>> _pathFinders;
 ObjectIdPool<Transformable<Path>> _paths;
@@ -45,11 +44,10 @@ char* Action(char * map)
 	return "Hello\nWorld";
 }
 
-
 double CreateMap(double width, double height, double cellSize)
 {
-	int width2 = static_cast<int>(width/cellSize);
-	int height2 = static_cast<int>(height/cellSize);
+	int width2 = static_cast<int>(width/cellSize+0.5);
+	int height2 = static_cast<int>(height/cellSize+0.5);
 	int cellSize2 = static_cast<int>(cellSize);
 
 	Map<int>* map = new Map<int>(width2, height2);
@@ -67,26 +65,31 @@ double SetCellMap(double mapIndex, double x, double y, double cell)
 	//int y2 = static_cast<int>(y);
 	int cell2 = static_cast<int>(cell);
 	Transformable<Map<int>>* m = _maps.Get(mapIndex2);
+	if (m!= NULL)
+	{
+		Map<int>* map = m->GetItem();
+		int x2 = m->Transform(x);
+		int y2 = m->Transform(y);
 
-	Map<int>* map = m->GetItem();
-	int x2 = m->Transform(x);
-	int y2 = m->Transform(y);
-
-	map->SetCell(x2, y2, cell2);
-
+		map->SetCell(x2, y2, cell2);
+	}
 	return cell;
 }
 
 double GetCellMap(double mapIndex, double x, double y)
 {
+	int result = 0;
 	int mapIndex2 = static_cast<int>(mapIndex);
 
 	Transformable<Map<int>>* m = _maps.Get(mapIndex2);
-	Map<int>* map = m->GetItem();
-	int x2 = m->Transform(x);
-	int y2 = m->Transform(y);
+	if (m != NULL)
+	{
+		Map<int>* map = m->GetItem();
+		int x2 = m->Transform(x);
+		int y2 = m->Transform(y);
+		result = map->GetCell(x2, y2);
 
-	int result = map->GetCell(x2, y2);
+	}
 	return static_cast<double>(result);
 }
 
@@ -104,10 +107,10 @@ double CreatePathFinder(double mapIndex)
 	int result = -1;
 
 	Transformable<Map<int>>* m = _maps.Get(mapIndex2);
-	Map<int>* map = m->GetItem();
 
-	if (map != NULL)
+	if (m != NULL)
 	{
+		Map<int>* map = m->GetItem();
 		PathFinder* pathFinder = new PathFinder(map);
 		//TODO: change to matrix transformation 
 		Transformable<PathFinder>* pf = new Scalable<PathFinder>(pathFinder, m->TransformExact(1));
@@ -121,17 +124,17 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 {
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
 
-
 	int result = -1;
 	Transformable<PathFinder>* pf  = _pathFinders.Get(pathFinderIndex2);
-	PathFinder* pathFinder = pf->GetItem();
-	int x2 = pf->Transform(x);
-	int y2 = pf->Transform(y);
-	int goalX2 = pf->Transform(goalX);
-	int goalY2 = pf->Transform(goalY);
 
-	if (pathFinder != NULL)
+	if (pf != NULL)
 	{
+		PathFinder* pathFinder = pf->GetItem();
+		int x2 = pf->Transform(x);
+		int y2 = pf->Transform(y);
+		int goalX2 = pf->Transform(goalX);
+		int goalY2 = pf->Transform(goalY);
+
 		Path* path = pathFinder->Find(x2, y2, goalX2, goalY2);
 
 		//TODO: change to matrix transformation 
@@ -140,6 +143,7 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 	}
 	return static_cast<double>(result);
 }
+
 double DestroyPathFinder(double pathFinderIndex)
 {
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
@@ -155,9 +159,9 @@ double GetXPath(double pathIndex, double n)
 
 	int result = -1;
 	Transformable<Path>* p = _paths.Get(pathIndex2);
-	Path* path = p->GetItem();
-	if (path!= NULL)
+	if (p!= NULL)
 	{
+		Path* path = p->GetItem();
 		Point point = path->GetPoint(n2);
 		result = p->Transform(point.X+0.5);
 	}
@@ -170,9 +174,9 @@ double GetYPath(double pathIndex, double n)
 
 	int result = -1;
 	Transformable<Path>* p = _paths.Get(pathIndex2);
-	Path* path = p->GetItem();
-	if (path!= NULL)
+	if (p!= NULL)
 	{
+		Path* path = p->GetItem();
 		Point point = path->GetPoint(n2);
 		result = p->Transform(point.Y+0.5);
 	}
@@ -185,9 +189,9 @@ double GetNPath(double pathIndex)
 
 	int result = -1;
 	Transformable<Path>* p = _paths.Get(pathIndex2);
-	Path* path = p->GetItem();
-	if (path!= NULL)
+	if (p!= NULL)
 	{
+		Path* path = p->GetItem();
 		result = path->Count();
 	}
 	return static_cast<double>(result);

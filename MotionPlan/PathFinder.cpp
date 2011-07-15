@@ -5,6 +5,8 @@
 
 #include "DistanceEvaluator.h"
 #include "PathFinder.h"
+#include "MathConstants.h"
+
 
 PathFinder::PathFinder(Map<int>* map)
 {
@@ -64,7 +66,7 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 	Path* result;
 	if (pathFound)
 	{
-		result = ExtractPath();
+		result =ExtractPath();
 	}
 	else
 	{
@@ -142,7 +144,7 @@ float PathFinder::GetDistance(int index, int dx, int dy)
 	float stepD;
 	if ((dx!=0)&&(dy!=0))
 	{
-		stepD = sqrt(2.0f);
+		stepD = SQRT_2;
 	}
 	else
 	{
@@ -162,7 +164,7 @@ float PathFinder::GetDistance(int index, int dx, int dy)
 			int cell = _map->GetCellIndex(index, dx - parentDx, dy - parentDy);
 			if (cell != 0)
 			{
-				stepD = sqrt(2.0f*2.0f + 1.0f);
+				stepD = SQRT_5;//sqrt(2.0f*2.0f + 1.0f);
 				index = parentIndex;
 			}
 		}

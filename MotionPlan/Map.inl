@@ -112,11 +112,11 @@ inline void Map<CellType>::SetCell(int x, int y, CellType cell)
 template<class CellType>
 void Map<CellType>::SetCellRegion(int x, int y, CellType cell, int width, int height)
 {
-	for ( x= x; x<x+width; x++)
+	for (int i = x; i < (x + width); i++)
 	{
-		for ( y= y; y<y+height; y++)
+		for (int k = y; k < (y + height); k++)
 		{
-			_map[GetCellIndex(x,y)] = cell;
+			_map[GetCellIndex(i,k)] = cell;
 		}
 	}
 }

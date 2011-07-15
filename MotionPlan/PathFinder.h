@@ -39,6 +39,9 @@ public:
 	~PathFinder();
 
 	Path* Find(int x, int y, int goalX, int goalY);
+	
+	//only for debug purpose
+	Map<float>* GetMapDist(){ return _mapDist;}
 };
 
 #endif //_PathFinder_h_

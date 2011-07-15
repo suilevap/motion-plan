@@ -2,6 +2,7 @@
 
 DllExport double CreateMap(double width, double height, double cellSize);
 DllExport double SetCellMap(double mapIndex, double x, double y, double cell);
+DllExport double SetCellMapRegion(double mapIndex, double x, double y, double w, double h, double cell);
 DllExport double GetCellMap(double mapIndex, double x, double y);
 DllExport double DestroyMap(double mapIndex);
 
@@ -15,7 +16,7 @@ DllExport double GetNPath(double pathIndex);
 DllExport double DestroyPath(double pathIndex);
 
 DllExport void TestGmInterface();
-DllExport void TestPerformance();
+DllExport void TestPerformance(bool outputMap);
 
 DllExport double Test();
 

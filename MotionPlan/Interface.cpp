@@ -76,6 +76,23 @@ double SetCellMap(double mapIndex, double x, double y, double cell)
 	return cell;
 }
 
+double SetCellMapRegion(double mapIndex, double x, double y, double w, double h, double cell)
+{
+	int mapIndex2 = static_cast<int>(mapIndex);
+	int cell2 = static_cast<int>(cell);
+	Transformable<Map<int>>* m = _maps.Get(mapIndex2);
+	if (m!= NULL)
+	{
+		Map<int>* map = m->GetItem();
+		int x2 = m->Transform(x);
+		int y2 = m->Transform(y);
+		int w2 = m->Transform(w);
+		int h2 = m->Transform(h);
+		map->SetCellRegion(x2, y2, cell2, w2, h2);
+	}
+	return cell;
+}
+
 double GetCellMap(double mapIndex, double x, double y)
 {
 	int result = 0;
@@ -214,7 +231,7 @@ void TestGmInterface()
 	SetCellMap(map, 5*cellSize, 6*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 7*cellSize, 1);
 	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
-
+	
 	double pathFinder = CreatePathFinder(map);
 	
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, 8.0*cellSize, 3.0*cellSize);
@@ -238,20 +255,33 @@ void TestGmInterface()
 	DestroyPath(path);
 }
 
-void TestPerformance()
+void TestPerformance(bool outputMap)
 {
 	int cellSize = 16;
-	double map = CreateMap(100*cellSize,100*cellSize,cellSize);
+	int w = 40;
+	int h = 100;
+	double map = CreateMap(w*cellSize,h*cellSize,cellSize);
 	SetCellMap(map, 4*cellSize, 4*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 4*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 5*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 6*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 7*cellSize, 1);
 	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
+	SetCellMapRegion(map, (w/2)*cellSize, 0*cellSize, 2*cellSize, (h/2-1)*cellSize, 1);
+	SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
 
 	double pathFinder = CreatePathFinder(map);
 	
-	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, 80*cellSize, 80*cellSize);
+	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, w*0.8*cellSize, h*0.8*cellSize);
+
+	if (outputMap)
+	{
+		//TODO: AAAaa
+		Map<int>* mapObst = _maps.Get(map)->GetItem();
+		mapObst->ToOutput();
+		Map<float>* mapDist = _pathFinders.Get(pathFinder)->GetItem()->GetMapDist();
+		mapDist->ToOutput();
+	}
 
 	DestroyMap(map);
 	DestroyPathFinder(pathFinder);

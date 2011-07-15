@@ -17,7 +17,7 @@ std::vector<Point> Path::GetPoints()
 
 Path* Path::Empty()
 {
-	//TODOL optimaze
+	//TODO: optimaze
 	return  new Path(std::vector<Point>());
 }
 Point Path::GetPoint(int index)

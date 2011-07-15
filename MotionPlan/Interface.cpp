@@ -148,7 +148,7 @@ double DestroyPathFinder(double pathFinderIndex)
 {
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
 
-	double result = _paths.Free(pathFinderIndex2)? 1.0: 0.0;
+	double result = _pathFinders.Free(pathFinderIndex2)? 1.0: 0.0;
 	return result;
 }
 
@@ -220,18 +220,38 @@ void TestGmInterface()
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, 8.0*cellSize, 3.0*cellSize);
 	double n = static_cast<int>(GetNPath(path));
 
-	Map<int> m(10,10);
-	for (double i = 0; i < n; ++i)
-	{
-		int x = static_cast<int>(GetXPath(path, i)/cellSize);
-		int y = static_cast<int>(GetYPath(path, i)/cellSize);
-		m.SetCell(x, y, static_cast<int>(i)+1);
-	}
-	m.ToOutput();
+	//Map<int> m(10,10);
+	//for (double i = 0; i < n; ++i)
+	//{
+	//	int x = static_cast<int>(GetXPath(path, i)/cellSize);
+	//	int y = static_cast<int>(GetYPath(path, i)/cellSize);
+	//	m.SetCell(x, y, static_cast<int>(i)+1);
+	//}
+	//m.ToOutput();
 
-	//TODO: AAAaa
-	Map<int>* map2 = _maps.Get(map)->GetItem();
-	map2->ToOutput();
+	////TODO: AAAaa
+	//Map<int>* map2 = _maps.Get(map)->GetItem();
+	//map2->ToOutput();
+
+	DestroyMap(map);
+	DestroyPathFinder(pathFinder);
+	DestroyPath(path);
+}
+
+void TestPerformance()
+{
+	int cellSize = 16;
+	double map = CreateMap(100*cellSize,100*cellSize,cellSize);
+	SetCellMap(map, 4*cellSize, 4*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 4*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 5*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 6*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 7*cellSize, 1);
+	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
+
+	double pathFinder = CreatePathFinder(map);
+	
+	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, 80*cellSize, 80*cellSize);
 
 	DestroyMap(map);
 	DestroyPathFinder(pathFinder);

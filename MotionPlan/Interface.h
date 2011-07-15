@@ -15,6 +15,7 @@ DllExport double GetNPath(double pathIndex);
 DllExport double DestroyPath(double pathIndex);
 
 DllExport void TestGmInterface();
+DllExport void TestPerformance();
 
 DllExport double Test();
 

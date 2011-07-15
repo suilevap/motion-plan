@@ -1,6 +1,6 @@
-//#ifndef UTILS_TRANSFORMABLE_H_
-//#error "Include from Transformable.h only."
-//#else
+#ifndef UTILS_TRANSFORMABLE_H_
+#error "Include from Transformable.h only."
+#else
 
 template<class T>
 Transformable<T>::Transformable(T* item)
@@ -33,4 +33,4 @@ inline T* Transformable<T>::GetItem()
 }
 
 
-//#endif
+#endif

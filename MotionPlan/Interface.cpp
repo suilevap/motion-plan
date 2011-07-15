@@ -267,12 +267,12 @@ void TestPerformance(bool outputMap)
 	SetCellMap(map, 5*cellSize, 6*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 7*cellSize, 1);
 	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
-	SetCellMapRegion(map, (w/2)*cellSize, 0*cellSize, 2*cellSize, (h/2-1)*cellSize, 1);
-	SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
+	SetCellMapRegion(map, (w/2)*cellSize, 0*cellSize, 2*cellSize, (h*0.75)*cellSize, 1);
+	//SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
 
 	double pathFinder = CreatePathFinder(map);
 	
-	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, w*0.8*cellSize, h*0.8*cellSize);
+	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w-2)*cellSize, 2.0*cellSize);
 
 	if (outputMap)
 	{
@@ -281,6 +281,17 @@ void TestPerformance(bool outputMap)
 		mapObst->ToOutput();
 		Map<float>* mapDist = _pathFinders.Get(pathFinder)->GetItem()->GetMapDist();
 		mapDist->ToOutput();
+
+		Map<int> m(mapObst->GetWidth(),mapObst->GetHeight());
+		double n = static_cast<int>(GetNPath(path));
+		for (double i = 0; i < n; ++i)
+		{
+			int x = static_cast<int>(GetXPath(path, i)/cellSize);
+			int y = static_cast<int>(GetYPath(path, i)/cellSize);
+			m.SetCell(x, y, (static_cast<int>(i))%100+1);
+		}
+		m.ToOutput();
+
 	}
 
 	DestroyMap(map);

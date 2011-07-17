@@ -43,6 +43,7 @@ public:
 	void SetCellRegion(int x, int y, CellType cell, int width, int height);
 	int GetWidth();
 	int GetHeight();
+	bool InMap(int x, int y);
 
 	void Clear(CellType value, CellType valueBorder);
 

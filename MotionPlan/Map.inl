@@ -134,6 +134,12 @@ inline int Map<CellType>::GetHeight()
 }
 
 template<class CellType>
+inline bool Map<CellType>::InMap(int x, int y)
+{
+	return ((x>=0)&&(y=>0)&&(x<GetWidth())&&(y<GetHeight()));
+}
+
+template<class CellType>
 void Map<CellType>::Clear(CellType value, CellType valueBorder)
 {
 	int size = _width*_height;

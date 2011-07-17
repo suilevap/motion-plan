@@ -22,15 +22,21 @@ PathFinder::~PathFinder(void)
 }
 
 Path* PathFinder::Find(int x, int y, int goalX, int goalY)
-{
-	_mapDist->Clear(0, 0);
-	_mapParent->Clear(0, 0);
-	_queue = new CellQueue();
-
+{	
 	_goalX = goalX;
 	_goalY = goalY;
 	_start = _map->GetCellIndex(x, y);
 	_goal = _map->GetCellIndex(_goalX, _goalY);
+	//TODO: fix several return!!
+	if ((_map->GetCell(_start) == 1) ||(_map->GetCell(_goal) == 1))
+	{
+		return Path::Empty();
+	}
+
+	_mapDist->Clear(0, 0);
+	_mapParent->Clear(0, 0);
+	_queue = new CellQueue();
+
 	 _mapParent->SetCell(_start, _start);
 
 	PathPoint point;
@@ -66,7 +72,7 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 	Path* result;
 	if (pathFound)
 	{
-		result =ExtractPath();
+		result = ExtractPath();
 	}
 	else
 	{
@@ -135,7 +141,7 @@ bool PathFinder::CheckNeighbor(int index, int dx, int dy)
 float PathFinder::GetEstimateDistance(int index)
 {
 	Point p = _map->GetCellPoint(index);
-	return DistanceEvaluator::EuclideanDistance<float>(p.X, p.Y, _goalX, _goalY);
+	return DistanceEvaluator::DiagonalDistance<float>(p.X, p.Y, _goalX, _goalY);
 }
 
 float PathFinder::GetDistance(int index, int dx, int dy)
@@ -151,24 +157,24 @@ float PathFinder::GetDistance(int index, int dx, int dy)
 		stepD = 1.0f;
 	}
 
-	//trick
-	int parentDx;
-	int parentDy;
-	int parentIndex = _mapParent->GetCell(index);
-	if (parentIndex != index)
-	{
-		_map->GetD(parentIndex, index, &parentDx,&parentDy);
-		//diagonal
-		if ((dx + dy + parentDx + parentDy) % 2 == 1)
-		{
-			int cell = _map->GetCellIndex(index, dx - parentDx, dy - parentDy);
-			if (cell != 0)
-			{
-				stepD = SQRT_5;//sqrt(2.0f*2.0f + 1.0f);
-				index = parentIndex;
-			}
-		}
-	}
+	////trick
+	//int parentDx;
+	//int parentDy;
+	//int parentIndex = _mapParent->GetCell(index);
+	//if (parentIndex != index)
+	//{
+	//	_map->GetD(parentIndex, index, &parentDx,&parentDy);
+	//	//diagonal
+	//	if ((dx + dy + parentDx + parentDy) % 2 == 1)
+	//	{
+	//		int cell = _map->GetCellIndex(index, dx - parentDx, dy - parentDy);
+	//		if (cell != 0)
+	//		{
+	//			stepD = SQRT_5;//sqrt(2.0f*2.0f + 1.0f);
+	//			index = parentIndex;
+	//		}
+	//	}
+	//}
 	result = _mapDist->GetCell(index) + stepD;
 	return result;
 }

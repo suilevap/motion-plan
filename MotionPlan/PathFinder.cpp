@@ -42,17 +42,17 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 	PathPoint point;
 	point.Index = _start;
 	point.Rank = 0;
-	_queue->push(point);
+	_queue->Push(point);
 
 	bool pathFound = false;
-	while (!_queue->empty() && !pathFound)
+	while (!_queue->Empty() && !pathFound)
 	{
 		//only for test
 		//_mapDist->ToOutput();
 		//_mapParent->ToOutputField();
 
-		point = _queue->top();
-		_queue->pop();
+		point = _queue->Top();
+		_queue->Pop();
 		int index = point.Index;
 		if (index != _goal)
 		{
@@ -131,7 +131,7 @@ bool PathFinder::CheckNeighbor(int index, int dx, int dy)
 			PathPoint point;
 			point.Index = newIndex;
 			point.Rank = dist + GetEstimateDistance(newIndex);
-			_queue->push(point);
+			_queue->Push(point);
 			result = true;
 		}
 	}

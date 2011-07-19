@@ -10,7 +10,7 @@ Path::~Path(void)
 {
 }
 
-std::vector<Point> Path::GetPoints()
+std::vector<Point>& Path::GetPoints()
 {
 	return _points;
 }

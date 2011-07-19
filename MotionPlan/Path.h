@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Point.h"
+#include "Scalable.h"
 
 class Path
 {
@@ -11,9 +12,10 @@ private:
 public:
 	Path(std::vector<Point> points);
 	~Path(void);
-	std::vector<Point> GetPoints();
+	std::vector<Point>& GetPoints();
 	Point GetPoint(int index);
-	int Count();
-	
+	int Count();	
+
 	static Path* Empty();
+	
 };

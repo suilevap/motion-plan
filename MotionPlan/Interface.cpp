@@ -20,6 +20,8 @@ ObjectIdPool<Transformable<Map<int>>> _maps;
 ObjectIdPool<Transformable<PathFinder>> _pathFinders;
 ObjectIdPool<Transformable<Path>> _paths;
 
+char* ConvertToGmPath(Transformable<Path>* p);
+
 char* Action(char * map)
 {
 	std::string d = map;
@@ -84,10 +86,10 @@ double SetCellMapRegion(double mapIndex, double x, double y, double w, double h,
 	if (m!= NULL)
 	{
 		Map<int>* map = m->GetItem();
-		int x2 = m->Transform(x);
-		int y2 = m->Transform(y);
-		int w2 = m->Transform(w);
-		int h2 = m->Transform(h);
+		int x2 = static_cast<int>(m->TransformExact(x)-0.5);
+		int y2 = static_cast<int>(m->TransformExact(y)-0.5);
+		int w2 = static_cast<int>(m->TransformExact(w)+1);
+		int h2 = static_cast<int>(m->TransformExact(h)+1);
 		map->SetCellRegion(x2, y2, cell2, w2, h2);
 	}
 	return cell;
@@ -214,6 +216,31 @@ double GetNPath(double pathIndex)
 	return static_cast<double>(result);
 }
 
+//only for GM
+char* ConvertToGmPath(Transformable<Path>* p)
+{
+	static char* format = "path_add_point(argument0, %8.2f, %8.2f, 100);\n";
+	Path* path = p->GetItem();
+	std::vector<Point>& points = path->GetPoints();
+	int estimatedLength = points.size() * (strlen(format)+2*16);
+	char* buffer = new char[estimatedLength];
+	int offset=0;
+	for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
+	{
+		offset += sprintf(buffer+offset, format, p->TransformExact(it->X+0.5), p->TransformExact(it->Y+0.5));
+	}
+	return buffer;
+}
+
+char* GetGmPath(double pathIndex)
+{
+	int pathIndex2 = static_cast<int>(pathIndex);
+	Transformable<Path>* p = _paths.Get(pathIndex2);
+	char * buffer = ConvertToGmPath(p);
+	return buffer;
+}
+
+
 double DestroyPath(double pathIndex)
 {
 	int pathIndex2 = static_cast<int>(pathIndex);
@@ -276,6 +303,9 @@ void TestPerformance(bool outputMap)
 
 	if (outputMap)
 	{
+		char* pathOutput = ConvertToGmPath(_paths.Get(path));
+		printf(pathOutput);
+
 		//TODO: AAAaa
 		Map<int>* mapObst = _maps.Get(map)->GetItem();
 		mapObst->ToOutput();

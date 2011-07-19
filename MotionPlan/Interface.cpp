@@ -26,7 +26,7 @@ char* Action(char * map)
 	std::vector<Point> points;
 	Map<int>* m = Map<int>::LoadFrom(d, &points);
 	PathFinder finder(m);
-	std::vector<Point> path = finder.Find(points[1].X, points[1].Y, points[2].X, points[2].Y)->GetPoints();
+	std::vector<Point> path = finder.Find(points[1].X, points[1].Y, points[2].X, points[2].Y, 10)->GetPoints();
 	printf("map\n");
 	m->ToOutput();
 	
@@ -152,7 +152,7 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 		int goalX2 = pf->Transform(goalX);
 		int goalY2 = pf->Transform(goalY);
 
-		Path* path = pathFinder->Find(x2, y2, goalX2, goalY2);
+		Path* path = pathFinder->Find(x2, y2, goalX2, goalY2, 1.0f);
 
 		//TODO: change to matrix transformation 
 		Transformable<Path>* p = new Scalable<Path>(path, 1 / pf->TransformExact(1));

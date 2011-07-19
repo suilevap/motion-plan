@@ -12,13 +12,21 @@ private:
 		PathPoint,
 		std::vector<PathPoint>,
 		std::greater<std::vector<PathPoint>::value_type>> _queue;
+	
+	//std::vector<PathPoint> _unsortedQueue;
 
-	std::multiset<
-		PathPoint,	
-		std::less<PathPoint>> _set;
+	float _alphaDist;
+
+	int _count;
+
+	//std::multiset<
+	//	PathPoint,	
+	//	std::less<PathPoint>> _set;
 public:
+	CellQueue(float alphaDist);
+
 	void Push(const PathPoint& point);
-	void Pop();
-	PathPoint Top();
+	PathPoint Pop();
+
 	bool Empty();
 };

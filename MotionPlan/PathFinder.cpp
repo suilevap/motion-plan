@@ -21,7 +21,7 @@ PathFinder::~PathFinder(void)
 	delete _mapParent;
 }
 
-Path* PathFinder::Find(int x, int y, int goalX, int goalY)
+Path* PathFinder::Find(int x, int y, int goalX, int goalY, float estimateAlpha)
 {	
 	_goalX = goalX;
 	_goalY = goalY;
@@ -35,13 +35,13 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 
 	_mapDist->Clear(0, 0);
 	_mapParent->Clear(0, 0);
-	_queue = new CellQueue();
+	//float estimateDist = GetEstimateDistance(_start) * estimateAlpha*0+155;
+	_queue = new CellQueue(estimateAlpha);
 
 	 _mapParent->SetCell(_start, _start);
 
-	PathPoint point;
-	point.Index = _start;
-	point.Rank = 0;
+	PathPoint point(_start, 0, 0);
+
 	_queue->Push(point);
 
 	bool pathFound = false;
@@ -50,9 +50,8 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY)
 		//only for test
 		//_mapDist->ToOutput();
 		//_mapParent->ToOutputField();
-
-		point = _queue->Top();
-		_queue->Pop();
+	
+		point = _queue->Pop();
 		int index = point.Index;
 		if (index != _goal)
 		{
@@ -128,9 +127,8 @@ bool PathFinder::CheckNeighbor(int index, int dx, int dy)
 			_mapParent->SetCell(newIndex, index);
 			_mapDist->SetCell(newIndex, dist);
 
-			PathPoint point;
-			point.Index = newIndex;
-			point.Rank = dist + GetEstimateDistance(newIndex);
+			float estimate = GetEstimateDistance(newIndex);
+			PathPoint point(newIndex, dist, estimate );
 			_queue->Push(point);
 			result = true;
 		}
@@ -141,7 +139,8 @@ bool PathFinder::CheckNeighbor(int index, int dx, int dy)
 float PathFinder::GetEstimateDistance(int index)
 {
 	Point p = _map->GetCellPoint(index);
-	return DistanceEvaluator::DiagonalDistance<float>(p.X, p.Y, _goalX, _goalY);
+	float result = DistanceEvaluator::DiagonalDistance<float>(p.X, p.Y, _goalX, _goalY);
+	return result;
 }
 
 float PathFinder::GetDistance(int index, int dx, int dy)
@@ -157,22 +156,17 @@ float PathFinder::GetDistance(int index, int dx, int dy)
 		stepD = 1.0f;
 	}
 
-	////trick
-	//int parentDx;
-	//int parentDy;
+	////Theta* trick
 	//int parentIndex = _mapParent->GetCell(index);
 	//if (parentIndex != index)
-	//{
-	//	_map->GetD(parentIndex, index, &parentDx,&parentDy);
-	//	//diagonal
-	//	if ((dx + dy + parentDx + parentDy) % 2 == 1)
+	//{	
+	//	//get middle cell between point and grandparent point
+	//	int cellIdx = _map->GetCellIndex(parentIndex, dx, dy);
+	//	//check that middle point is not our parent, and that it cell is clear
+	//	if ((cellIdx != index) && (_map->GetCell(cellIdx)==0))
 	//	{
-	//		int cell = _map->GetCellIndex(index, dx - parentDx, dy - parentDy);
-	//		if (cell != 0)
-	//		{
-	//			stepD = SQRT_5;//sqrt(2.0f*2.0f + 1.0f);
-	//			index = parentIndex;
-	//		}
+	//		stepD = SQRT_5;//sqrt(2.0f*2.0f + 1.0f);
+	//		index = parentIndex;
 	//	}
 	//}
 	result = _mapDist->GetCell(index) + stepD;

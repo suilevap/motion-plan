@@ -1,7 +1,15 @@
 #include "StdAfx.h"
 #include "PathPoint.h"
 
-PathPoint::PathPoint(void)
+PathPoint::PathPoint(int index, float distance, float estimateDistance)
+	:Index(index), 
+	Distance(distance),
+	EstimateDistance(estimateDistance),
+	Rank(distance + estimateDistance)
+{
+}
+
+PathPoint::PathPoint()
 {
 }
 

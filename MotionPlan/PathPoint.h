@@ -2,9 +2,13 @@
 
 struct PathPoint
 {
+
 public:
 	int Index;
+	float Distance;
+	float EstimateDistance;
 	float Rank;
+
 
 	//Overload the < operator.
 	bool operator< ( const PathPoint &point2);
@@ -12,6 +16,7 @@ public:
 	//Overload the > operator.
 	bool operator> ( const PathPoint &point2);
 
+	PathPoint(int index, float distance, float estimateDistance);
 	PathPoint();
 	~PathPoint();
 };

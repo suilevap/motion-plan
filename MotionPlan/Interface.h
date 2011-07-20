@@ -13,6 +13,7 @@ DllExport double DestroyPathFinder(double pathFinderIndex);
 DllExport double GetXPath(double pathIndex, double n);
 DllExport double GetYPath(double pathIndex, double n);
 DllExport double GetNPath(double pathIndex);
+DllExport char* GetGmPath(double pathIndex);
 DllExport double DestroyPath(double pathIndex);
 
 DllExport void TestGmInterface();

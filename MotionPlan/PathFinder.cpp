@@ -100,13 +100,22 @@ Path* PathFinder::ExtractPath()
 	
 	std::vector<Point> result;
 	int pos = _goal;
-	
+	int prevPos =_goal;
+	int prevPrevPos;
+
 	result.push_back(_map->GetCellPoint(_goal));
 	while (pos != _start)
 	{
+		prevPrevPos = prevPos;
+		prevPos = pos;
 		pos = _mapParent->GetCell(pos);
-		result.push_back(_map->GetCellPoint(pos));
+		//save only points on edge
+		if (prevPos-pos != prevPrevPos-prevPos)
+		{
+			result.push_back(_map->GetCellPoint(prevPos));
+		}
 	}
+	result.push_back(_map->GetCellPoint(_start));
 	
 	reverse(result.begin(), result.end());
 	Path* path = new Path(result);

@@ -1,7 +1,11 @@
 #include "stdafx.h"
-
+//TODO: move GM Interface to different lib
 #include <string>
 #include <vector>
+
+#define GMAPI_NO_D3D
+#include <gmapi.h>
+
 #include "Map.h"
 #include "Point.h"
 #include "PathPoint.h"
@@ -9,18 +13,31 @@
 
 #include "Interface.h"
 
-//char * data 
-//	= "..#\n1.2\n###";
 
 #include "ObjectIdPool.h"
 #include "Transformable.h"
 #include "Scalable.h"
+
+gm::CGMAPI* _gmapi;
 
 ObjectIdPool<Transformable<Map<int>>> _maps;
 ObjectIdPool<Transformable<PathFinder>> _pathFinders;
 ObjectIdPool<Transformable<Path>> _paths;
 
 char* ConvertToGmPath(Transformable<Path>* p);
+
+double InitGM()
+{
+	unsigned long gmInit;
+	_gmapi = gm::CGMAPI::Create( &gmInit );;
+	return static_cast<double>(gmInit);
+}
+
+double CloseGM()
+{
+	_gmapi->Destroy();
+	return 0;
+}
 
 char* Action(char * map)
 {
@@ -240,6 +257,24 @@ char* GetGmPath(double pathIndex)
 	return buffer;
 }
 
+double ConvertToGmPath(double pathIndex, double gmPathId)
+{
+	int pathIndex2 = static_cast<int>(pathIndex);
+	int gmPathId2 = static_cast<int>(gmPathId);
+
+	Transformable<Path>* p = _paths.Get(pathIndex2);
+	Path* path = p->GetItem();
+	std::vector<Point>& points = path->GetPoints();
+	double x;
+	double y;
+	for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
+	{
+		x = p->TransformExact(it->X+0.5);
+		y = p->TransformExact(it->Y+0.5);
+		gm::path_add_point(gmPathId2, x, y, 100);
+	}
+	return path->Count();
+}
 
 double DestroyPath(double pathIndex)
 {

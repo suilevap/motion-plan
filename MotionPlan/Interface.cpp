@@ -323,6 +323,7 @@ void TestPerformance(bool outputMap)
 	int w = 40;
 	int h = 100;
 	double map = CreateMap(w*cellSize,h*cellSize,cellSize);
+	//map = CreateMap(w*cellSize,h*cellSize,cellSize);
 	SetCellMap(map, 4*cellSize, 4*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 4*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 5*cellSize, 1);
@@ -333,6 +334,7 @@ void TestPerformance(bool outputMap)
 	//SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
 
 	double pathFinder = CreatePathFinder(map);
+	//pathFinder = CreatePathFinder(map);
 	
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w-2)*cellSize, 2.0*cellSize);
 

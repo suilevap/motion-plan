@@ -257,6 +257,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GridMapView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Interface.h"
 				>
 			</File>
@@ -301,7 +305,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GridMapView.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\Map.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="AStar"
+			>
+			<File
+				RelativePath=".\Edge.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MapView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MapView.h"
 				>
 			</File>
 		</Filter>

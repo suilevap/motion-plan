@@ -32,15 +32,6 @@ protected:
 	int GetBorder();
 public:
 
-	virtual std::vector<Edge>& GetNeighbors(NodeInfo& node);
-	virtual PointInfo GetPoint(NodeInfo& node);	
-	virtual NodeInfo GetNode(PointInfo& point);
-	virtual CellType GetCell(NodeInfo& node);
-	virtual void SetCell(NodeInfo& index, CellType cell);
-	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size);
-	virtual PointInfo GetMaxPoint();
-	virtual NodeInfo GetMaxNode();
-
 	void ToOutput();
 	void ToOutputField();
 	static Map<int>* LoadFrom(std::string &data, std::vector<Point>* specialPoints);

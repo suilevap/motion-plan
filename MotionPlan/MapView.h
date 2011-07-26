@@ -19,7 +19,7 @@ class MapView
 {
 public:
 
-	virtual std::vector<Edge<NodeInfo,CostInfo>>& GetNeighbors(NodeInfo& node) = 0;
+	virtual void GetNeighbors(NodeInfo& node, std::vector<Edge<NodeInfo,CostInfo>>& neighbors) = 0;
 	virtual PointInfo GetPoint(NodeInfo& node)= 0;	
 	virtual NodeInfo GetNode(PointInfo& point)= 0;
 	virtual CellType GetCell(NodeInfo& node)= 0;

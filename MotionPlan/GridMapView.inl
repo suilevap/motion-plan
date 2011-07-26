@@ -1,10 +1,31 @@
 #ifndef MOTIONPLAN_GRIDMAPVIEW_H_
-#error "Include from GridMapView.h only."
-#else
+//#error "Include from GridMapView.h only."
+//#else
 
-virtual std::vector<GridMapView::Edge>& GridMapView<CellType>::GetNeighbors(NodeInfo& node)
+#include "Math.h"
+
+virtual void GridMapView<CellType>::GetNeighbors(NodeInfo& node, std::vector<GridMapView::Edge>& neighbors)
 {
-	//TODO: implement
+	neighnodebors.reserve(8);
+
+	neighbors[0].To = node+1;
+	neighbors[0].Cost = 1;
+	neighbors[1].To = node-1;
+	neighbors[1].Cost = 1;
+	neighbors[2].To = node+_width;
+	neighbors[2].Cost = 1;
+	neighbors[3].To = node-_width;
+	neighbors[3].Cost = 1;
+
+	neighbors[4].To = node+1 + width;
+	neighbors[4].Cost = SQRT_2;
+	neighbors[5].To = node-1 + _width;
+	neighbors[5].Cost = SQRT_2;
+	neighbors[6].To = node +1 - _width;
+	neighbors[6].Cost = SQRT_2;
+	neighbors[7].To = node -1 -_width;
+	neighbors[7].Cost = SQRT_2;
+	
 	return NULL;
 }
 

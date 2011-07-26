@@ -19,14 +19,14 @@ class MapView
 {
 public:
 
-	std::vector<Edge<NodeInfo,CostInfo>> GetNeighbors(NodeInfo& node);
-	PointInfo GetPoint(NodeInfo& node);	
-	NodeInfo GetNode(PointInfo& point);
-	CellType GetCell(NodeInfo& node);
-	void SetCell(NodeInfo& index, CellType cell);
-	void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size);
-	PointInfo GetMaxPoint();
-	NodeInfo GetMaxNode();
+	virtual std::vector<Edge<NodeInfo,CostInfo>>& GetNeighbors(NodeInfo& node) = 0;
+	virtual PointInfo GetPoint(NodeInfo& node)= 0;	
+	virtual NodeInfo GetNode(PointInfo& point)= 0;
+	virtual CellType GetCell(NodeInfo& node)= 0;
+	virtual void SetCell(NodeInfo& index, CellType cell)= 0;
+	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
+	virtual PointInfo GetMaxPoint()= 0;
+	virtual NodeInfo GetMaxNode()= 0;
 
 	
 	CellType GetCell(PointInfo& point) {return GetCell(GetNode(point));}

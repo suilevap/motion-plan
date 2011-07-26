@@ -32,7 +32,7 @@ protected:
 	int GetBorder();
 public:
 
-	virtual std::vector<Edge> GetNeighbors(NodeInfo& node);
+	virtual std::vector<Edge>& GetNeighbors(NodeInfo& node);
 	virtual PointInfo GetPoint(NodeInfo& node);	
 	virtual NodeInfo GetNode(PointInfo& point);
 	virtual CellType GetCell(NodeInfo& node);

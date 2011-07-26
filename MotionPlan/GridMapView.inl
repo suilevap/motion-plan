@@ -2,7 +2,7 @@
 #error "Include from GridMapView.h only."
 #else
 
-virtual std::vector<GridMapView::Edge> GridMapView<CellType>::GetNeighbors(NodeInfo& node)
+virtual std::vector<GridMapView::Edge>& GridMapView<CellType>::GetNeighbors(NodeInfo& node)
 {
 	//TODO: implement
 	return NULL;

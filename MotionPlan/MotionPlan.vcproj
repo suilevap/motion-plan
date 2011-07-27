@@ -181,10 +181,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CellQueue.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\dllmain.cpp"
 				>
 				<FileConfiguration
@@ -249,10 +245,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\CellQueue.h"
-				>
-			</File>
-			<File
 				RelativePath=".\DistanceEvaluator.h"
 				>
 			</File>
@@ -289,6 +281,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -317,6 +313,22 @@
 			Name="AStar"
 			>
 			<File
+				RelativePath=".\BasePathFinder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BasePathFinder.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\CellQueue.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CellQueue.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Edge.h"
 				>
 			</File>
@@ -329,6 +341,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\MotionPlan.rc"
+			>
+		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

@@ -4,6 +4,8 @@
 #include "PathPoint.h"
 
 //typedef priority_queue<PathPoint,vector<PathPoint>,less<vector<PathPoint>::value_type>> CellQueue;
+namespace AStar
+{
 
 class CellQueue 
 {
@@ -30,3 +32,5 @@ public:
 
 	bool Empty();
 };
+
+}

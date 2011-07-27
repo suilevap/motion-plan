@@ -33,7 +33,7 @@ DllExport double Test();
 
 	//public:
 		//static 
-			DllExport char* Action(char * map);
+			//DllExport char* Action(char * map);
 
 	//};
 

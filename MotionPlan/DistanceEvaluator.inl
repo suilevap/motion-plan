@@ -1,4 +1,4 @@
-#ifndef MOTIONPLAN_DISTANCEEVALUATOR_H_
+#ifndef MOTIONPLAN_ASTAR_DISTANCEEVALUATOR_H_
 #error "Include from DistanceEvaluator.h only."
 #else
 

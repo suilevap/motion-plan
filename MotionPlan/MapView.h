@@ -27,6 +27,7 @@ public:
 	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
+	virtual CostInfo GetCost(NodeInfo& node1, NodeInfo& node2) = 0;
 
 	
 	CellType GetCell(PointInfo& point) {return GetCell(GetNode(point));}

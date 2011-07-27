@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="MotionPlan"
 	ProjectGUID="{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
 	RootNamespace="MotionPlan"
@@ -215,10 +215,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PathPoint.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -273,15 +269,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PathPoint.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Point.h"
-				>
-			</File>
-			<File
-				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
@@ -321,11 +309,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CellQueue.cpp"
+				RelativePath=".\CellQueue.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CellQueue.h"
+				RelativePath=".\CellQueue.inl"
 				>
 			</File>
 			<File
@@ -340,11 +328,11 @@
 				RelativePath=".\MapView.h"
 				>
 			</File>
+			<File
+				RelativePath=".\PathNode.h"
+				>
+			</File>
 		</Filter>
-		<File
-			RelativePath=".\MotionPlan.rc"
-			>
-		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

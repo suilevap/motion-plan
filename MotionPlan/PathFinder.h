@@ -23,7 +23,7 @@ private:
 	int _goalY;
 	int _goal;
 	int _start;
-	CellQueue* _queue;
+	AStar::CellQueue* _queue;
 	//void DirToXY(int dir, int* x, int* y);
 	//int XYToDir(int x, int y);
 	//float ComputeCost(int x0, int y0, int x1, int y1);

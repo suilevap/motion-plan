@@ -36,7 +36,7 @@ Path* PathFinder::Find(int x, int y, int goalX, int goalY, float estimateAlpha)
 	_mapDist->Clear(0, 0);
 	_mapParent->Clear(0, 0);
 	//float estimateDist = GetEstimateDistance(_start) * estimateAlpha*0+155;
-	_queue = new CellQueue(estimateAlpha);
+	_queue = new AStar::CellQueue(estimateAlpha);
 
 	 _mapParent->SetCell(_start, _start);
 

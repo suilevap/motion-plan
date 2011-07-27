@@ -43,10 +43,20 @@ public:
 };
 
 ////Overload the < operator.
-//bool operator< (const PathPoint &point1, const PathPoint &point2);
+template<
+	typename NodeInfo,
+	typename CostInfo> 
+bool operator< (const PathNode<NodeInfo,CostInfo> &node1, const PathNode<NodeInfo,CostInfo> &node2)
+{
+	return node1.Rank < node2.Rank;
+}
 ////Overload the > operator.
-//bool operator> (const PathPoint &point1, const PathPoint &point2);
-
+template<
+	typename NodeInfo,
+	typename CostInfo> 
+bool operator> (const PathNode<NodeInfo,CostInfo> &node1, const PathNode<NodeInfo,CostInfo> &node2)
+{
+	return node1.Rank > node2.Rank;
 }
 
 #endif //MOTIONPLAN_ASTAR_PATHNODE_H

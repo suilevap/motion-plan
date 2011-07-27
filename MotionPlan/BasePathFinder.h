@@ -25,8 +25,9 @@ class BasePathFinder
 
 private:	
 	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
-	std::vector<float> _mapDist;
+	std::vector<float> _mapCost;
 	std::vector<NodeInfo> _mapParent;
+	std::vector<Edge<NodeInfo,CostInfo>> _neighbors;
 	
 	PointInfo _goalPoint;
 	PointInfo _startPoint;
@@ -37,17 +38,17 @@ private:
 	//int XYToDir(int x, int y);
 	//float ComputeCost(int x0, int y0, int x1, int y1);
 	//float GetParentDist(int x, int y);
-	bool CheckNeighbor(int index, int dx, int dy);
-	float GetDistance(int index, int dx, int dy);
-	float GetEstimateDistance(NodeInfo index);
-	Path* ExtractPath();
-	void Step(NodeInfo index);
+	bool CheckNeighbor(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge);
+	CostInfo GetDistance(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge)
+	CostInfo GetEstimateDistance(NodeInfo& node);
+	Path<PointInfo>* ExtractPath();
+	void Step(NodeInfo index);	
 
 public:
-	PathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map);
-	~PathFinder();
+	BasePathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map);
+	~BasePathFinder();
 
-	Path* Find(PointInfo start, PointInfo goal);
+	Path<PointInfo>* Find(PointInfo start, PointInfo goal);
 	
 	////only for debug purpose
 	//std::vector<float>* GetMapDist(){ return _mapDist;};

@@ -14,7 +14,7 @@
 //typedef float CellType;
 
 template<class CellType>
-class GridMapView: AStar::MapView<Point, CellType, int, float>
+class GridMapView: AStar:: public MapView<Point, CellType, int, float>
 {
 	typedef int NodeInfo;
 	typedef float CostInfo;
@@ -31,7 +31,10 @@ protected:
 	void InitMap(int width, int height, int border);
 	int GetBorder();
 public:
+	GridMapView(int width, int height);
+	GridMapView(int width, int height, int border)
 
+	~GridMapView();
 	void ToOutput();
 	void ToOutputField();
 	static Map<int>* LoadFrom(std::string &data, std::vector<Point>* specialPoints);

@@ -17,9 +17,9 @@ class CellQueue
 {
 private:
 	std::priority_queue<
-		PathPoint,
+		PathNode<NodeInfo,CostInfo>,
 		std::vector<PathNode<NodeInfo,CostInfo>>,
-		std::greater<std::vector<PathNode<NodeInfo,CostInfo>::value_type>> _queue;
+		std::greater<std::vector<PathNode<NodeInfo,CostInfo>>::value_type>> _queue;
 	
 	//std::vector<PathPoint> _unsortedQueue;
 
@@ -31,7 +31,7 @@ private:
 	//	PathPoint,	
 	//	std::less<PathPoint>> _set;
 public:
-	CellQueue(float alphaDist);
+	CellQueue();
 
 	void Push(const PathNode<NodeInfo,CostInfo>& point);
 	PathNode<NodeInfo,CostInfo> Pop();

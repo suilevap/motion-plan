@@ -1,6 +1,6 @@
 #ifndef MOTIONPLAN_GRIDMAPVIEW_H_
-//#error "Include from GridMapView.h only."
-//#else
+#error "Include from GridMapView.h only."
+#else
 
 #include "Math.h"
 
@@ -36,6 +36,14 @@ virtual PointInfo GridMapView<CellType>::GetPoint(NodeInfo& node)
 	p.X = index % _width - _border;
 	p.Y = index / _width - _border;
 	return p;
+}
+template<class CellType>
+virtual CostInfo GridMapView<CellType>::GetCost(NodeInfo& node1, NodeInfo& node2)
+{
+	PointInfo p1 = GetPoint(node1);
+	PointInfo p2 = GetPoint(node2);
+	CostInfo cost = DistanceEvaluator::DiagonalDistance<CostInfo>(p1.X, p1.Y, p2.X, p2.Y);
+	return cost;
 }
 
 template<class CellType>
@@ -99,13 +107,6 @@ template<class CellType>
 GridMapView<CellType>::GridMapView(int width, int height, int border)
 {
 	InitMap(width, height, border);
-}
-
-template<class CellType>
-template<class T>
-GridMapView<CellType>::GridMapView(Map<T>* map)		
-{
-	InitMap(map->GetWidth(), map->GetHeight(), 1);
 }
 
 template<class CellType>

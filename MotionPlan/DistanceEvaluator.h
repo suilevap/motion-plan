@@ -1,9 +1,12 @@
 #pragma once
 
-#ifndef MOTIONPLAN_DISTANCEEVALUATOR_H_
-#define MOTIONPLAN_DISTANCEEVALUATOR_H_
+#ifndef MOTIONPLAN_ASTAR_DISTANCEEVALUATOR_H_
+#define MOTIONPLAN_ASTAR_DISTANCEEVALUATOR_H_
 
 #include <math.h>
+
+namespace AStar
+{
 
 class DistanceEvaluator
 {
@@ -20,5 +23,7 @@ public:
 };
 
 #include "DistanceEvaluator.inl"
+
+}
 
 #endif

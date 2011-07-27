@@ -2,6 +2,165 @@
 #error "Include from BasePathFinder.h only."
 #else
 
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+BasePathFinder<PointInfo, CellType, CostInfo>::BasePathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
+{
+    _map = map;        
+}
 
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+BasePathFinder<PointInfo, CellType, CostInfo>::~BasePathFinder()
+{
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+	Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo>::Find(PointInfo start, PointInfo goal)
+{
+	_goalPoint = goal;
+	_start = _map->GetNode(start);
+	_goal = _map->GetNode(goal);
+	//TODO: fix several return!!
+	if ((_map->GetCell(_start) == 1) ||(_map->GetCell(_goal) == 1))
+	{
+		return Path::Empty();
+	}
+
+	//TODO: donot use vector explicitly
+	_mapCost.clear();
+	_mapParent.clear();
+
+	_mapCost.reserve(_map->GetMaxNode());
+	_mapParent.reserve(_map->GetMaxNode());
+
+	_queue = new CellQueue<NodeInfo,CostInfo>();
+
+	 _mapParent[_start] = _start;
+
+	PathNode<NodeInfo,NodeCost> pathNode(_start, 0, 0);
+
+	_queue->Push(node);
+
+	bool pathFound = false;
+	while (!_queue->Empty() && !pathFound)
+	{
+
+		pathNode = _queue->Pop();
+		NodeInfo node = pathNode.Node;
+		if (node != _goal)
+		{
+			Step(node);
+		}
+		else
+		{
+			pathFound = true;
+		}
+	}
+
+	delete _queue;
+
+	Path* result;
+	if (pathFound)
+	{
+		result = ExtractPath();
+	}
+	else
+	{
+		result = Path::Empty();
+	}
+	return result;
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+	void BasePathFinder<PointInfo, CellType, CostInfo>::Step(NodeInfo index)
+{
+	_map->GetNeighbors(node, _neighbors);
+	for(std::vector<Edge<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
+	{
+		CheckNeighbor(node, *it);
+	}
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+bool BasePathFinder<PointInfo, CellType, CostInfo>::CheckNeighbor(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge)
+{
+	bool result = false;
+	NodeInfo newNode = edge.To;
+	//TODO: fix magic if cell==0
+	if (_map->GetCell(newNode) == 0)
+	{
+		CostInfo cost = GetDistance(node, edge);
+		//TODO: fix hardcoded _mapDist for NodeInfo == int
+		if ((_mapParent->GetCell(newNode) == 0) 
+			|| (_mapCost[newNode] > cost))
+		{
+			//TODO: fix hardcoded _mapDist for NodeInfo == int
+			_mapParent[newNode]= node;
+			_mapCost[newIndex] = dist;
+
+			CostInfo estimate = GetEstimateDistance(newIndex);
+			PathNode pathNode(newNode, cost, estimate );
+			_queue->Push(pathNode);
+			result = true;
+		}
+	}
+	return result;
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::GetDistance(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge)
+{
+	return _mapDist[node] + edge.Cost;
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::GetEstimateDistance(NodeInfo& node)
+{
+	return _goalPoint;
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo>::ExtractPath()
+{
+	PointInfo point;
+	
+	std::vector<PointInfo> result;
+	NodeInfo pos = _goal;
+	
+	result.push_back(_map->GetPoint(_goal));
+	while (pos != _start)
+	{		
+		pos = _mapParent[pos];
+		point = _map->GetPoint(pos);
+		result.push_back(point);
+	}
+	
+	reverse(result.begin(), result.end());
+	Path<PointInfo>* path = new Path<PointInfo>(result);
+	return path;
+}
 
 #endif

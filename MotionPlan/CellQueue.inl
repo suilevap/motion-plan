@@ -2,10 +2,7 @@
 #error "Include from CellQueue.h only."
 #else
 
-#include <algorithm>
-
-namespace AStar
-{
+//#include <algorithm>
 
 template<typename NodeInfo,typename CostInfo> 
 CellQueue<NodeInfo, CostInfo>::CellQueue(float alphaDist)
@@ -38,6 +35,5 @@ bool CellQueue<NodeInfo, CostInfo>::Empty()
 	return _queue.empty();
 }
 
-}
 
 #endif

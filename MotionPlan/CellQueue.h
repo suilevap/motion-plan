@@ -1,19 +1,25 @@
+#ifndef MOTIONPLAN_ASTAR_CELLQUEUE_H
+#define MOTIONPLAN_ASTAR_CELLQUEUE_H
+
 #include <queue>
 #include <vector>
 #include <set>
-#include "PathPoint.h"
+#include "PathNode.h"
 
 //typedef priority_queue<PathPoint,vector<PathPoint>,less<vector<PathPoint>::value_type>> CellQueue;
 namespace AStar
 {
 
+template<
+	typename NodeInfo,
+	typename CostInfo> 
 class CellQueue 
 {
 private:
 	std::priority_queue<
 		PathPoint,
-		std::vector<PathPoint>,
-		std::greater<std::vector<PathPoint>::value_type>> _queue;
+		std::vector<PathNode<NodeInfo,CostInfo>>,
+		std::greater<std::vector<PathNode<NodeInfo,CostInfo>::value_type>> _queue;
 	
 	//std::vector<PathPoint> _unsortedQueue;
 
@@ -27,10 +33,14 @@ private:
 public:
 	CellQueue(float alphaDist);
 
-	void Push(const PathPoint& point);
-	PathPoint Pop();
+	void Push(const PathNode<NodeInfo,CostInfo>& point);
+	PathNode<NodeInfo,CostInfo> Pop();
 
 	bool Empty();
 };
 
+#include "CelQueue.inl"
+
 }
+
+#endif //MOTIONPLAN_ASTAR_CELLQUEUE_H

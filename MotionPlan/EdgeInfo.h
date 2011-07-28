@@ -14,7 +14,10 @@ public:
 	NodeInfo To;
 	CostInfo Cost;
 	
-	EdgeInfo(){}
+	EdgeInfo()
+		:To(0),
+		Cost(0)
+	{}
 
 	EdgeInfo(NodeInfo node, CostInfo cost)
 		:To(node),

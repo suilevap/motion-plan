@@ -28,8 +28,11 @@ public:
 
 private:	
 	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
-	std::vector<float> _mapCost;
-	std::vector<NodeInfo> _mapParent;
+	std::vector<EdgeInfo<NodeInfo,CostInfo>> _mapCost;
+
+	//std::vector<float> _mapCost;
+	//std::vector<NodeInfo> _mapParent;
+
 	std::vector<EdgeInfo<NodeInfo,CostInfo>> _neighbors;
 	
 	PointInfo _goalPoint;

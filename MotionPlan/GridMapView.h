@@ -8,18 +8,20 @@
 #include <string>
 #include "MapView.h"
 #include "Point.h"
+#include "EdgeInfo.h"
 #include "DistanceEvaluator.h"
 
 
 //typedef float CellType;
 
 template<class CellType>
-class GridMapView: AStar:: public MapView<Point, CellType, int, float>
+class GridMapView: public AStar::MapView<Point, CellType, int, float>
 {
+public:
 	typedef int NodeInfo;
 	typedef float CostInfo;
-	typedef Point PointInfo;
-	typedef Edge<NodeInfo,CostInfo> GridMapView::Edge;
+	typedef typename Point PointInfo;
+	typedef typename AStar::EdgeInfo<NodeInfo,CostInfo> Edge;
 	
 private:
 	CellType* _map;
@@ -31,13 +33,24 @@ protected:
 	void InitMap(int width, int height, int border);
 	int GetBorder();
 public:
+	void GetNeighbors(NodeInfo& node, std::vector<Edge>& neighbors);
+	PointInfo GetPoint(NodeInfo& node);	
+	NodeInfo GetNode(PointInfo& point);
+	CellType GetCell(NodeInfo& node);
+	void SetCell(NodeInfo& index, CellType cell);
+	void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size);
+	PointInfo GetMaxPoint();
+	NodeInfo GetMaxNode();
+	CostInfo GetCost(NodeInfo& node1, NodeInfo& node2);
+
+
 	GridMapView(int width, int height);
-	GridMapView(int width, int height, int border)
+	GridMapView(int width, int height, int border);
 
 	~GridMapView();
 	void ToOutput();
 	void ToOutputField();
-	static Map<int>* LoadFrom(std::string &data, std::vector<Point>* specialPoints);
+	static GridMapView<int>* LoadFrom(std::string &data, std::vector<Point>* specialPoints);
 
 };
 

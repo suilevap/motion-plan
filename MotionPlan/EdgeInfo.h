@@ -7,16 +7,16 @@ namespace AStar
 {
 
 template<typename NodeInfo, typename CostInfo> 
-struct Edge
+struct EdgeInfo
 {
 public:
 	//NodeInfo From;
 	NodeInfo To;
 	CostInfo Cost;
 	
-	Edge(){}
+	EdgeInfo(){}
 
-	Edge(NodeInfo node, CostInfo cost)
+	EdgeInfo(NodeInfo node, CostInfo cost)
 		:To(node),
 		Cost(cost)
 	{}

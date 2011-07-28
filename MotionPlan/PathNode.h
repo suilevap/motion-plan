@@ -59,4 +59,5 @@ bool operator> (const PathNode<NodeInfo,CostInfo> &node1, const PathNode<NodeInf
 	return node1.Rank > node2.Rank;
 }
 
+}
 #endif //MOTIONPLAN_ASTAR_PATHNODE_H

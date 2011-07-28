@@ -4,7 +4,8 @@
 
 #include "Math.h"
 
-virtual void GridMapView<CellType>::GetNeighbors(NodeInfo& node, std::vector<GridMapView::Edge>& neighbors)
+template<class CellType>
+void GridMapView<CellType>::GetNeighbors(NodeInfo& node, std::vector<Edge>& neighbors)
 {
 	neighnodebors.reserve(8);
 
@@ -26,11 +27,10 @@ virtual void GridMapView<CellType>::GetNeighbors(NodeInfo& node, std::vector<Gri
 	neighbors[7].To = node -1 -_width;
 	neighbors[7].Cost = SQRT_2;
 	
-	return NULL;
 }
 
 template<class CellType>
-virtual PointInfo GridMapView<CellType>::GetPoint(NodeInfo& node)
+PointInfo GridMapView<CellType>::GetPoint(NodeInfo& node)
 {
 	PointInfo p;
 	p.X = index % _width - _border;
@@ -38,7 +38,7 @@ virtual PointInfo GridMapView<CellType>::GetPoint(NodeInfo& node)
 	return p;
 }
 template<class CellType>
-virtual CostInfo GridMapView<CellType>::GetCost(NodeInfo& node1, NodeInfo& node2)
+GridMapView::CostInfo GridMapView<CellType>::GetCost(GridMapView::NodeInfo& node1, GridMapView::NodeInfo& node2)
 {
 	PointInfo p1 = GetPoint(node1);
 	PointInfo p2 = GetPoint(node2);
@@ -47,25 +47,25 @@ virtual CostInfo GridMapView<CellType>::GetCost(NodeInfo& node1, NodeInfo& node2
 }
 
 template<class CellType>
-virtual NodeInfo GridMapView<CellType>::GetNode(PointInfo& point)
+GridMapView::NodeInfo GridMapView<CellType>::GetNode(GridMapView::PointInfo& point)
 {
 	return (x + _border) + (y + _border) * _width ;
 }
 
 template<class CellType>
-virtual CellType GridMapView<CellType>::GetCell(NodeInfo& node)
+CellType GridMapView<CellType>::GetCell(GridMapView::NodeInfo& node)
 {
 	return _map[index] ;
 }
 
 template<class CellType>
-virtual void GridMapView<CellType>::SetCell(NodeInfo& index, CellType cell)
+void GridMapView<CellType>::SetCell(GridMapView::NodeInfo& index, CellType cell)
 {
 	_map[index] = cell;
 }
 
 template<class CellType>
-virtual PointInfo GridMapView<CellType>::GetMaxPoint()
+GridMapView::PointInfo GridMapView<CellType>::GetMaxPoint()
 {
 	PointInfo p;
 	p.X = _width - _border * 2;;
@@ -74,7 +74,7 @@ virtual PointInfo GridMapView<CellType>::GetMaxPoint()
 }
 
 template<class CellType>
-virtual NodeInfo GridMapView<CellType>::GetMaxNode()
+GridMapView::NodeInfo GridMapView<CellType>::GetMaxNode()
 {
 	return _width * _height;
 }
@@ -116,7 +116,7 @@ GridMapView<CellType>::~GridMapView(void)
 }
 
 template<class CellType>
-void GridMapView<CellType>::SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)
+void GridMapView<CellType>::SetCellRegion(GridMapView::PointInfo& point, CellType cell, GridMapView::PointInfo& size)
 {
 	for (int i = point.X; i < (point.X + size.X); i++)
 	{

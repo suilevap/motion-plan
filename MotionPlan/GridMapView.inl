@@ -42,7 +42,7 @@ float GridMapView<CellType>::GetCost(int& node1, int& node2)
 {
 	Point p1 = GetPoint(node1);
 	Point p2 = GetPoint(node2);
-	float cost = AStar::DistanceEvaluator::DiagonalDistance<float>(p1.X, p1.Y, p2.X, p2.Y);
+	float cost = AStar::DistanceEvaluator::DiagonalDistance<float>(p1, p2);
 	return cost;
 }
 

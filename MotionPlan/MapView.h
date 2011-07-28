@@ -13,8 +13,8 @@ namespace AStar
 template<
 	typename PointInfo, 
 	typename CellType, 
-	typename NodeInfo, 
-	typename CostInfo> 
+	typename NodeInfo = int, 
+	typename CostInfo = float> 
 class MapView
 {
 public:
@@ -28,10 +28,18 @@ public:
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
 	virtual CostInfo GetCost(NodeInfo& node1, NodeInfo& node2) = 0;
-
 	
-	CellType GetCell(PointInfo& point) {return GetCell(GetNode(point));}
-	void SetCell(PointInfo& point, CellType cell) { SetCell(GetNode(point), cell);}
+	CellType GetCellPoint(PointInfo& point)
+	{
+		NodeInfo node = GetNode(point);
+		CellType cell = GetCell(node);
+		return cell;
+	}
+	void SetCellPoint(PointInfo& point, CellType cell)
+	{
+		NodeInfo node = GetNode(point);
+		SetCell(node, cell);
+	}
 	
 };
 

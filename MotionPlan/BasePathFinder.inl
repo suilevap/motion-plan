@@ -34,23 +34,23 @@ Find(PointInfo start, PointInfo goal)
 	//TODO: fix several return!!
 	if ((_map->GetCell(_start) == 1) ||(_map->GetCell(_goal) == 1))
 	{
-		return Path::Empty();
+		return Path<Point>::Empty();
 	}
 
 	//TODO: donot use vector explicitly
 	_mapCost.clear();
 	_mapParent.clear();
 
-	_mapCost.reserve(_map->GetMaxNode());
-	_mapParent.reserve(_map->GetMaxNode());
+	_mapCost.resize(_map->GetMaxNode());
+	_mapParent.resize(_map->GetMaxNode());
 
 	_queue = new CellQueue<NodeInfo,CostInfo>();
 
 	 _mapParent[_start] = _start;
 
-	PathNode<NodeInfo,NodeCost> pathNode(_start, 0, 0);
+	PathNode<int,float> pathNode(_start, 0, 0);
 
-	_queue->Push(node);
+	_queue->Push(pathNode);
 
 	bool pathFound = false;
 	while (!_queue->Empty() && !pathFound)
@@ -70,14 +70,14 @@ Find(PointInfo start, PointInfo goal)
 
 	delete _queue;
 
-	Path* result;
+	Path<Point>* result;
 	if (pathFound)
 	{
 		result = ExtractPath();
 	}
 	else
 	{
-		result = Path::Empty();
+		result = Path<Point>::Empty();
 	}
 	return result;
 }
@@ -86,10 +86,10 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo> 
-	void BasePathFinder<PointInfo, CellType, CostInfo>::Step(NodeInfo index)
+	void BasePathFinder<PointInfo, CellType, CostInfo>::Step(int node)
 {
 	_map->GetNeighbors(node, _neighbors);
-	for(std::vector<Edge<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
+	for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
 	{
 		CheckNeighbor(node, *it);
 	}
@@ -109,15 +109,15 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
 	{
 		CostInfo cost = GetDistance(node, edge);
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
-		if ((_mapParent->GetCell(newNode) == 0) 
+		if ((_mapParent[newNode] == 0) 
 			|| (_mapCost[newNode] > cost))
 		{
 			//TODO: fix hardcoded _mapDist for NodeInfo == int
 			_mapParent[newNode]= node;
-			_mapCost[newIndex] = dist;
+			_mapCost[newNode] = cost;
 
-			CostInfo estimate = GetEstimateDistance(newIndex);
-			PathNode pathNode(newNode, cost, estimate );
+			CostInfo estimate = GetEstimateDistance(newNode);
+			PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
 			_queue->Push(pathNode);
 			result = true;
 		}
@@ -132,7 +132,7 @@ template<
 CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::
 GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
 {
-	return _mapDist[node] + edge.Cost;
+	return _mapCost[node] + edge.Cost;
 }
 
 template<
@@ -141,7 +141,7 @@ template<
 	typename CostInfo> 
 CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::GetEstimateDistance(NodeInfo& node)
 {
-	return _goalPoint;
+	return _map->GetCost(node, _goal);
 }
 
 template<

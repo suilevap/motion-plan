@@ -14,7 +14,7 @@ template<typename NodeInfo,typename CostInfo>
 void CellQueue<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& node)
 {
 
-	_queue.push(point);
+	_queue.push(node);
 	_count++;
 }
 

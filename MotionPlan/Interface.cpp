@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 
+#ifdef USE_GMAPI
 #define GMAPI_NO_D3D
-#include <gmapi.h>
+#include "gmapi.h"
+#endif
 
 #include "Point.h"
 #include "PathNode.h"
@@ -17,13 +19,16 @@
 #include "Transformable.h"
 #include "Scalable.h"
 
-gm::CGMAPI* _gmapi;
+
 
 ObjectIdPool<Transformable<GridMapView<int>>> _maps;
 ObjectIdPool<Transformable<AStar::BasePathFinder<Point, int, float>>> _pathFinders;
 ObjectIdPool<Transformable<AStar::Path<Point>>> _paths;
 
 char* ConvertToGmPath(Transformable<AStar::Path<Point>>* p);
+
+#ifdef USE_GMAPI
+gm::CGMAPI* _gmapi;
 
 double InitGM()
 {
@@ -37,6 +42,35 @@ double CloseGM()
 	_gmapi->Destroy();
 	return 0;
 }
+
+char* GetGmPath(double pathIndex)
+{
+	int pathIndex2 = static_cast<int>(pathIndex);
+	Transformable<AStar::Path<Point>>* p = _paths.Get(pathIndex2);
+	char * buffer = ConvertToGmPath(p);
+	return buffer;
+}
+
+double ConvertToGmPath(double pathIndex, double gmPathId)
+{
+	int pathIndex2 = static_cast<int>(pathIndex);
+	int gmPathId2 = static_cast<int>(gmPathId);
+
+	Transformable<AStar::Path<Point>>* p = _paths.Get(pathIndex2);
+	AStar::Path<Point>* path = p->GetItem();
+	std::vector<Point> points = path->GetPoints();
+	double x;
+	double y;
+	for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
+	{
+		x = p->TransformExact(it->X+0.5);
+		y = p->TransformExact(it->Y+0.5);
+		gm::path_add_point(gmPathId2, x, y, 100);
+	}
+	return path->Count();
+}
+#endif
+
 
 char* Action(char * map)
 {
@@ -247,33 +281,6 @@ char* ConvertToGmPath(Transformable<AStar::Path<Point>>* p)
 		offset += sprintf(buffer+offset, format, p->TransformExact(it->X+0.5), p->TransformExact(it->Y+0.5));
 	}
 	return buffer;
-}
-
-char* GetGmPath(double pathIndex)
-{
-	int pathIndex2 = static_cast<int>(pathIndex);
-	Transformable<AStar::Path<Point>>* p = _paths.Get(pathIndex2);
-	char * buffer = ConvertToGmPath(p);
-	return buffer;
-}
-
-double ConvertToGmPath(double pathIndex, double gmPathId)
-{
-	int pathIndex2 = static_cast<int>(pathIndex);
-	int gmPathId2 = static_cast<int>(gmPathId);
-
-	Transformable<AStar::Path<Point>>* p = _paths.Get(pathIndex2);
-	AStar::Path<Point>* path = p->GetItem();
-	std::vector<Point> points = path->GetPoints();
-	double x;
-	double y;
-	for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
-	{
-		x = p->TransformExact(it->X+0.5);
-		y = p->TransformExact(it->Y+0.5);
-		gm::path_add_point(gmPathId2, x, y, 100);
-	}
-	return path->Count();
 }
 
 double DestroyPath(double pathIndex)

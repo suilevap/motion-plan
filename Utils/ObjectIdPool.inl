@@ -59,7 +59,7 @@ T* ObjectIdPool<T>::Get(int id)
 template<class T>
 bool ObjectIdPool<T>::Free(int id)
 {
-	int isSucceed = false;
+	bool isSucceed = false;
 	if ((id>=0) &&(id<_items.size()))
 	{
 		if (_items[id] != NULL)

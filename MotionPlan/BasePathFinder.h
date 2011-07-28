@@ -6,10 +6,12 @@
 #include "MapView.h"
 #include <vector>
 #include "PathNode.h"
-//#include "Point.h"
-//#include "Path.h"
 #include "CellQueue.h"
-namespace Astar
+#include "EdgeInfo.h"
+#include "Path.h"
+
+
+namespace AStar
 {
 
 template<
@@ -18,6 +20,7 @@ template<
 	typename CostInfo> 
 class BasePathFinder
 {
+public:
 	typedef int NodeInfo;
 	//typedef float CostInfo;
 	//typedef Point PointInfo;
@@ -27,7 +30,7 @@ private:
 	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
 	std::vector<float> _mapCost;
 	std::vector<NodeInfo> _mapParent;
-	std::vector<Edge<NodeInfo,CostInfo>> _neighbors;
+	std::vector<EdgeInfo<NodeInfo,CostInfo>> _neighbors;
 	
 	PointInfo _goalPoint;
 	PointInfo _startPoint;
@@ -38,8 +41,8 @@ private:
 	//int XYToDir(int x, int y);
 	//float ComputeCost(int x0, int y0, int x1, int y1);
 	//float GetParentDist(int x, int y);
-	bool CheckNeighbor(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge);
-	CostInfo GetDistance(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge)
+	bool CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge);
+	CostInfo GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge);
 	CostInfo GetEstimateDistance(NodeInfo& node);
 	Path<PointInfo>* ExtractPath();
 	void Step(NodeInfo index);	

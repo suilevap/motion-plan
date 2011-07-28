@@ -9,7 +9,7 @@ Path<PointInfo>::Path(std::vector<PointInfo> points)
 }
 
 template<typename PointInfo>
-Path::~Path(void)
+Path<PointInfo>::~Path(void)
 {
 }
 

@@ -6,7 +6,8 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo> 
-BasePathFinder<PointInfo, CellType, CostInfo>::BasePathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
+BasePathFinder<PointInfo, CellType, CostInfo>::
+BasePathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
 {
     _map = map;        
 }
@@ -15,7 +16,8 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo> 
-BasePathFinder<PointInfo, CellType, CostInfo>::~BasePathFinder()
+BasePathFinder<PointInfo, CellType, CostInfo>::
+~BasePathFinder()
 {
 }
 
@@ -23,7 +25,8 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo> 
-	Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo>::Find(PointInfo start, PointInfo goal)
+Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo>::
+Find(PointInfo start, PointInfo goal)
 {
 	_goalPoint = goal;
 	_start = _map->GetNode(start);
@@ -96,7 +99,8 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo> 
-bool BasePathFinder<PointInfo, CellType, CostInfo>::CheckNeighbor(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge)
+bool BasePathFinder<PointInfo, CellType, CostInfo>::
+CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
 {
 	bool result = false;
 	NodeInfo newNode = edge.To;
@@ -125,7 +129,8 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo> 
-CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::GetDistance(NodeInfo& node, Edge<NodeInfo, CostInfo>& edge)
+CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::
+GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
 {
 	return _mapDist[node] + edge.Cost;
 }

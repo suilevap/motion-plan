@@ -5,9 +5,8 @@
 //#include <algorithm>
 
 template<typename NodeInfo,typename CostInfo> 
-CellQueue<NodeInfo, CostInfo>::CellQueue(float alphaDist)
+CellQueue<NodeInfo, CostInfo>::CellQueue()
 {
-	_alphaDist = alphaDist;
 	_count = 0;
 }
 
@@ -20,7 +19,7 @@ void CellQueue<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& nod
 }
 
 template<typename NodeInfo,typename CostInfo> 
-PathPoint CellQueue<NodeInfo, CostInfo>::Pop()
+PathNode<NodeInfo, CostInfo> CellQueue<NodeInfo, CostInfo>::Pop()
 {
 
 	PathNode<NodeInfo, CostInfo> result = _queue.top();

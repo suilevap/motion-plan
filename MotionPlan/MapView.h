@@ -4,7 +4,7 @@
 #define MOTIONPLAN_ASTAR_MAPVIEW_H
 
 #include <vector>
-#include "Edge.h"
+#include "EdgeInfo.h"
 //#include "Point.h"
 
 namespace AStar
@@ -19,7 +19,7 @@ class MapView
 {
 public:
 
-	virtual void GetNeighbors(NodeInfo& node, std::vector<Edge<NodeInfo,CostInfo>>& neighbors) = 0;
+	virtual void GetNeighbors(NodeInfo& node, std::vector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
 	virtual PointInfo GetPoint(NodeInfo& node)= 0;	
 	virtual NodeInfo GetNode(PointInfo& point)= 0;
 	virtual CellType GetCell(NodeInfo& node)= 0;

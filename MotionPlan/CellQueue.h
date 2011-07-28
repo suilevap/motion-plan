@@ -16,10 +16,14 @@ template<
 class CellQueue 
 {
 private:
+	/*std::priority_queue<
+		PathNode<NodeInfo,CostInfo>,
+		std::vector<PathNode<NodeInfo,CostInfo>>,
+		std::greater<std::vector<PathNode<NodeInfo,CostInfo>>::value_type>> _queue;*/
 	std::priority_queue<
 		PathNode<NodeInfo,CostInfo>,
 		std::vector<PathNode<NodeInfo,CostInfo>>,
-		std::greater<std::vector<PathNode<NodeInfo,CostInfo>>::value_type>> _queue;
+		std::greater<PathNode<NodeInfo,CostInfo>> > _queue;
 	
 	//std::vector<PathPoint> _unsortedQueue;
 
@@ -39,7 +43,7 @@ public:
 	bool Empty();
 };
 
-#include "CelQueue.inl"
+#include "CellQueue.inl"
 
 }
 

@@ -38,10 +38,8 @@ Point GridMapView<CellType>::GetPoint(int& node)
 	return p;
 }
 template<class CellType>
-float GridMapView<CellType>::GetCost(int& node1, int& node2)
+float GridMapView<CellType>::GetCostPoint(const Point& p1,const Point& p2)
 {
-	Point p1 = GetPoint(node1);
-	Point p2 = GetPoint(node2);
 	float cost = AStar::DistanceEvaluator::DiagonalDistance<float>(p1, p2);
 	return cost;
 }

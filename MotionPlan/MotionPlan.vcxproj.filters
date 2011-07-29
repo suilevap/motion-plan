@@ -51,9 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="DistanceEvaluator.inl">
-      <Filter>Inline Files</Filter>
-    </None>
     <None Include="MotionPlan.vcxproj" />
     <None Include="BasePathFinder.inl">
       <Filter>AStar</Filter>
@@ -66,6 +63,9 @@
     </None>
     <None Include="GridMapView.inl">
       <Filter>Inline Files</Filter>
+    </None>
+    <None Include="DistanceEvaluator.inl">
+      <Filter>AStar</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

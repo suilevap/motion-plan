@@ -39,17 +39,17 @@ Find(PointInfo start, PointInfo goal)
 
 	//TODO: donot use vector explicitly
 	_mapCost.clear();
-	//_mapParent.clear();
 
-	_mapCost.resize(_map->GetMaxNode(),EdgeInfo<NodeInfo,CostInfo>());
-	//_mapParent.resize(_map->GetMaxNode());
+	_mapCost.resize(_map->GetMaxNode(),NodeState<NodeInfo,CostInfo>());
 
 	_queue = new CellQueue<NodeInfo,CostInfo>();
 
 	 //_mapParent[_start] = _start;
-	_mapCost[_start].To = _start;
 
 	PathNode<int,float> pathNode(_start, 0, 0);
+
+	_mapCost[_start] = NodeState<NodeInfo, CostInfo>(_start, 0);
+
 
 	_queue->Push(pathNode);
 
@@ -110,19 +110,16 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
 	{
 		CostInfo cost = GetDistance(node, edge);
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
-		EdgeInfo<NodeInfo,CostInfo> bestResult = _mapCost[newNode];
-		if ((bestResult.To == 0) 
+		NodeState<NodeInfo,CostInfo> bestResult = _mapCost[newNode];
+		if ((bestResult.ParentNode == 0) 
 			|| (bestResult.Cost > cost))
 		{
 			//TODO: fix hardcoded _mapDist for NodeInfo == int
-			//_mapParent[newNode]= node;
-			bestResult.To = node;
-			bestResult.Cost = cost;
-			_mapCost[newNode] = bestResult;
 
 			CostInfo estimate = GetEstimateDistance(newNode);
 			PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
 			_queue->Push(pathNode);
+			_mapCost[newNode] = NodeState<NodeInfo, CostInfo>(node, cost);
 			result = true;
 		}
 	}
@@ -164,7 +161,7 @@ Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo>::ExtractPath()
 	result.push_back(_map->GetPoint(_goal));
 	while (pos != _start)
 	{		
-		pos = _mapCost[pos].To;
+		pos = _mapCost[pos].ParentNode;
 		point = _map->GetPoint(pos);
 		result.push_back(point);
 	}

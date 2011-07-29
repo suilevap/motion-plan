@@ -9,6 +9,7 @@
 #include "CellQueue.h"
 #include "EdgeInfo.h"
 #include "Path.h"
+#include "NodeState.h"
 
 
 namespace AStar
@@ -28,7 +29,7 @@ public:
 
 private:	
 	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
-	std::vector<EdgeInfo<NodeInfo,CostInfo>> _mapCost;
+	std::vector<NodeState<NodeInfo,CostInfo>> _mapCost;
 
 	//std::vector<float> _mapCost;
 	//std::vector<NodeInfo> _mapParent;

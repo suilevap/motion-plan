@@ -241,6 +241,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NodeState.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Point.h"
 				>
 			</File>

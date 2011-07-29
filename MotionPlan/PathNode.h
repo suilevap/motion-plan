@@ -14,8 +14,8 @@ struct PathNode
 
 public:
 	NodeInfo Node;
-	CostInfo Distance;
-	CostInfo EstimateDistance;
+	CostInfo Cost;
+	CostInfo EstimateAditionalCost;
 	CostInfo Rank;
 
 
@@ -31,15 +31,21 @@ public:
 		return Rank > node2.Rank;
 	}
 
-	PathNode(NodeInfo node, CostInfo distance, CostInfo estimateDistance)
+	PathNode(NodeInfo node, CostInfo cost, CostInfo estimateAddCost)
 		:Node(node),
-		Distance(distance),
-		EstimateDistance(estimateDistance),
-		Rank(distance+estimateDistance)
+		Cost(cost),
+		EstimateAditionalCost(estimateAddCost),
+		Rank(cost+estimateAddCost)
 	{
 	}
 
-	PathNode();
+	PathNode()
+		:Node(0),
+		Cost(0),
+		EstimateAditionalCost(0),
+		Rank(0)
+	{
+	}
 };
 
 ////Overload the < operator.

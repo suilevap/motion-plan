@@ -48,6 +48,9 @@
     <ClInclude Include="PathNode.h">
       <Filter>AStar</Filter>
     </ClInclude>
+    <ClInclude Include="NodeState.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

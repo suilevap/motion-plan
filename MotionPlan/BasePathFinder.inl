@@ -110,7 +110,7 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
 	{
 		CostInfo cost = GetDistance(node, edge);
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
-		NodeState<NodeInfo,CostInfo> bestResult = _mapCost[newNode];
+		NodeState<NodeInfo,CostInfo>& bestResult = _mapCost[newNode];
 		if ((bestResult.ParentNode == 0) 
 			|| (bestResult.Cost > cost))
 		{

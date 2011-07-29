@@ -42,7 +42,7 @@ public:
 	void SetCellRegion(Point& point, CellType cell, Point& size);
 	Point GetMaxPoint();
 	int GetMaxNode();
-	float GetCost(int& node1, int& node2);
+	float GetCostPoint(const Point& point1,const Point& point2);
 
 	GridMapView(int width, int height);
 	GridMapView(int width, int height, int border);

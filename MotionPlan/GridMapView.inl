@@ -8,24 +8,33 @@ template<class CellType>
 void GridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
 {
 	neighbors.resize(8);
+	neighbors[0] = AStar::EdgeInfo<int,float>(node + 1, 1, AStar::NodeStatus::Close);
+	neighbors[1] = AStar::EdgeInfo<int,float>(node - 1, 1, AStar::NodeStatus::Close);
+	neighbors[2] = AStar::EdgeInfo<int,float>(node + _width, 1, AStar::NodeStatus::Close);
+	neighbors[3] = AStar::EdgeInfo<int,float>(node - _width, 1, AStar::NodeStatus::Close);
 
-	neighbors[0].To = node+1;
-	neighbors[0].Cost = 1;
-	neighbors[1].To = node-1;
-	neighbors[1].Cost = 1;
-	neighbors[2].To = node+_width;
-	neighbors[2].Cost = 1;
-	neighbors[3].To = node-_width;
-	neighbors[3].Cost = 1;
+	neighbors[4] = AStar::EdgeInfo<int,float>(node + 1 + _width, SQRT_2, AStar::NodeStatus::Open);
+	neighbors[5] = AStar::EdgeInfo<int,float>(node - 1 + _width, SQRT_2, AStar::NodeStatus::Open);
+	neighbors[6] = AStar::EdgeInfo<int,float>(node + 1 - _width, SQRT_2, AStar::NodeStatus::Open);
+	neighbors[7] = AStar::EdgeInfo<int,float>(node - 1 - _width, SQRT_2, AStar::NodeStatus::Open);
 
-	neighbors[4].To = node+1 + _width;
-	neighbors[4].Cost = SQRT_2;
-	neighbors[5].To = node-1 + _width;
-	neighbors[5].Cost = SQRT_2;
-	neighbors[6].To = node +1 - _width;
-	neighbors[6].Cost = SQRT_2;
-	neighbors[7].To = node -1 -_width;
-	neighbors[7].Cost = SQRT_2;
+	//neighbors[0].To = node+1;
+	//neighbors[0].Cost = 1;
+	//neighbors[1].To = node-1;
+	//neighbors[1].Cost = 1;
+	//neighbors[2].To = node+_width;
+	//neighbors[2].Cost = 1;
+	//neighbors[3].To = node-_width;
+	//neighbors[3].Cost = 1;
+
+	//neighbors[4].To = node+1 + _width;
+	//neighbors[4].Cost = SQRT_2;
+	//neighbors[5].To = node-1 + _width;
+	//neighbors[5].Cost = SQRT_2;
+	//neighbors[6].To = node +1 - _width;
+	//neighbors[6].Cost = SQRT_2;
+	//neighbors[7].To = node -1 -_width;
+	//neighbors[7].Cost = SQRT_2;
 	
 }
 

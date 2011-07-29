@@ -96,10 +96,7 @@ template<
 		if (_mapCost[it->To].Status == NodeStatus::Open)
 		{
 			CheckNeighbor(node, *it);
-			/*if (it->Cost == 1)
-			{
-				_mapCost[it->To].Status = NodeStatus::Close;
-			}*/
+			_mapCost[it->To].Status = it->InitStatus;			
 		}
 	}
 }

@@ -89,10 +89,18 @@ template<
 	typename CostInfo> 
 	void BasePathFinder<PointInfo, CellType, CostInfo>::Step(int node)
 {
+	_mapCost[node].Status = NodeStatus::Close;
 	_map->GetNeighbors(node, _neighbors);
 	for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
 	{
-		CheckNeighbor(node, *it);
+		if (_mapCost[it->To].Status == NodeStatus::Open)
+		{
+			CheckNeighbor(node, *it);
+			/*if (it->Cost == 1)
+			{
+				_mapCost[it->To].Status = NodeStatus::Close;
+			}*/
+		}
 	}
 }
 
@@ -108,9 +116,10 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
 	//TODO: fix magic if cell==0
 	if (_map->GetCell(newNode) == 0)
 	{
-		CostInfo cost = GetDistance(node, edge);
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
 		NodeState<NodeInfo,CostInfo>& bestResult = _mapCost[newNode];
+
+		CostInfo cost = GetDistance(node, edge);
 		if ((bestResult.ParentNode == 0) 
 			|| (bestResult.Cost > cost))
 		{

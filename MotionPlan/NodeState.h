@@ -6,25 +6,38 @@
 namespace AStar
 {
 
+	namespace NodeStatus
+	{
+		enum Status
+		{
+			Open=0,
+			Close
+		};
+	}
+
 template<
 	typename NodeInfo,
 	typename CostInfo> 
 struct NodeState
 {
 
-public:
+public:	
+
 	NodeInfo ParentNode;
 	CostInfo Cost;
+	NodeStatus::Status Status;
 
 	NodeState(const NodeInfo& parent,const CostInfo& cost):
 		ParentNode(parent),
-		Cost(cost)
+		Cost(cost),
+		Status(NodeStatus::Open)
 	{
 	}
 
 	NodeState():
 		ParentNode(0),
-		Cost(0)
+		Cost(0),
+		Status(NodeStatus::Open)
 	{
 	}
 };

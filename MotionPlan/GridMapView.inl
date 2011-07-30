@@ -44,6 +44,11 @@ inline Point<int> GridMapView<CellType, CoordType>::GetMapPoint(int node)
 	pointMap.Y = node / _width - _border;
 	return pointMap;
 }
+template<class CellType, typename CoordType>
+int GridMapView<CellType, CoordType>:: GetNodeFromMapPoint(const Point<int>& pointMap)
+{
+	return (pointMap.X + _border) + (pointMap.Y + _border) * _width ;
+}
 
 template<class CellType, typename CoordType>
 Point<CoordType> GridMapView<CellType, CoordType>::GetPoint(int& node)
@@ -68,7 +73,7 @@ int GridMapView<CellType, CoordType>::GetNode(Point<CoordType>& pointWorld)
 {
 	Point<int >pointMap;
 	TransformPointToCell(pointWorld, pointMap);
-	return (pointMap.X + _border) + (pointMap.Y + _border) * _width ;
+	return GetNodeFromMapPoint(pointMap);
 }
 
 template<class CellType, typename CoordType>
@@ -136,6 +141,11 @@ GridMapView<CellType, CoordType>::GridMapView(CoordType width, CoordType height,
 	InitMap(width, height, 1, Point<CoordType>(cellWidth, cellWidth));
 }
 
+template<class CellType, typename CoordType>
+GridMapView<CellType, CoordType>::GridMapView()
+{
+	
+}
 
 //template<class CellType, typename CoordType>
 //GridMapView<CellType, CoordType>::GridMapView(int width, int height, int border)

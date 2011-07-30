@@ -126,6 +126,7 @@
     <ClInclude Include="BasePathFinder.h" />
     <ClInclude Include="EdgeInfo.h" />
     <ClInclude Include="GridMapView.h" />
+    <ClInclude Include="HexGridMapView.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="MapView.h" />
     <ClInclude Include="NodeState.h" />
@@ -142,6 +143,7 @@
     <None Include="BasePathFinder.inl" />
     <None Include="CellQueue.inl" />
     <None Include="GridMapView.inl" />
+    <None Include="HexGridMapView.inl" />
     <None Include="MotionPlan.vcxproj" />
     <None Include="Path.inl" />
     <None Include="ReadMe.txt" />

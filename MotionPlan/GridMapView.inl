@@ -21,12 +21,29 @@ void GridMapView<CellType, CoordType>::GetNeighbors(int& node, std::vector<AStar
 }
 
 template<class CellType, typename CoordType>
+inline void GridMapView<CellType, CoordType>::TransformPointReverse(Point<CoordType>& pointFrom, Point<int>& pointTo)
+{
+	pointTo.X = static_cast<int>(pointFrom.X * _scaleXReverse + 0.5);
+	pointTo.Y = static_cast<int>(pointFrom.Y * _scaleYReverse + 0.5);	
+}
+template<class CellType, typename CoordType>
+inline void GridMapView<CellType, CoordType>::TransformPoint(Point<CoordType>& pointTo, Point<int>& pointFrom)
+{
+	pointTo.X = static_cast<CoordType>((pointFrom.X + 0.5) * _scaleX );
+	pointTo.Y = static_cast<CoordType>((pointFrom.Y + 0.5) * _scaleY );
+}
+
+template<class CellType, typename CoordType>
 Point<CoordType> GridMapView<CellType, CoordType>::GetPoint(int& node)
 {
-	Point<CoordType> p;
-	p.X = node % _width - _border;
-	p.Y = node / _width - _border;
-	return p;
+	Point<CoordType> pointWorld;
+	Point<int> pointMap;
+
+	pointMap.X = node % _width - _border;
+	pointMap.Y = node / _width - _border;
+
+	TransformPoint(pointWorld, pointMap);
+	return pointWorld;
 }
 template<class CellType, typename CoordType>
 float GridMapView<CellType, CoordType>::GetCostPoint(const Point<CoordType>& p1,const Point<CoordType>& p2)
@@ -36,9 +53,11 @@ float GridMapView<CellType, CoordType>::GetCostPoint(const Point<CoordType>& p1,
 }
 
 template<class CellType, typename CoordType>
-int GridMapView<CellType, CoordType>::GetNode(Point<CoordType>& point)
+int GridMapView<CellType, CoordType>::GetNode(Point<CoordType>& pointWorld)
 {
-	return (point.X + _border) + (point.Y + _border) * _width ;
+	Point<int >pointMap;
+	TransformPointReverse(pointWorld, pointMap);
+	return (pointMap.X + _border) + (pointMap.Y + _border) * _width ;
 }
 
 template<class CellType, typename CoordType>
@@ -75,7 +94,7 @@ inline int GridMapView<CellType, CoordType>::GetBorder()
 }
 
 template<class CellType, typename CoordType>
-void GridMapView<CellType, CoordType>::InitMap(int width, int height, int border)
+void GridMapView<CellType, CoordType>::InitMap(int width, int height, int border, float scaleX, float scaleY)
 {
 	_border = border;
 	_width = width + _border * 2;
@@ -83,20 +102,30 @@ void GridMapView<CellType, CoordType>::InitMap(int width, int height, int border
 	int size = _width*_height;
 	_map = new CellType[size];
 	Clear(0,1);
-	//_neighbors.i
+
+	_scaleX = scaleX;
+	_scaleXReverse = 1/_scaleX;
+	_scaleY = scaleY;
+	_scaleYReverse = 1/_scaleY;
 }
 
 template<class CellType, typename CoordType>
 GridMapView<CellType, CoordType>::GridMapView(int width, int height)
 {
-	InitMap(width, height, 1);
+	InitMap(width, height, 1, 1, 1);
+}
+template<class CellType, typename CoordType>
+GridMapView<CellType, CoordType>::GridMapView(int width, int height, float sacleX, float scaleY)
+{
+	InitMap(width, height, 1, scaleX, scaleY);
 }
 
-template<class CellType, typename CoordType>
-GridMapView<CellType, CoordType>::GridMapView(int width, int height, int border)
-{
-	InitMap(width, height, border);
-}
+
+//template<class CellType, typename CoordType>
+//GridMapView<CellType, CoordType>::GridMapView(int width, int height, int border)
+//{
+//	InitMap(width, height, border);
+//}
 
 template<class CellType, typename CoordType>
 GridMapView<CellType, CoordType>::~GridMapView(void)

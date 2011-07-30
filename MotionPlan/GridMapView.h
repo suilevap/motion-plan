@@ -14,26 +14,27 @@
 
 //typedef float CellType;
 
-template<class CellType, typename CoordType = int>
+template<class CellType, typename CoordType = float>
 class GridMapView: 
 	public AStar::MapView<Point<CoordType>, CellType, int, float>
 {
-public:
-	//typedef Point<CoordType> Point;
-	//typedef int NodeInfo;
-	//typedef float CostInfo;
-	//typedef Point PointInfo;
-	//typedef typename AStar::EdgeInfo<NodeInfo,CostInfo> Edge;
-	
 private:
 	CellType* _map;
 	int _width;
 	int _height;
 	int _border;
-	//std::vector<AStar::EdgeInfo<int,float>> _neighbors;
+
+	float _scaleX;
+	float _scaleY;
+	float _scaleXReverse;
+	float _scaleYReverse;
+	
 protected:
-	void InitMap(int width, int height, int border);
+	void InitMap(int width, int height, int border, float scaleX, float scaleY);
 	int GetBorder();
+	void TransformPoint(Point<CoordType>& point, Point<int>& p);
+	void TransformPointReverse(Point<CoordType>& point, Point<int>& p);
+
 public:
 	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<CoordType> GetPoint(int& node);	
@@ -46,7 +47,11 @@ public:
 	virtual float GetCostPoint(const Point<CoordType>& point1, const Point<CoordType>& point2);
 
 	GridMapView(int width, int height);
-	GridMapView(int width, int height, int border);
+	GridMapView(int width, int height, float scaleX, float scaleY);
+
+	//GridMapView(int width, int height, int border);
+	//GridMapView(int width, int height, int border, f);
+
 
 	virtual ~GridMapView();
 	void Clear(CellType value, CellType valueBorder);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MotionPlan"
 	ProjectGUID="{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
 	RootNamespace="MotionPlan"
@@ -137,7 +137,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="..\lib\*.lib"
+				ShowProgress="1"
 				LinkIncremental="1"
+				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -237,11 +239,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Interface.h"
+				RelativePath=".\HexGridMapView.h"
 				>
 			</File>
 			<File
-				RelativePath=".\NodeState.h"
+				RelativePath=".\Interface.h"
 				>
 			</File>
 			<File
@@ -262,6 +264,10 @@
 			>
 			<File
 				RelativePath=".\GridMapView.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\HexGridMapView.inl"
 				>
 			</File>
 		</Filter>
@@ -306,6 +312,10 @@
 			</File>
 			<File
 				RelativePath=".\MathConstants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NodeState.h"
 				>
 			</File>
 			<File

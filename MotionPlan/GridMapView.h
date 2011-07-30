@@ -20,20 +20,23 @@ class GridMapView:
 {
 private:
 	CellType* _map;
+	
+protected:
 	int _width;
 	int _height;
 	int _border;
 
 	Point<float> _scale;
 	Point<CoordType> _cellSize;
-	
-protected:
-	void InitMap(CoordType width, CoordType height, int border, Point<CoordType> cellSize);
+
+	virtual void InitMap(CoordType width, CoordType height, int border, Point<CoordType> cellSize);
 	int GetBorder();
 	void TransformPointToCell(Point<CoordType>& pointFrom, Point<int>& pointTo);
 	void TransformPointToWorld(Point<int>& pointFrom, Point<CoordType>& pointTo);
 
 	Point<int> GetMapPoint(int node);
+	int GetNodeFromMapPoint(const Point<int>& point);
+
 public:
 	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<CoordType> GetPoint(int& node);	
@@ -50,6 +53,7 @@ public:
 
 	GridMapView(CoordType width, CoordType height);
 	GridMapView(CoordType width, CoordType height, CoordType cellWidth);
+	GridMapView();
 
 	//GridMapView(int width, int height, int border);
 	//GridMapView(int width, int height, int border, f);
@@ -57,7 +61,7 @@ public:
 
 	virtual ~GridMapView();
 	void Clear(CellType value, CellType valueBorder);
-	void ToOutput();
+	virtual void ToOutput();
 	void ToOutputField();
 	static GridMapView<int>* LoadFrom(std::string &data, std::vector<Point<CoordType>>* specialPoints);
 

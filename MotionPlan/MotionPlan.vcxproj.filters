@@ -51,6 +51,9 @@
     <ClInclude Include="NodeState.h">
       <Filter>AStar</Filter>
     </ClInclude>
+    <ClInclude Include="HexGridMapView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -69,6 +72,9 @@
     </None>
     <None Include="DistanceEvaluator.inl">
       <Filter>AStar</Filter>
+    </None>
+    <None Include="HexGridMapView.inl">
+      <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

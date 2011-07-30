@@ -4,6 +4,8 @@ DllExport double InitGM();
 DllExport double CloseGM();
 
 DllExport double CreateMap(double width, double height, double cellSize);
+DllExport double CreateHexMap(double width, double height, double cellSize);
+
 DllExport double SetCellMap(double mapIndex, double x, double y, double cell);
 DllExport double SetCellMapRegion(double mapIndex, double x, double y, double w, double h, double cell);
 DllExport double GetCellMap(double mapIndex, double x, double y);
@@ -22,6 +24,8 @@ DllExport double DestroyPath(double pathIndex);
 
 DllExport void TestGmInterface();
 DllExport void TestPerformance(bool outputMap);
+DllExport void TestHexPerformance(bool outputMap);
+
 
 DllExport double Test();
 

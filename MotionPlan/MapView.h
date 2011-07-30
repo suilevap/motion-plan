@@ -16,7 +16,8 @@ template<
 	typename NodeInfo = int, 
 	typename CostInfo = float> 
 class MapView
-{
+{	
+	
 public:
 
 	virtual void GetNeighbors(NodeInfo& node, std::vector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
@@ -27,16 +28,8 @@ public:
 	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
-	virtual CostInfo GetCostPoint(const PointInfo& pointStart,const PointInfo& pointGoal) = 0;
+	virtual CostInfo GetCost(const NodeInfo& nodeStart,const NodeInfo& nodeGoal) = 0;
 
-	CostInfo GetCost(NodeInfo& nodeStart, NodeInfo& nodeGoal)
-	{
-		PointInfo p1 = GetPoint(nodeStart);
-		PointInfo p2 = GetPoint(nodeGoal);
-		CostInfo result = GetCostPoint(p1, p2);
-		return result;
-	}
-	
 	CellType GetCellPoint(PointInfo& point)
 	{
 		NodeInfo node = GetNode(point);

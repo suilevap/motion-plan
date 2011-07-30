@@ -24,17 +24,16 @@ private:
 	int _height;
 	int _border;
 
-	float _scaleX;
-	float _scaleY;
-	float _scaleXReverse;
-	float _scaleYReverse;
+	Point<float> _scale;
+	Point<CoordType> _cellSize;
 	
 protected:
-	void InitMap(int width, int height, int border, float scaleX, float scaleY);
+	void InitMap(CoordType width, CoordType height, int border, Point<CoordType> cellSize);
 	int GetBorder();
-	void TransformPoint(Point<CoordType>& point, Point<int>& p);
-	void TransformPointReverse(Point<CoordType>& point, Point<int>& p);
+	void TransformPointToCell(Point<CoordType>& pointFrom, Point<int>& pointTo);
+	void TransformPointToWorld(Point<int>& pointFrom, Point<CoordType>& pointTo);
 
+	Point<int> GetMapPoint(int node);
 public:
 	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<CoordType> GetPoint(int& node);	
@@ -44,10 +43,13 @@ public:
 	virtual void SetCellRegion(Point<CoordType>& point, CellType cell, Point<CoordType>& size);
 	virtual Point<CoordType> GetMaxPoint();
 	virtual int GetMaxNode();
-	virtual float GetCostPoint(const Point<CoordType>& point1, const Point<CoordType>& point2);
+	virtual float GetCost(const int& nodeStart,const int& nodeGoal);
 
-	GridMapView(int width, int height);
-	GridMapView(int width, int height, float scaleX, float scaleY);
+	Point<CoordType>& GetCellSize() {return _cellSize;}
+
+
+	GridMapView(CoordType width, CoordType height);
+	GridMapView(CoordType width, CoordType height, CoordType cellWidth);
 
 	//GridMapView(int width, int height, int border);
 	//GridMapView(int width, int height, int border, f);

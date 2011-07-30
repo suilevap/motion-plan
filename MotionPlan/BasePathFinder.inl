@@ -146,11 +146,9 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo> 
-CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::GetEstimateDistance(NodeInfo& node)
+inline CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::GetEstimateDistance(NodeInfo& node)
 {
-	PointInfo& p = _map->GetPoint(node);
-	return _map->GetCostPoint(p, _goalPoint);
-	//return _map->GetCost(node, _goal);
+	return _map->GetCost(node, _goal);
 }
 
 template<

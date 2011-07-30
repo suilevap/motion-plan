@@ -16,15 +16,15 @@
 #include "Interface.h"
 
 #include "ObjectIdPool.h"
-#include "Transformable.h"
-#include "Scalable.h"
+//#include "Transformable.h"
+//#include "Scalable.h"
 
 
-ObjectIdPool<Transformable<GridMapView<int>>> _maps;
-ObjectIdPool<Transformable<AStar::BasePathFinder<Point<float>, int, float>>> _pathFinders;
-ObjectIdPool<Transformable<AStar::Path<Point<float>>>> _paths;
+ObjectIdPool<GridMapView<int>> _maps;
+ObjectIdPool<AStar::BasePathFinder<Point<float>, int, float>> _pathFinders;
+ObjectIdPool<AStar::Path<Point<float>>> _paths;
 
-char* ConvertToGmPath(Transformable<AStar::Path<Point<float>>>* p);
+char* ConvertToGmPath(AStar::Path<Point<float>>* p);
 
 #ifdef USE_GMAPI
 gm::CGMAPI* _gmapi;
@@ -45,7 +45,7 @@ double CloseGM()
 char* GetGmPath(double pathIndex)
 {
 	int pathIndex2 = static_cast<int>(pathIndex);
-	Transformable<AStar::Path<Point<float>>>* p = _paths.Get(pathIndex2);
+	AStar::Path<Point<float>>* p = _paths.Get(pathIndex2);
 	char * buffer = ConvertToGmPath(p);
 	return buffer;
 }
@@ -55,15 +55,14 @@ double ConvertToGmPath(double pathIndex, double gmPathId)
 	int pathIndex2 = static_cast<int>(pathIndex);
 	int gmPathId2 = static_cast<int>(gmPathId);
 
-	Transformable<AStar::Path<Point<float>>>* p = _paths.Get(pathIndex2);
-	AStar::Path<Point<float>>* path = p->GetItem();
+	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);	
 	std::vector<Point<float>> points = path->GetPoints();
 	double x;
 	double y;
 	for (std::vector<Point<float>>::iterator it = points.begin(); it != points.end(); ++it)
 	{
-		x = p->TransformExact(it->X+0.5);
-		y = p->TransformExact(it->Y+0.5);
+		x = it->X;
+		y = it->Y;
 		gm::path_add_Point<float>(gmPathId2, x, y, 100);
 	}
 	return path->Count();
@@ -98,14 +97,13 @@ char* Action(char * map)
 
 double CreateMap(double width, double height, double cellSize)
 {
-	int width2 = static_cast<int>(width/cellSize+0.5);
-	int height2 = static_cast<int>(height/cellSize+0.5);
+	//int width2 = static_cast<int>(width/cellSize+0.5);
+	//int height2 = static_cast<int>(height/cellSize+0.5);
 	int cellSize2 = static_cast<int>(cellSize);
 
-	GridMapView<int>* map = new GridMapView<int>(width2, height2);
+	GridMapView<int>* map = new GridMapView<int>(width, height, cellSize);
 
-	Transformable<GridMapView<int>>* m = new Scalable<GridMapView<int>>(map, 1.0/cellSize);
-	int result = _maps.Add(m);
+	int result = _maps.Add(map);
 
 	return static_cast<double>(result);
 }
@@ -113,16 +111,12 @@ double CreateMap(double width, double height, double cellSize)
 double SetCellMap(double mapIndex, double x, double y, double cell)
 {
 	int mapIndex2 = static_cast<int>(mapIndex);
-	//int x2 = static_cast<int>(x);
-	//int y2 = static_cast<int>(y);
+
 	int cell2 = static_cast<int>(cell);
-	Transformable<GridMapView<int>>* m = _maps.Get(mapIndex2);
-	if (m!= NULL)
+	GridMapView<int>* map = _maps.Get(mapIndex2);
+	if (map!= NULL)
 	{
-		GridMapView<int>* map = m->GetItem();
-		int x2 = m->Transform(x);
-		int y2 = m->Transform(y);
-		Point<float> p(x2,y2);
+		Point<float> p(x, y);
 		map->SetCellPoint(p, cell2);
 	}
 	return cell;
@@ -132,15 +126,10 @@ double SetCellMapRegion(double mapIndex, double x, double y, double w, double h,
 {
 	int mapIndex2 = static_cast<int>(mapIndex);
 	int cell2 = static_cast<int>(cell);
-	Transformable<GridMapView<int>>* m = _maps.Get(mapIndex2);
-	if (m!= NULL)
+	GridMapView<int>* map = _maps.Get(mapIndex2);
+	if (map!= NULL)
 	{
-		GridMapView<int>* map = m->GetItem();
-		int x2 = static_cast<int>(m->TransformExact(x)-0.5);
-		int y2 = static_cast<int>(m->TransformExact(y)-0.5);
-		int w2 = static_cast<int>(m->TransformExact(w)+1);
-		int h2 = static_cast<int>(m->TransformExact(h)+1);
-		map->SetCellRegion(Point<float>(x2, y2), cell2, Point<float>(w2, h2));
+		map->SetCellRegion(Point<float>(x, y), cell2, Point<float>(w, h));
 	}
 	return cell;
 }
@@ -150,14 +139,10 @@ double GetCellMap(double mapIndex, double x, double y)
 	int result = 0;
 	int mapIndex2 = static_cast<int>(mapIndex);
 
-	Transformable<GridMapView<int>>* m = _maps.Get(mapIndex2);
-	if (m != NULL)
+	GridMapView<int>* map = _maps.Get(mapIndex2);
+	if (map != NULL)
 	{
-		GridMapView<int>* map = m->GetItem();
-		int x2 = m->Transform(x);
-		int y2 = m->Transform(y);
-		result = map->GetCellPoint(Point<float>(x2, y2));
-
+		result = map->GetCellPoint(Point<float>(x, y));
 	}
 	return static_cast<double>(result);
 }
@@ -175,16 +160,13 @@ double CreatePathFinder(double mapIndex)
 
 	int result = -1;
 
-	Transformable<GridMapView<int>>* m = _maps.Get(mapIndex2);
+	GridMapView<int>* map = _maps.Get(mapIndex2);
 
-	if (m != NULL)
+	if (map != NULL)
 	{
-		GridMapView<int>* map = m->GetItem();
 		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
-		//TODO: change to matrix transformation 
-		Transformable<AStar::BasePathFinder<Point<float>, int, float>>* pf = new Scalable<AStar::BasePathFinder<Point<float>, int, float>>(pathFinder, m->TransformExact(1));
 
-		result = _pathFinders.Add(pf);
+		result = _pathFinders.Add(pathFinder);
 	}
 	return static_cast<double>(result);
 }
@@ -194,21 +176,15 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
 
 	int result = -1;
-	Transformable<AStar::BasePathFinder<Point<float>, int, float>>* pf  = _pathFinders.Get(pathFinderIndex2);
+	AStar::BasePathFinder<Point<float>, int, float>* pathFinder  = _pathFinders.Get(pathFinderIndex2);
 
-	if (pf != NULL)
+	if (pathFinder != NULL)
 	{
-		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = pf->GetItem();
-		int x2 = pf->Transform(x);
-		int y2 = pf->Transform(y);
-		int goalX2 = pf->Transform(goalX);
-		int goalY2 = pf->Transform(goalY);
 
-		AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(x2, y2), Point<float>(goalX2, goalY2));
+		AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(x, y), Point<float>(goalX, goalY));
 
 		//TODO: change to matrix transformation 
-		Transformable<AStar::Path<Point<float>>>* p = new Scalable<AStar::Path<Point<float>>>(path, 1 / pf->TransformExact(1));
-		result = _paths.Add(p);
+		result = _paths.Add(path);
 	}
 	return static_cast<double>(result);
 }
@@ -227,12 +203,11 @@ double GetXPath(double pathIndex, double n)
 	int n2 = static_cast<int>(n);
 
 	int result = -1;
-	Transformable<AStar::Path<Point<float>>>* p = _paths.Get(pathIndex2);
-	if (p!= NULL)
+	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);
+	if (path!= NULL)
 	{
-		AStar::Path<Point<float>>* path = p->GetItem();
 		Point<float> point = path->GetPoint(n2);
-		result = p->Transform(point.X+0.5);
+		result = point.X;
 	}
 	return static_cast<double>(result);
 }
@@ -242,12 +217,11 @@ double GetYPath(double pathIndex, double n)
 	int n2 = static_cast<int>(n);
 
 	int result = -1;
-	Transformable<AStar::Path<Point<float>>>* p = _paths.Get(pathIndex2);
-	if (p!= NULL)
+	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);
+	if (path!= NULL)
 	{
-		AStar::Path<Point<float>>* path = p->GetItem();
 		Point<float> point = path->GetPoint(n2);
-		result = p->Transform(point.Y+0.5);
+		result = point.Y;
 	}
 	return static_cast<double>(result);
 }
@@ -257,27 +231,25 @@ double GetNPath(double pathIndex)
 	int pathIndex2 = static_cast<int>(pathIndex);
 
 	int result = -1;
-	Transformable<AStar::Path<Point<float>>>* p = _paths.Get(pathIndex2);
-	if (p!= NULL)
+	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);
+	if (path!= NULL)
 	{
-		AStar::Path<Point<float>>* path = p->GetItem();
 		result = path->Count();
 	}
 	return static_cast<double>(result);
 }
 
 //only for GM
-char* ConvertToGmPath(Transformable<AStar::Path<Point<float>>>* p)
+char* ConvertToGmPath(AStar::Path<Point<float>>* path)
 {
 	static char* format = "path_add_Point<float>(argument0, %8.2f, %8.2f, 100);\n";
-	AStar::Path<Point<float>>* path = p->GetItem();
 	std::vector<Point<float>> points = path->GetPoints();
 	int estimatedLength = points.size() * (strlen(format)+2*16);
 	char* buffer = new char[estimatedLength];
 	int offset=0;
 	for (std::vector<Point<float>>::iterator it = points.begin(); it != points.end(); ++it)
 	{
-		offset += sprintf(buffer+offset, format, p->TransformExact(it->X+0.5), p->TransformExact(it->Y+0.5));
+		offset += sprintf(buffer+offset, format, it->X, it->Y);
 	}
 	return buffer;
 }
@@ -349,18 +321,18 @@ void TestPerformance(bool outputMap)
 		printf(pathOutput);
 
 		//TODO: AAAaa
-		GridMapView<int>* mapObst = _maps.Get(map)->GetItem();
+		GridMapView<int>* mapObst = _maps.Get(map);
 		mapObst->ToOutput();
 		/*Map<float>* mapDist = _pathFinders.Get(AStar::BasePathFinder<Point<float>, int, float>)->GetItem()->GetMapDist();
 		mapDist->ToOutput();*/
 
-		GridMapView<int> m(mapObst->GetMaxPoint().X,mapObst->GetMaxPoint().Y);
+		GridMapView<int> m(mapObst->GetMaxPoint().X, mapObst->GetMaxPoint().Y, mapObst->GetCellSize().X);
 		double n = static_cast<int>(GetNPath(path));
 		for (double i = 0; i < n; ++i)
 		{
-			int x = static_cast<int>(GetXPath(path, i)/cellSize);
-			int y = static_cast<int>(GetYPath(path, i)/cellSize);
-			m.SetCellPoint(Point<float>(x, y), (static_cast<int>(i))%100+1);
+			float x = GetXPath(path, i);
+			float y = GetYPath(path, i);
+			m.SetCellPoint(Point<float>(x, y), (static_cast<int>(i+1))%100);
 		}
 		m.ToOutput();
 

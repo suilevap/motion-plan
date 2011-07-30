@@ -5,19 +5,19 @@
 #include "MathConstants.h"
 
 template<typename T>
-inline static T DistanceEvaluator::EuclideanDistance(const Point& p1, const Point& p2)
+inline static T DistanceEvaluator::EuclideanDistance(const Point<T>& p1, const Point<T>& p2)
 {
 	return (T) sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
 }
 
 template<typename T>
-inline static T DistanceEvaluator::ManhattanDistance(const Point& p1, const Point& p2) 
+inline static T DistanceEvaluator::ManhattanDistance(const Point<T>& p1, const Point<T>& p2) 
 { 
 	return (std::abs(p1.X - p2.X) + std::abs(p1.Y - p2.Y)); 
 }
 
 template<typename T>
-inline static T DistanceEvaluator::DiagonalDistance(const Point& p1, const Point& p2) 
+inline static T DistanceEvaluator::DiagonalDistance(const Point<T>& p1, const Point<T>& p2) 
 { 
 	T xd = std::abs(p1.X - p2.X);
 	T yd = std::abs(p1.Y - p2.Y);

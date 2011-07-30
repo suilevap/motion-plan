@@ -29,7 +29,7 @@ Path<PointInfo>* Path<PointInfo>::Empty()
 template<typename PointInfo>
 PointInfo Path<PointInfo>::GetPoint(int index)
 {
-	Point result;
+	PointInfo result;
 	if ((index<_points.size()) && (index >= 0))
 	{
 		result = _points[index];

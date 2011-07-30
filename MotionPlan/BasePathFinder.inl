@@ -34,7 +34,7 @@ Find(PointInfo start, PointInfo goal)
 	//TODO: fix several return!!
 	if ((_map->GetCell(_start) == 1) ||(_map->GetCell(_goal) == 1))
 	{
-		return Path<Point>::Empty();
+		return Path<PointInfo>::Empty();
 	}
 
 	//TODO: donot use vector explicitly
@@ -71,14 +71,14 @@ Find(PointInfo start, PointInfo goal)
 
 	delete _queue;
 
-	Path<Point>* result;
+	Path<PointInfo>* result;
 	if (pathFound)
 	{
 		result = ExtractPath();
 	}
 	else
 	{
-		result = Path<Point>::Empty();
+		result = Path<PointInfo>::Empty();
 	}
 	return result;
 }
@@ -148,7 +148,7 @@ template<
 	typename CostInfo> 
 CostInfo BasePathFinder<PointInfo, CellType, CostInfo>::GetEstimateDistance(NodeInfo& node)
 {
-	Point p = _map->GetPoint(node);
+	PointInfo& p = _map->GetPoint(node);
 	return _map->GetCostPoint(p, _goalPoint);
 	//return _map->GetCost(node, _goal);
 }

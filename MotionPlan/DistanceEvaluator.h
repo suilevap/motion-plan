@@ -12,13 +12,13 @@ class DistanceEvaluator
 {
 public:
 	template<typename T>
-	inline static T EuclideanDistance(const Point& p1, const Point& p2);
+	inline static T EuclideanDistance(const Point<T>& p1, const Point<T>& p2);
 
 	template<typename T>
-	inline static T ManhattanDistance(const Point& p1, const Point& p2);
+	inline static T ManhattanDistance(const Point<T>& p1, const Point<T>& p2);
 
 	template<typename T>
-	inline static T DiagonalDistance(const Point& p1, const Point& p2) ;
+	inline static T DiagonalDistance(const Point<T>& p1, const Point<T>& p2) ;
 
 };
 

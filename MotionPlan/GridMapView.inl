@@ -4,8 +4,8 @@
 
 #include "Math.h"
 
-template<class CellType>
-void GridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
 {
 	neighbors.resize(8);
 	neighbors[0] = AStar::EdgeInfo<int,float>(node + 1, 1, AStar::NodeStatus::Close);
@@ -17,83 +17,65 @@ void GridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<
 	neighbors[5] = AStar::EdgeInfo<int,float>(node - 1 + _width, SQRT_2, AStar::NodeStatus::Open);
 	neighbors[6] = AStar::EdgeInfo<int,float>(node + 1 - _width, SQRT_2, AStar::NodeStatus::Open);
 	neighbors[7] = AStar::EdgeInfo<int,float>(node - 1 - _width, SQRT_2, AStar::NodeStatus::Open);
-
-	//neighbors[0].To = node+1;
-	//neighbors[0].Cost = 1;
-	//neighbors[1].To = node-1;
-	//neighbors[1].Cost = 1;
-	//neighbors[2].To = node+_width;
-	//neighbors[2].Cost = 1;
-	//neighbors[3].To = node-_width;
-	//neighbors[3].Cost = 1;
-
-	//neighbors[4].To = node+1 + _width;
-	//neighbors[4].Cost = SQRT_2;
-	//neighbors[5].To = node-1 + _width;
-	//neighbors[5].Cost = SQRT_2;
-	//neighbors[6].To = node +1 - _width;
-	//neighbors[6].Cost = SQRT_2;
-	//neighbors[7].To = node -1 -_width;
-	//neighbors[7].Cost = SQRT_2;
 	
 }
 
-template<class CellType>
-Point GridMapView<CellType>::GetPoint(int& node)
+template<class CellType, typename CoordType>
+Point<CoordType> GridMapView<CellType, CoordType>::GetPoint(int& node)
 {
-	Point p;
+	Point<CoordType> p;
 	p.X = node % _width - _border;
 	p.Y = node / _width - _border;
 	return p;
 }
-template<class CellType>
-float GridMapView<CellType>::GetCostPoint(const Point& p1,const Point& p2)
+template<class CellType, typename CoordType>
+float GridMapView<CellType, CoordType>::GetCostPoint(const Point<CoordType>& p1,const Point<CoordType>& p2)
 {
-	float cost = AStar::DistanceEvaluator::DiagonalDistance<float>(p1, p2);
+	float cost = AStar::DistanceEvaluator::DiagonalDistance(p1, p2);
 	return cost;
 }
 
-template<class CellType>
-int GridMapView<CellType>::GetNode(Point& point)
+template<class CellType, typename CoordType>
+int GridMapView<CellType, CoordType>::GetNode(Point<CoordType>& point)
 {
 	return (point.X + _border) + (point.Y + _border) * _width ;
 }
 
-template<class CellType>
-CellType GridMapView<CellType>::GetCell(int& node)
+template<class CellType, typename CoordType>
+CellType GridMapView<CellType, CoordType>::GetCell(int& node)
 {
 	return _map[node] ;
 }
 
-template<class CellType>
-void GridMapView<CellType>::SetCell(int& node, CellType cell)
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::SetCell(int& node, CellType cell)
 {
 	_map[node] = cell;	
 }
 
-template<class CellType>
-Point GridMapView<CellType>::GetMaxPoint()
+template<class CellType, typename CoordType>
+Point<CoordType> GridMapView<CellType, CoordType>::GetMaxPoint()
 {
-	Point p;
+	Point<CoordType> p;
 	p.X = _width - _border * 2;;
 	p.Y = _height - _border * 2;;
 	return p;
 }
 
-template<class CellType>
-int GridMapView<CellType>::GetMaxNode()
+template<class CellType, typename CoordType>
+int GridMapView<CellType, CoordType>::GetMaxNode()
 {
 	return _width * _height;
 }
 
-template<class CellType>
-inline int GridMapView<CellType>::GetBorder()
+template<class CellType, typename CoordType>
+inline int GridMapView<CellType, CoordType>::GetBorder()
 {
 	return _border;
 }
 
-template<class CellType>
-void GridMapView<CellType>::InitMap(int width, int height, int border)
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::InitMap(int width, int height, int border)
 {
 	_border = border;
 	_width = width + _border * 2;
@@ -104,38 +86,38 @@ void GridMapView<CellType>::InitMap(int width, int height, int border)
 	//_neighbors.i
 }
 
-template<class CellType>
-GridMapView<CellType>::GridMapView(int width, int height)
+template<class CellType, typename CoordType>
+GridMapView<CellType, CoordType>::GridMapView(int width, int height)
 {
 	InitMap(width, height, 1);
 }
 
-template<class CellType>
-GridMapView<CellType>::GridMapView(int width, int height, int border)
+template<class CellType, typename CoordType>
+GridMapView<CellType, CoordType>::GridMapView(int width, int height, int border)
 {
 	InitMap(width, height, border);
 }
 
-template<class CellType>
-GridMapView<CellType>::~GridMapView(void)
+template<class CellType, typename CoordType>
+GridMapView<CellType, CoordType>::~GridMapView(void)
 {
 	delete[] _map;
 }
 
-template<class CellType>
-void GridMapView<CellType>::SetCellRegion(Point& point, CellType cell, Point& size)
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::SetCellRegion(Point<CoordType>& point, CellType cell, Point<CoordType>& size)
 {
 	for (int i = point.X; i < (point.X + size.X); i++)
 	{
 		for (int k = point.Y; k < (point.Y + size.Y); k++)
 		{
-			_map[GetNode(Point(i,k))] = cell;
+			_map[GetNode(Point<CoordType>(i,k))] = cell;
 		}
 	}
 }
 
-template<class CellType>
-void GridMapView<CellType>::Clear(CellType value, CellType valueBorder)
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorder)
 {
 	int size = _width*_height;
 	int sizeCell = sizeof(_map[0]);
@@ -163,10 +145,10 @@ void GridMapView<CellType>::Clear(CellType value, CellType valueBorder)
 }
 
 //only for test!!
-template<class CellType>
-void GridMapView<CellType>::ToOutput()
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::ToOutput()
 {
-	Point size = GetMaxPoint();
+	Point<CoordType> size = GetMaxPoint();
 
 	int w = size.X;
 	int h = size.Y;
@@ -175,15 +157,15 @@ void GridMapView<CellType>::ToOutput()
 		for (int i =0; i < w; i++)
 		{
 			//printf("%3d",(int)( (int)(GetCell(i , k)*10 )%100 ));
-			printf("%3d",(int)GetCellPoint(Point(i , k)));
+			printf("%3d",(int)GetCellPoint(Point<CoordType>(i , k)));
 		}
 		printf("\n");
 	}
 	printf("========================\n");
 }
 
-template<class CellType>
-void GridMapView<CellType>::ToOutputField()
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::ToOutputField()
 {
 	const char * presentation = "\\|/-.-/|\\";
 	int w = GetWidth();
@@ -214,8 +196,8 @@ void GridMapView<CellType>::ToOutputField()
 	printf("========================\n");
 }
 
-template<class CellType>
-GridMapView<int>* GridMapView<CellType>::LoadFrom(std::string &data, std::vector<Point>* specialPoints)
+template<class CellType, typename CoordType>
+GridMapView<int>* GridMapView<CellType, CoordType>::LoadFrom(std::string &data, std::vector<Point<CoordType>>* specialPoints)
 {
 	int width = data.find("\r\n");
 	int height = (data.length()+2) / (width + 2);
@@ -239,12 +221,11 @@ GridMapView<int>* GridMapView<CellType>::LoadFrom(std::string &data, std::vector
 			if ((symbol>='0') && (symbol<='9'))
 			{
 				int idx = (int)(symbol-'0');
-				Point point;
-				point.X = i;
-				point.Y = k;
+				Point<CoordType> point(i, k);
+				
 				(*specialPoints)[idx]=point;
 			}
-			map->SetCellPoint(Point(i,k), cell);
+			map->SetCellPoint(Point<CoordType>(i,k), cell);
 			index++;
 		}
 		index+=2;

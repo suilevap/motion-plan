@@ -14,11 +14,12 @@
 
 //typedef float CellType;
 
-template<class CellType>
+template<class CellType, typename CoordType = int>
 class GridMapView: 
-	public AStar::MapView<Point, CellType, int, float>
+	public AStar::MapView<Point<CoordType>, CellType, int, float>
 {
 public:
+	//typedef Point<CoordType> Point;
 	//typedef int NodeInfo;
 	//typedef float CostInfo;
 	//typedef Point PointInfo;
@@ -29,29 +30,29 @@ private:
 	int _width;
 	int _height;
 	int _border;
-	std::vector<AStar::EdgeInfo<int,float>> _neighbors;
+	//std::vector<AStar::EdgeInfo<int,float>> _neighbors;
 protected:
 	void InitMap(int width, int height, int border);
 	int GetBorder();
 public:
-	void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
-	Point GetPoint(int& node);	
-	int GetNode(Point& point);
-	CellType GetCell(int& node);
-	void SetCell(int& node, CellType cell);
-	void SetCellRegion(Point& point, CellType cell, Point& size);
-	Point GetMaxPoint();
-	int GetMaxNode();
-	float GetCostPoint(const Point& point1,const Point& point2);
+	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual Point<CoordType> GetPoint(int& node);	
+	virtual int GetNode(Point<CoordType>& point);
+	virtual CellType GetCell(int& node);
+	virtual void SetCell(int& node, CellType cell);
+	virtual void SetCellRegion(Point<CoordType>& point, CellType cell, Point<CoordType>& size);
+	virtual Point<CoordType> GetMaxPoint();
+	virtual int GetMaxNode();
+	virtual float GetCostPoint(const Point<CoordType>& point1, const Point<CoordType>& point2);
 
 	GridMapView(int width, int height);
 	GridMapView(int width, int height, int border);
 
-	~GridMapView();
+	virtual ~GridMapView();
 	void Clear(CellType value, CellType valueBorder);
 	void ToOutput();
 	void ToOutputField();
-	static GridMapView<int>* LoadFrom(std::string &data, std::vector<Point>* specialPoints);
+	static GridMapView<int>* LoadFrom(std::string &data, std::vector<Point<CoordType>>* specialPoints);
 
 };
 

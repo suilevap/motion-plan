@@ -2,8 +2,6 @@
 #error "Include from GridMapView.h only."
 #else
 
-#include "Math.h"
-
 template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
 {
@@ -64,7 +62,7 @@ float GridMapView<CellType, CoordType>::GetCost(const int& nodeStart,const int& 
 {
 	Point<int> p1 = GetMapPoint(nodeStart);
 	Point<int> p2 = GetMapPoint(nodeGoal);
-	float cost = AStar::DistanceEvaluator::DiagonalDistance(p1, p2);
+	float cost = AStar::DistanceEvaluator::DiagonalDistance<float>(p1, p2);
 	return cost;
 }
 

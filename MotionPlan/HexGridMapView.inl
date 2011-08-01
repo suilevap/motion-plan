@@ -2,8 +2,6 @@
 #error "Include from HexGridMapView.h only."
 #else
 
-#include "Math.h"
-
 template<class CellType>
 inline int HexGridMapView<CellType>::GetYOffset(int node)
 {
@@ -53,6 +51,15 @@ int HexGridMapView<CellType>::GetNode(Point<float>& point)
 	p.Y -= _cellSize.Y/2 * offset;
 	int node = GridMapView<CellType,float>::GetNode(p);
 	return node;
+}
+
+template<class CellType>
+float HexGridMapView<CellType>::GetCost(const int& nodeStart,const int& nodeGoal)
+{
+	Point<int> p1 = GetMapPoint(nodeStart);
+	Point<int> p2 = GetMapPoint(nodeGoal);
+	float cost = AStar::DistanceEvaluator::HexShiftByXDistance<float>(p1, p2);
+	return cost;
 }
 
 template<class CellType>

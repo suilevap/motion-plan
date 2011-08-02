@@ -56,7 +56,9 @@ Find(PointInfo start, PointInfo goal)
 	bool pathFound = false;
 	while (!_queue->Empty() && !pathFound)
 	{
-
+#ifdef _DEBUG
+		//ToOutputCurrentState();
+#endif
 		pathNode = _queue->Pop();
 		NodeInfo node = pathNode.Node;
 		if (node != _goal)
@@ -66,6 +68,9 @@ Find(PointInfo start, PointInfo goal)
 		else
 		{
 			pathFound = true;
+#ifdef _DEBUG
+			ToOutputCurrentState();
+#endif
 		}
 	}
 
@@ -174,5 +179,24 @@ Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo>::ExtractPath()
 	Path<PointInfo>* path = new Path<PointInfo>(result);
 	return path;
 }
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo> 
+void BasePathFinder<PointInfo, CellType, CostInfo>::ToOutputCurrentState()
+{
+
+	if (_mapForStateDebug != NULL)
+	{
+		for (int i =0; i < _mapCost.size(); ++i)
+		{
+			//_mapForStateDebug->SetCell(i, ((int)_mapCost[i].Cost%10)+1);
+			_mapForStateDebug->SetCell(i, ((int) GetEstimateDistance(i)%10)+1);
+		}
+		_mapForStateDebug->ToOutput();
+	}
+}
+
 
 #endif

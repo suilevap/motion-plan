@@ -290,4 +290,13 @@ GridMapView<int>* GridMapView<CellType, CoordType>::LoadFrom(std::string &data, 
 	return map;
 }
 
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::LoadFromVector(std::vector<float>& data)
+{
+	for (int i = 0; i < data.size(); ++i)
+	{
+		SetCell(i, data[i]);
+	}
+}
+
 #endif

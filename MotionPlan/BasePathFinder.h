@@ -23,16 +23,11 @@ class BasePathFinder
 {
 public:
 	typedef int NodeInfo;
-	//typedef float CostInfo;
-	//typedef Point PointInfo;
-	//typedef Edge<NodeInfo,CostInfo> GridMapView::Edge;
+
 
 private:	
 	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
 	std::vector<NodeState<NodeInfo,CostInfo>> _mapCost;
-
-	//std::vector<float> _mapCost;
-	//std::vector<NodeInfo> _mapParent;
 
 	std::vector<EdgeInfo<NodeInfo,CostInfo>> _neighbors;
 	
@@ -41,10 +36,10 @@ private:
 	NodeInfo _goal;
 	NodeInfo _start;
 	CellQueue<NodeInfo, CostInfo>* _queue;
-	//void DirToXY(int dir, int* x, int* y);
-	//int XYToDir(int x, int y);
-	//float ComputeCost(int x0, int y0, int x1, int y1);
-	//float GetParentDist(int x, int y);
+
+	//for debug
+	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _mapForStateDebug;
+
 	bool CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge);
 	CostInfo GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge);
 	CostInfo GetEstimateDistance(NodeInfo& node);
@@ -59,6 +54,8 @@ public:
 	
 	////only for debug purpose
 	//std::vector<float>* GetMapDist(){ return _mapDist;};
+	void InitDebug(MapView<PointInfo, CellType, NodeInfo, CostInfo>* mapForStateDebug) { _mapForStateDebug = mapForStateDebug; }
+	void ToOutputCurrentState();
 };
 
 #include "BasePathFinder.inl"

@@ -13,7 +13,7 @@ template<class CellType>
 inline int HexGridMapView<CellType>::GetYOffset(const Point<float>& point)
 {
 	//check that column is even
-	return static_cast<int>(point.X * _scale.X ) & 0x01;
+	return static_cast<int>(point.X * _scale.X +0.5 ) & 0x01;
 }
 
 template<class CellType>
@@ -80,7 +80,7 @@ void HexGridMapView<CellType>::ToOutput()
 	{
 		
 		int offset = GetYOffset(GetNodeFromMapPoint(Point<int>(i, 0)));
-		if (offset == 0)
+		if (offset == 1)
 		{
 			printf(" ");
 		}

@@ -30,6 +30,9 @@ public:
 	virtual NodeInfo GetMaxNode()= 0;
 	virtual CostInfo GetCost(const NodeInfo& nodeStart,const NodeInfo& nodeGoal) = 0;
 
+	virtual void ToOutput() = 0;
+
+
 	CellType GetCellPoint(PointInfo& point)
 	{
 		NodeInfo node = GetNode(point);

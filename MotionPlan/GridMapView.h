@@ -64,7 +64,8 @@ public:
 	virtual void ToOutput();
 	void ToOutputField();
 	static GridMapView<int>* LoadFrom(std::string &data, std::vector<Point<CoordType>>* specialPoints);
-
+	void LoadFromVector(std::vector<float>& data);
+	void ToOtputDebugStep();
 };
 
 #include "GridMapView.inl"

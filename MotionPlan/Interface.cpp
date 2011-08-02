@@ -184,6 +184,27 @@ double CreatePathFinder(double mapIndex)
 	return static_cast<double>(result);
 }
 
+double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
+{
+	int mapIndex2 = static_cast<int>(mapIndex);
+
+	int result = -1;
+
+	GridMapView<int>* map = _maps.Get(mapIndex2);
+	GridMapView<int>* mapDebug = _maps.Get(mapDebugIndex);
+
+
+	if (map != NULL)
+	{
+		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
+		pathFinder->InitDebug(mapDebug);
+
+		result = _pathFinders.Add(pathFinder);
+	}
+	return static_cast<double>(result);
+}
+
+
 double FindPath(double pathFinderIndex, double x, double y, double goalX, double goalY)
 {
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
@@ -368,6 +389,8 @@ void TestHexPerformance(bool outputMap)
 	int w = 40;
 	int h = 100;
 	double map = CreateHexMap(w*cellSize,h*cellSize,cellSize);
+
+
 	//map = CreateMap(w*cellSize,h*cellSize,cellSize);
 	SetCellMap(map, 4*cellSize, 4*cellSize, 1);
 	SetCellMap(map, 5*cellSize, 4*cellSize, 1);
@@ -378,22 +401,26 @@ void TestHexPerformance(bool outputMap)
 	SetCellMapRegion(map, (w/2)*cellSize, 0*cellSize, 2*cellSize, (h*0.75)*cellSize, 1);
 	//SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
 
+#ifndef _DEBUG
 	double pathFinder = CreatePathFinder(map);
+#else
+	double mapDebug = CreateHexMap(w*cellSize,h*cellSize,cellSize);
+	double pathFinder = CreatePathFinderDebug(map, mapDebug);
+#endif
+
 	
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w-2)*cellSize, 2.0*cellSize);
 
 	if (outputMap)
 	{
-		char* pathOutput = ConvertToGmPath(_paths.Get(path));
-		printf(pathOutput);
+		//char* pathOutput = ConvertToGmPath(_paths.Get(path));
+		//printf(pathOutput);
 
 		//TODO: AAAaa
 		GridMapView<int>* mapObst = _maps.Get(map);
 		mapObst->ToOutput();
-		/*Map<float>* mapDist = _pathFinders.Get(AStar::BasePathFinder<Point<float>, int, float>)->GetItem()->GetMapDist();
-		mapDist->ToOutput();*/
 
-		HexGridMapView<int> m(mapObst->GetMaxPoint().X, mapObst->GetMaxPoint().Y, cellSize);
+		HexGridMapView<int> m(mapObst->GetMaxPoint().X, mapObst->GetMaxPoint().Y, mapObst->GetCellSize().Y);
 		double n = static_cast<int>(GetNPath(path));
 		for (double i = 0; i < n; ++i)
 		{
@@ -408,4 +435,7 @@ void TestHexPerformance(bool outputMap)
 	DestroyMap(map);
 	DestroyPathFinder(pathFinder);
 	DestroyPath(path);
+#ifdef _DEBUG
+	DestroyMap(mapDebug);
+#endif
 }

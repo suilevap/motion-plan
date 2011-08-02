@@ -29,16 +29,22 @@ inline static T DistanceEvaluator::DiagonalDistance(const Point<P>& p1, const Po
 template<typename T, typename P>
 inline static T DistanceEvaluator::HexShiftByXDistance(const Point<P>& p1, const Point<P>& p2) 
 {
-	P xd = std::abs(p1.X - p2.X);
-	P yd = std::abs(p1.Y - p2.Y);
+	//Point<P> point1(p1.X * 2, p1.Y*2+p1.X%2);
+	//Point<P> point2(p2.X * 2, p2.Y*2+p2.X%2);
+
+
+	P xd = std::abs(p1.X - p2.X)* 2;
+	P yd = std::abs((p1.Y - p2.Y)*2+(p1.X%2-p2.X%2));
+
 	T result;
+
 	if (xd >= yd * 2)// x more than  needed for diagonal	
 	{
-		result = (T)(xd + yd / 127*0); // +yd * 0.01 to prioritize more straingth line
+		result = xd/2;
 	}
 	else //need some vertical movements
 	{
-		result = (T)(xd - (xd / 2 - yd ));
+		result = (xd/2 + yd)/2;
 	}
 	return result;
 }

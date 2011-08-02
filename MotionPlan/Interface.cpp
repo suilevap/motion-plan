@@ -388,6 +388,8 @@ void TestHexPerformance(bool outputMap)
 	int cellSize = 16;
 	int w = 40;
 	int h = 100;
+	//w = 10;
+	//h = 10;
 	double map = CreateHexMap(w*cellSize,h*cellSize,cellSize);
 
 
@@ -399,7 +401,7 @@ void TestHexPerformance(bool outputMap)
 	SetCellMap(map, 5*cellSize, 7*cellSize, 1);
 	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
 	SetCellMapRegion(map, (w/2)*cellSize, 0*cellSize, 2*cellSize, (h*0.75)*cellSize, 1);
-	//SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
+	
 
 #ifndef _DEBUG
 	double pathFinder = CreatePathFinder(map);
@@ -410,6 +412,7 @@ void TestHexPerformance(bool outputMap)
 
 	
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w-2)*cellSize, 2.0*cellSize);
+	//double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w/2)*cellSize, h/2.0*cellSize);
 
 	if (outputMap)
 	{

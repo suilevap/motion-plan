@@ -327,6 +327,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PathFinder.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PathNode.h"
 				>
 			</File>

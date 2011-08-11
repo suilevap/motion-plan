@@ -344,9 +344,12 @@ void TestPerformance(bool outputMap)
 	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
 	SetCellMapRegion(map, (w/2)*cellSize, 0*cellSize, 2*cellSize, (h*0.75)*cellSize, 1);
 	//SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
-
+#ifndef _DEBUG
 	double pathFinder = CreatePathFinder(map);
-	
+#else
+	double mapDebug = CreateMap(w*cellSize,h*cellSize,cellSize);
+	double pathFinder = CreatePathFinderDebug(map, mapDebug);
+#endif	
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w-2)*cellSize, 2.0*cellSize);
 
 	if (outputMap)
@@ -375,6 +378,9 @@ void TestPerformance(bool outputMap)
 	DestroyMap(map);
 	DestroyPathFinder(pathFinder);
 	DestroyPath(path);
+#ifdef _DEBUG
+	DestroyMap(mapDebug);
+#endif
 }
 
 double Test()

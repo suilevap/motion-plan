@@ -23,7 +23,7 @@ private:
 	std::priority_queue<
 		PathNode<NodeInfo,CostInfo>,
 		std::vector<PathNode<NodeInfo,CostInfo>>,
-		std::greater<PathNode<NodeInfo,CostInfo>> > _queue;
+		std::greater<PathNode<NodeInfo,CostInfo>> >* _queue;
 	
 	//std::vector<PathPoint> _unsortedQueue;
 
@@ -36,11 +36,15 @@ private:
 	//	std::less<PathPoint>> _set;
 public:
 	CellQueue();
+	~CellQueue();
+
 
 	void Push(const PathNode<NodeInfo,CostInfo>& point);
 	PathNode<NodeInfo,CostInfo> Pop();
-
 	bool Empty();
+
+	void Clear();
+
 };
 
 #include "CellQueue.inl"

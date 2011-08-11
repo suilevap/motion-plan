@@ -14,12 +14,12 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//char * result = Action(f.GetBuffer());
 	//printf(result);
-	TestHexPerformance(true);
+	TestPerformance(true);
 	times = clock();
 	time0 = times;
 	for (int i=1; i < 100000; i++)
 	{
-		TestHexPerformance(false);
+		TestPerformance(false);
 		if (i%1000 == 0)
 		{
 			time1 = clock();

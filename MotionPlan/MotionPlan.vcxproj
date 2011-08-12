@@ -130,6 +130,7 @@
     <ClInclude Include="Interface.h" />
     <ClInclude Include="MapView.h" />
     <ClInclude Include="NodeState.h" />
+    <ClInclude Include="PathFinder.h" />
     <ClInclude Include="PathNode.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="stdafx.h" />

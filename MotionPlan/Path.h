@@ -21,6 +21,8 @@ public:
 	PointInfo GetPoint(int index);
 	int Count();	
 
+	void AddPoints(std::vector<PointInfo>& points);
+
 	static Path* Empty();
 	
 };

@@ -11,6 +11,7 @@
 #include "Point.h"
 #include "PathNode.h"
 #include "BasePathFinder.h"
+#include "BidirectionalPathFinder.h"
 #include "GridMapView.h"
 #include "HexGridMapView.h"
 
@@ -22,7 +23,7 @@
 
 
 ObjectIdPool<GridMapView<int>> _maps;
-ObjectIdPool<AStar::BasePathFinder<Point<float>, int, float>> _pathFinders;
+ObjectIdPool<AStar::PathFinder<Point<float>, int, int, float>> _pathFinders;
 ObjectIdPool<AStar::Path<Point<float>>> _paths;
 
 char* ConvertToGmPath(AStar::Path<Point<float>>* p);
@@ -177,7 +178,10 @@ double CreatePathFinder(double mapIndex)
 
 	if (map != NULL)
 	{
-		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
+		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = 
+			new AStar::BasePathFinder<Point<float>, int, float>(map);
+		//AStar::PathFinder<Point<float>, int, int, float>* pathFinder = 
+		//	new AStar::BidirectionalPathFinder<Point<float>, int, float>(map);
 
 		result = _pathFinders.Add(pathFinder);
 	}
@@ -187,18 +191,23 @@ double CreatePathFinder(double mapIndex)
 double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
 {
 	int mapIndex2 = static_cast<int>(mapIndex);
+	int mapDebugIndex2 = static_cast<int>(mapDebugIndex);
 
 	int result = -1;
 
 	GridMapView<int>* map = _maps.Get(mapIndex2);
-	GridMapView<int>* mapDebug = _maps.Get(mapDebugIndex);
+	GridMapView<int>* mapDebug = _maps.Get(mapDebugIndex2);
 
 
 	if (map != NULL)
 	{
-		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
-		pathFinder->InitDebug(mapDebug);
+		//AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
+		AStar::PathFinder<Point<float>, int, int, float>* pathFinder = 
+			new AStar::BidirectionalPathFinder<Point<float>, int, float>(map);
 
+#ifdef _DEBUG
+		pathFinder->InitDebug(mapDebug);
+#endif
 		result = _pathFinders.Add(pathFinder);
 	}
 	return static_cast<double>(result);
@@ -210,7 +219,7 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
 
 	int result = -1;
-	AStar::BasePathFinder<Point<float>, int, float>* pathFinder  = _pathFinders.Get(pathFinderIndex2);
+	AStar::PathFinder<Point<float>, int, int, float>* pathFinder  = _pathFinders.Get(pathFinderIndex2);
 
 	if (pathFinder != NULL)
 	{
@@ -236,7 +245,7 @@ double GetXPath(double pathIndex, double n)
 	int pathIndex2 = static_cast<int>(pathIndex);
 	int n2 = static_cast<int>(n);
 
-	int result = -1;
+	double result = -1;
 	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);
 	if (path!= NULL)
 	{
@@ -250,7 +259,7 @@ double GetYPath(double pathIndex, double n)
 	int pathIndex2 = static_cast<int>(pathIndex);
 	int n2 = static_cast<int>(n);
 
-	int result = -1;
+	double result = -1;
 	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);
 	if (path!= NULL)
 	{
@@ -283,7 +292,7 @@ char* ConvertToGmPath(AStar::Path<Point<float>>* path)
 	int offset=0;
 	for (std::vector<Point<float>>::iterator it = points.begin(); it != points.end(); ++it)
 	{
-		offset += sprintf(buffer+offset, format, it->X, it->Y);
+		offset += sprintf_s(buffer+offset, estimatedLength-offset, format, it->X, it->Y);
 	}
 	return buffer;
 }
@@ -354,11 +363,11 @@ void TestPerformance(bool outputMap)
 
 	if (outputMap)
 	{
-		char* pathOutput = ConvertToGmPath(_paths.Get(path));
-		printf(pathOutput);
+		//char* pathOutput = ConvertToGmPath(_paths.Get(static_cast<int>(path)));
+		//printf(pathOutput);
 
 		//TODO: AAAaa
-		GridMapView<int>* mapObst = _maps.Get(map);
+		GridMapView<int>* mapObst = _maps.Get(static_cast<int>(map));
 		mapObst->ToOutput();
 		/*Map<float>* mapDist = _pathFinders.Get(AStar::BasePathFinder<Point<float>, int, float>)->GetItem()->GetMapDist();
 		mapDist->ToOutput();*/
@@ -426,7 +435,7 @@ void TestHexPerformance(bool outputMap)
 		//printf(pathOutput);
 
 		//TODO: AAAaa
-		GridMapView<int>* mapObst = _maps.Get(map);
+		GridMapView<int>* mapObst = _maps.Get(static_cast<int>(map));
 		mapObst->ToOutput();
 
 		HexGridMapView<int> m(mapObst->GetMaxPoint().X, mapObst->GetMaxPoint().Y, mapObst->GetCellSize().Y);

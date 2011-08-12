@@ -20,13 +20,15 @@ protected:
 	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
 	NodeInfo _start;
 	NodeInfo _goal;
+
+	//for debug
+	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _mapForStateDebug;
 	
 	virtual bool IsGoal(NodeInfo& goal) = 0;	
 public:
 
 	Path<PointInfo>* Find(PointInfo start, PointInfo goal)
 	{
-		Path<PointInfo>* result;
 		_start = _map->GetNode(start);
 		_goal = _map->GetNode(goal);
 		FindStart(_start, _goal);
@@ -37,7 +39,7 @@ public:
 		{
 			curNode = FindStep();
 		}
-		Path<PointInfo>* path = FindEnd(_goal);
+		Path<PointInfo>* path = FindEnd(curNode);
 
 		return path;
 	}
@@ -47,6 +49,12 @@ public:
 	virtual NodeInfo FindStep() = 0;
 	virtual bool FindIsPathExists(NodeInfo& node) = 0;
 	virtual Path<PointInfo>* FindEnd(NodeInfo& node) = 0;
+
+	virtual void InitDebug(MapView<PointInfo, CellType, NodeInfo, CostInfo>* mapForStateDebug)
+	{
+		_mapForStateDebug = mapForStateDebug; 
+	}
+	virtual void ToOutputCurrentState() = 0;
 
 };
 

@@ -55,4 +55,15 @@ int Path<PointInfo>::Count()
 	return _points.size();
 }
 
+template<typename PointInfo>
+void Path<PointInfo>::AddPoints(std::vector<PointInfo>& points)
+{
+	//_points.resize(_points.size() + points.size()+1);
+	for (std::vector<PointInfo>::iterator it = points.begin(); it != points.end(); ++it)
+	{
+		_points.push_back(*it);
+	}
+
+}
+
 #endif

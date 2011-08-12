@@ -39,6 +39,8 @@ template<
 void BasePathFinder<PointInfo, CellType, CostInfo>::
 FindStart(NodeInfo start, NodeInfo goal)
 {
+	_start = start;
+	_goal = goal;
 	//TODO: donot use vector explicitly
 	_mapCost.clear();
 
@@ -64,12 +66,16 @@ int BasePathFinder<PointInfo, CellType, CostInfo>::
 FindStep()
 {
 #ifdef _DEBUG
+	static int i = 0;
+	if (i++%1023 == 0)
+	{
 		//ToOutputCurrentState();
+	}
 #endif
-		PathNode<int,float> pathNode = _queue->Pop();
-		NodeInfo node = pathNode.Node;
-		Step(node, _goal);		
-		return node;
+	PathNode<int,float> pathNode = _queue->Pop();
+	NodeInfo node = pathNode.Node;
+	Step(node, _goal);		
+	return node;
 }
 
 
@@ -265,7 +271,7 @@ ExtractPath(NodeInfo& toPoint)
 	std::vector<PointInfo> result;
 	NodeInfo pos = toPoint;
 	
-	result.push_back(_map->GetPoint(_goal));
+	result.push_back(_map->GetPoint(pos));
 	while (pos != _start)
 	{		
 		pos = _mapCost[pos].ParentNode;

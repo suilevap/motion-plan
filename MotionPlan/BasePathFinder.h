@@ -37,9 +37,6 @@ protected:
 
 	CellQueue<NodeInfo, CostInfo>* _queue;
 
-	//for debug
-	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _mapForStateDebug;
-
 	bool CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal);
 	CostInfo GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge);
 	CostInfo GetEstimateDistance(NodeInfo& node1, NodeInfo& node2);
@@ -61,8 +58,7 @@ public:
 	
 	////only for debug purpose
 	//std::vector<float>* GetMapDist(){ return _mapDist;};
-	void InitDebug(MapView<PointInfo, CellType, NodeInfo, CostInfo>* mapForStateDebug) { _mapForStateDebug = mapForStateDebug; }
-	void ToOutputCurrentState();
+	virtual void ToOutputCurrentState();
 };
 
 #include "BasePathFinder.inl"

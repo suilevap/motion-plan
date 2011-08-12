@@ -283,6 +283,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BidirectionalPathFinder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BidirectionalPathFinder.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\CellQueue.h"
 				>
 			</File>

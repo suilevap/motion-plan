@@ -161,9 +161,9 @@ template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::SetCellRegion(Point<CoordType>& point, CellType cell, Point<CoordType>& size)
 {
 
-	for (int i = point.X; i < (point.X + size.X); i += _cellSize.X)
+	for (float i = point.X; i < (point.X + size.X); i += _cellSize.X)
 	{
-		for (int k = point.Y; k < (point.Y + size.Y); k += _cellSize.Y)
+		for (float k = point.Y; k < (point.Y + size.Y); k += _cellSize.Y)
 		{
 			_map[GetNode(Point<CoordType>(i,k))] = cell;
 		}
@@ -204,11 +204,11 @@ void GridMapView<CellType, CoordType>::ToOutput()
 {
 	Point<CoordType> size = GetMaxPoint();
 
-	int w = size.X;
-	int h = size.Y;
-	for (int k = 0; k < h; k += _cellSize.Y)
+	float w = size.X;
+	float h = size.Y;
+	for (float k = 0; k < h; k += _cellSize.Y)
 	{
-		for (int i =0; i < w; i += _cellSize.X)
+		for (float i =0; i < w; i += _cellSize.X)
 		{
 			//printf("%3d",(int)( (int)(GetCell(i , k)*10 )%100 ));
 			printf("%2d",(int)GetCellPoint(Point<CoordType>(i , k)));

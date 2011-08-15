@@ -6,7 +6,7 @@
 #include "MapView.h"
 #include <vector>
 #include "PathNode.h"
-#include "CellQueue.h"
+#include "CellQueueRanked.h"
 #include "EdgeInfo.h"
 #include "Path.h"
 #include "NodeState.h"
@@ -19,7 +19,8 @@ namespace AStar
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
+	typename CostInfo,
+	typename CellQueue = CellQueueRanked<int, CostInfo>> 
 class BasePathFinder : public PathFinder<PointInfo, CellType, int, CostInfo>
 {
 public:
@@ -35,7 +36,7 @@ protected:
 	PointInfo _goalPoint;
 	PointInfo _startPoint;
 
-	CellQueue<NodeInfo, CostInfo>* _queue;
+	CellQueue* _queue;
 
 	bool CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal);
 	CostInfo GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge);

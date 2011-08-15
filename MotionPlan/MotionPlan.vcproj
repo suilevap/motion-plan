@@ -291,11 +291,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CellQueue.h"
+				RelativePath=".\CellQueueRanked.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CellQueue.inl"
+				RelativePath=".\CellQueueRanked.inl"
 				>
 			</File>
 			<File

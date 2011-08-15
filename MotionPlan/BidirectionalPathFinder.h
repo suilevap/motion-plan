@@ -6,7 +6,7 @@
 #include "MapView.h"
 #include <vector>
 #include "PathNode.h"
-#include "CellQueue.h"
+
 #include "EdgeInfo.h"
 #include "Path.h"
 #include "NodeState.h"

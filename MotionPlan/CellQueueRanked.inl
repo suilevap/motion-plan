@@ -1,11 +1,11 @@
-#ifndef MOTIONPLAN_ASTAR_CELLQUEUE_H
-#error "Include from CellQueue.h only."
+#ifndef MOTIONPLAN_ASTAR_CELLQUEUERANKED_H
+#error "Include from CellQueueRanked.h only."
 #else
 
 //#include <algorithm>
 
 template<typename NodeInfo,typename CostInfo> 
-CellQueue<NodeInfo, CostInfo>::CellQueue()
+CellQueueRanked<NodeInfo, CostInfo>::CellQueueRanked()
 {
 	_count = 0;
 	_queue = new std::priority_queue<
@@ -14,13 +14,13 @@ CellQueue<NodeInfo, CostInfo>::CellQueue()
 		std::greater<PathNode<NodeInfo,CostInfo>> >();
 }
 template<typename NodeInfo,typename CostInfo> 
-CellQueue<NodeInfo, CostInfo>::~CellQueue()
+CellQueueRanked<NodeInfo, CostInfo>::~CellQueueRanked()
 {
 	delete _queue;
 }
 
 template<typename NodeInfo,typename CostInfo> 
-void CellQueue<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& node)
+void CellQueueRanked<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& node)
 {
 
 	_queue->push(node);
@@ -28,7 +28,7 @@ void CellQueue<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& nod
 }
 
 template<typename NodeInfo,typename CostInfo> 
-PathNode<NodeInfo, CostInfo> CellQueue<NodeInfo, CostInfo>::Pop()
+PathNode<NodeInfo, CostInfo> CellQueueRanked<NodeInfo, CostInfo>::Pop()
 {
 
 	PathNode<NodeInfo, CostInfo> result = _queue->top();
@@ -38,13 +38,13 @@ PathNode<NodeInfo, CostInfo> CellQueue<NodeInfo, CostInfo>::Pop()
 }
 
 template<typename NodeInfo,typename CostInfo> 
-bool CellQueue<NodeInfo, CostInfo>::Empty()
+bool CellQueueRanked<NodeInfo, CostInfo>::Empty()
 {
 	return _queue->empty();
 }
 
 template<typename NodeInfo,typename CostInfo> 
-void CellQueue<NodeInfo, CostInfo>::Clear()
+void CellQueueRanked<NodeInfo, CostInfo>::Clear()
 {
 	if (_queue != NULL)
 	{

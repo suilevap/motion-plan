@@ -1,19 +1,19 @@
-#ifndef MOTIONPLAN_ASTAR_CELLQUEUE_H
-#define MOTIONPLAN_ASTAR_CELLQUEUE_H
+#ifndef MOTIONPLAN_ASTAR_CELLQUEUERANKED_H
+#define MOTIONPLAN_ASTAR_CELLQUEUERANKED_H
 
 #include <queue>
 #include <vector>
 #include <set>
 #include "PathNode.h"
 
-//typedef priority_queue<PathPoint,vector<PathPoint>,less<vector<PathPoint>::value_type>> CellQueue;
+//typedef priority_queue<PathPoint,vector<PathPoint>,less<vector<PathPoint>::value_type>> CellQueueRanked;
 namespace AStar
 {
 
 template<
 	typename NodeInfo,
 	typename CostInfo> 
-class CellQueue 
+class CellQueueRanked 
 {
 private:
 	/*std::priority_queue<
@@ -35,8 +35,8 @@ private:
 	//	PathPoint,	
 	//	std::less<PathPoint>> _set;
 public:
-	CellQueue();
-	~CellQueue();
+	CellQueueRanked();
+	~CellQueueRanked();
 
 
 	void Push(const PathNode<NodeInfo,CostInfo>& point);
@@ -47,8 +47,8 @@ public:
 
 };
 
-#include "CellQueue.inl"
+#include "CellQueueRanked.inl"
 
 }
 
-#endif //MOTIONPLAN_ASTAR_CELLQUEUE_H
+#endif //MOTIONPLAN_ASTAR_CELLQUEUERANKED_H

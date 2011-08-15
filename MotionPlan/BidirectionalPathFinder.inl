@@ -5,8 +5,10 @@
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal> 
+BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 BidirectionalPathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
 {
 	Init(map);
@@ -15,8 +17,10 @@ BidirectionalPathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 ~BidirectionalPathFinder()
 {
 	delete _pathFinderStart;
@@ -26,20 +30,24 @@ BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-void BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+void BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 Init(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
 {
     _map = map;
-	_pathFinderStart = new AStar::BasePathFinder<PointInfo, CellType, CostInfo>(_map);
-	_pathFinderGoal = new AStar::BasePathFinder<PointInfo, CellType, CostInfo>(_map);
+	_pathFinderStart = new AStar::BasePathFinder<PointInfo, CellType, CostInfo, CellQueueStart>(_map);
+	_pathFinderGoal = new AStar::BasePathFinder<PointInfo, CellType, CostInfo, CellQueueGoal>(_map);
 }
 
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-void BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+void BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 FindStart(NodeInfo start, NodeInfo goal)
 {
 	_pathFinderStart->FindStart(start, goal);
@@ -50,8 +58,10 @@ FindStart(NodeInfo start, NodeInfo goal)
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-int BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+int BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 FindStep()
 {
 	int result;
@@ -64,8 +74,10 @@ FindStep()
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-bool BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+bool BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 IsGoal(NodeInfo& node)
 {
 	bool result = (_pathFinderGoal->FindIsPathExists(node));
@@ -75,8 +87,10 @@ IsGoal(NodeInfo& node)
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-bool BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+bool BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 FindIsPathExists(NodeInfo& node)
 {
 	bool result = (_pathFinderStart->FindIsPathExists(node));
@@ -87,8 +101,10 @@ FindIsPathExists(NodeInfo& node)
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-Path<PointInfo>* BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+Path<PointInfo>* BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 FindEnd(NodeInfo& node)
 {
 	Path<PointInfo>* result;
@@ -114,8 +130,10 @@ FindEnd(NodeInfo& node)
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
-void BidirectionalPathFinder<PointInfo, CellType, CostInfo>::
+	typename CostInfo,
+	typename CellQueueStart,
+	typename CellQueueGoal>
+void BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
 ToOutputCurrentState()
 {
 	_pathFinderStart->ToOutputCurrentState();

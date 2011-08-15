@@ -45,6 +45,7 @@ public:
 
 	void Clear();
 
+	static const bool UseHeuristic = true;
 };
 
 #include "CellQueueRanked.inl"

@@ -180,8 +180,8 @@ double CreatePathFinder(double mapIndex)
 	{
 		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = 
 			new AStar::BasePathFinder<Point<float>, int, float>(map);
-		//AStar::PathFinder<Point<float>, int, int, float>* pathFinder = 
-		//	new AStar::BidirectionalPathFinder<Point<float>, int, float>(map);
+		/*AStar::PathFinder<Point<float>, int, int, float>* pathFinder = 
+			new AStar::BidirectionalPathFinder<Point<float>, int, float>(map);*/
 
 		result = _pathFinders.Add(pathFinder);
 	}
@@ -195,20 +195,18 @@ double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
 
 	int result = -1;
 
-	GridMapView<int>* map = _maps.Get(mapIndex2);
 	GridMapView<int>* mapDebug = _maps.Get(mapDebugIndex2);
 
+	int pathFinderIndex = static_cast<int>(CreatePathFinder(mapIndex2));
 
-	if (map != NULL)
+	if (mapDebug != NULL)
 	{
-		//AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
-		AStar::PathFinder<Point<float>, int, int, float>* pathFinder = 
-			new AStar::BidirectionalPathFinder<Point<float>, int, float>(map);
+		AStar::PathFinder<Point<float>, int, int, float>* pathFinder = _pathFinders.Get(pathFinderIndex);
 
 #ifdef _DEBUG
 		pathFinder->InitDebug(mapDebug);
 #endif
-		result = _pathFinders.Add(pathFinder);
+		result = pathFinderIndex;
 	}
 	return static_cast<double>(result);
 }

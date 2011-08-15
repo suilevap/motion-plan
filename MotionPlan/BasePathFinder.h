@@ -7,6 +7,8 @@
 #include <vector>
 #include "PathNode.h"
 #include "CellQueueRanked.h"
+#include "CellQueueSimple.h"
+
 #include "EdgeInfo.h"
 #include "Path.h"
 #include "NodeState.h"
@@ -47,7 +49,7 @@ protected:
 	virtual bool IsGoal(NodeInfo& goal);
 public:
 	BasePathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map);
-	~BasePathFinder();
+	virtual ~BasePathFinder();
 
 	//Path<PointInfo>* Find(PointInfo start, PointInfo goal);
 

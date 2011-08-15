@@ -10,6 +10,8 @@
 #include "EdgeInfo.h"
 #include "Path.h"
 #include "NodeState.h"
+#include "CellQueueRanked.h"
+#include "CellQueueSimple.h"
 
 
 namespace AStar
@@ -18,15 +20,17 @@ namespace AStar
 template<
 	typename PointInfo, 
 	typename CellType, 	
-	typename CostInfo> 
+	typename CostInfo,
+	typename CellQueueStart = CellQueueSimple<int, CostInfo>,
+	typename CellQueueGoal = CellQueueSimple<int, CostInfo>> 
 class BidirectionalPathFinder: public AStar::PathFinder<PointInfo, CellType, int, CostInfo>
 {
 public:
 	typedef int NodeInfo;
 
 protected:	
-	AStar::BasePathFinder<PointInfo, CellType, CostInfo>* _pathFinderStart;
-	AStar::BasePathFinder<PointInfo, CellType, CostInfo>* _pathFinderGoal;
+	AStar::BasePathFinder<PointInfo, CellType, CostInfo, CellQueueStart>* _pathFinderStart;
+	AStar::BasePathFinder<PointInfo, CellType, CostInfo, CellQueueGoal>* _pathFinderGoal;
 	virtual bool IsGoal(NodeInfo& goal);
 public:
 	BidirectionalPathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map);

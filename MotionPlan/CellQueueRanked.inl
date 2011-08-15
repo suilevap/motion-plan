@@ -8,10 +8,8 @@ template<typename NodeInfo,typename CostInfo>
 CellQueueRanked<NodeInfo, CostInfo>::CellQueueRanked()
 {
 	_count = 0;
-	_queue = new std::priority_queue<
-		PathNode<NodeInfo,CostInfo>,
-		std::vector<PathNode<NodeInfo,CostInfo>>,
-		std::greater<PathNode<NodeInfo,CostInfo>> >();
+	_queue = NULL;
+	Clear();
 }
 template<typename NodeInfo,typename CostInfo> 
 CellQueueRanked<NodeInfo, CostInfo>::~CellQueueRanked()

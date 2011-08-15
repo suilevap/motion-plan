@@ -44,6 +44,7 @@ public:
 		return path;
 	}
 
+	virtual ~PathFinder(){};
 	virtual void Init(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map) = 0;
 	virtual void FindStart(NodeInfo start, NodeInfo goal) = 0;
 	virtual NodeInfo FindStep() = 0;

@@ -21,6 +21,7 @@ template<
 BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
 ~BasePathFinder()
 {
+	delete _queue;
 }
 
 template<
@@ -172,8 +173,12 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal
 			|| (bestResult.Cost > cost))
 		{
 			//TODO: fix hardcoded _mapDist for NodeInfo == int
-
-			CostInfo estimate = GetEstimateDistance(newNode, goal);//*96.0f/128;
+			CostInfo estimate = 0;
+			if (CellQueue::UseHeuristic)
+			{
+				estimate = GetEstimateDistance(newNode, goal);//*96.0f/128;
+			}
+			
 			PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
 			_queue->Push(pathNode);
 			_mapCost[newNode] = NodeState<NodeInfo, CostInfo>(node, cost);

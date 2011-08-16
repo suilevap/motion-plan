@@ -29,6 +29,7 @@ public:
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
 	virtual CostInfo GetCost(const NodeInfo& nodeStart,const NodeInfo& nodeGoal) = 0;
+	virtual bool OnMap(PointInfo& point) = 0;
 
 	virtual void ToOutput() = 0;
 

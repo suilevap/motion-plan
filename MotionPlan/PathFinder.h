@@ -29,8 +29,17 @@ public:
 
 	Path<PointInfo>* Find(PointInfo start, PointInfo goal)
 	{
-		_start = _map->GetNode(start);
-		_goal = _map->GetNode(goal);
+		_start = 0;
+		_goal = 0;
+		if (_map->OnMap(start))
+		{
+			_start = _map->GetNode(start);
+		}
+		if (_map->OnMap(goal))
+		{
+			_goal = _map->GetNode(goal);
+		}
+
 		FindStart(_start, _goal);
 
 		NodeInfo curNode = _start;

@@ -41,6 +41,7 @@ public:
 	virtual Point<CoordType> GetMaxPoint();
 	virtual int GetMaxNode();
 	virtual float GetCost(const int& nodeStart,const int& nodeGoal);
+	virtual bool OnMap(Point<CoordType>& point);
 
 	Point<CoordType>& GetCellSize() {return _cellSize;}
 

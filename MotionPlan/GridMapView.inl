@@ -164,9 +164,9 @@ template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::SetCellRegion(Point<CoordType>& point, CellType cell, Point<CoordType>& size)
 {
 
-	for (float i = point.X; i < (point.X + size.X); i += _cellSize.X)
+	for (float i = point.X; i < (point.X + size.X); i += _cellSize.X/2)
 	{
-		for (float k = point.Y; k < (point.Y + size.Y); k += _cellSize.Y)
+		for (float k = point.Y; k < (point.Y + size.Y); k += _cellSize.Y/2)
 		{
 			_map[GetNode(Point<CoordType>(i,k))] = cell;
 		}

@@ -14,5 +14,5 @@ TEST(GridMapViewTest, SetGetCellPointRegion)
 {
 	GridMapView<int>* map = new GridMapView<int>(10, 10);
 	map->SetCellRegion(Point<float>(2,2), 12, Point<float>(2,2));
-	ASSERT_EQ(10, map->GetCellPoint(Point<float>(3,3)));
+	ASSERT_EQ(12, map->GetCellPoint(Point<float>(3,3)));
 }

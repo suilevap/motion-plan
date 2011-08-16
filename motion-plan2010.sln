@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{B5CB0349-D187-4C1E-8F8D-915EB6248AB2}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{D69EDF7C-B886-46F3-97D6-7101F96B94B2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionPlan", "MotionPlan\MotionPlan.vcxproj", "{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcxproj", "{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "gtest-1.6.0\msvc\gtest.vcxproj", "{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionPlanTests", "MotionPlanTests\MotionPlanTests.vcxproj", "{EEC96EDB-9587-429F-A962-CA9882D8F0DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,8 +31,20 @@ Global
 		{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}.Debug|Win32.Build.0 = Debug|Win32
 		{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}.Release|Win32.ActiveCfg = Release|Win32
 		{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}.Release|Win32.Build.0 = Release|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|Win32.Build.0 = Debug|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Release|Win32.ActiveCfg = Release|Win32
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Release|Win32.Build.0 = Release|Win32
+		{EEC96EDB-9587-429F-A962-CA9882D8F0DA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EEC96EDB-9587-429F-A962-CA9882D8F0DA}.Debug|Win32.Build.0 = Debug|Win32
+		{EEC96EDB-9587-429F-A962-CA9882D8F0DA}.Release|Win32.ActiveCfg = Release|Win32
+		{EEC96EDB-9587-429F-A962-CA9882D8F0DA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1} = {B5CB0349-D187-4C1E-8F8D-915EB6248AB2}
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7} = {B5CB0349-D187-4C1E-8F8D-915EB6248AB2}
 	EndGlobalSection
 EndGlobal

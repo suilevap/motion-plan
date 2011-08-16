@@ -27,9 +27,6 @@
     <ClInclude Include="BasePathFinder.h">
       <Filter>AStar</Filter>
     </ClInclude>
-    <ClInclude Include="CellQueue.h">
-      <Filter>AStar</Filter>
-    </ClInclude>
     <ClInclude Include="DistanceEvaluator.h">
       <Filter>AStar</Filter>
     </ClInclude>
@@ -54,17 +51,23 @@
     <ClInclude Include="HexGridMapView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bidirectionalpathfinder.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="CellQueueRanked.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="CellQueueSimple.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
     <ClInclude Include="PathFinder.h">
-      <Filter>Header Files</Filter>
+      <Filter>AStar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="MotionPlan.vcxproj" />
     <None Include="BasePathFinder.inl">
-      <Filter>AStar</Filter>
-    </None>
-    <None Include="CellQueue.inl">
       <Filter>AStar</Filter>
     </None>
     <None Include="Path.inl">
@@ -78,6 +81,15 @@
     </None>
     <None Include="HexGridMapView.inl">
       <Filter>Inline Files</Filter>
+    </None>
+    <None Include="CellQueueSimple.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="bidirectionalpathfinder.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="CellQueueRanked.inl">
+      <Filter>AStar</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

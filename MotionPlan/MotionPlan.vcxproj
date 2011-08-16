@@ -108,6 +108,7 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <LinkErrorReporting>PromptImmediately</LinkErrorReporting>
+      <Profile>true</Profile>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -124,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasePathFinder.h" />
+    <ClInclude Include="BidirectionalPathfinder.h" />
+    <ClInclude Include="CellQueueRanked.h" />
+    <ClInclude Include="CellQueueSimple.h" />
     <ClInclude Include="EdgeInfo.h" />
     <ClInclude Include="GridMapView.h" />
     <ClInclude Include="HexGridMapView.h" />
@@ -135,14 +139,15 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="CellQueue.h" />
     <ClInclude Include="DistanceEvaluator.h" />
     <ClInclude Include="MathConstants.h" />
     <ClInclude Include="Path.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BasePathFinder.inl" />
-    <None Include="CellQueue.inl" />
+    <None Include="BidirectionalPathfinder.inl" />
+    <None Include="CellQueueRanked.inl" />
+    <None Include="CellQueueSimple.inl" />
     <None Include="GridMapView.inl" />
     <None Include="HexGridMapView.inl" />
     <None Include="MotionPlan.vcxproj" />

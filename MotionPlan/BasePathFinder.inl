@@ -78,9 +78,13 @@ FindStep()
 		//ToOutputCurrentState();
 	}
 #endif
-	PathNode<int,float> pathNode = _queue->Pop();
-	NodeInfo node = pathNode.Node;
-	Step(node, _goal);		
+	NodeInfo node = NULL;
+	if (!_queue->Empty())
+	{
+		PathNode<int,float> pathNode = _queue->Pop();
+		node = pathNode.Node;
+		Step(node, _goal);
+	}
 	return node;
 }
 
@@ -104,7 +108,7 @@ template<
 bool BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
 FindIsPathExists(NodeInfo& node)
 {
-	return (_mapCost[node].Status == NodeStatus::Close);
+	return ((node!=NULL) && (_mapCost[node].Status == NodeStatus::Close));
 }
 
 
@@ -244,7 +248,7 @@ template<
 void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
 ToOutputCurrentState()
 {
-
+#ifdef DEBUG_OUTPUT
 	if (_mapForStateDebug != NULL)
 	{
 		for (int i =0; i < _mapCost.size(); ++i)
@@ -254,6 +258,7 @@ ToOutputCurrentState()
 		}
 		_mapForStateDebug->ToOutput();
 	}
+#endif
 }
 
 

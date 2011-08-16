@@ -101,6 +101,13 @@ Point<CoordType> GridMapView<CellType, CoordType>::GetMaxPoint()
 }
 
 template<class CellType, typename CoordType>
+bool GridMapView<CellType, CoordType>::OnMap(Point<CoordType>& point)
+{
+	Point<CoordType> maxPoint = GetMaxPoint();
+	return ((point.X >= 0) &&(point.Y>=0)&&(point.X<= maxPoint.X)&&(point.Y<= maxPoint.Y));
+}
+
+template<class CellType, typename CoordType>
 int GridMapView<CellType, CoordType>::GetMaxNode()
 {
 	return _width * _height;

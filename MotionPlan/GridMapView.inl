@@ -2,6 +2,9 @@
 #error "Include from GridMapView.h only."
 #else
 
+#include "DistanceEvaluator.h"
+#include "MathConstants.h"
+
 template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
 {

@@ -11,3 +11,6 @@ ipch
 *.pch
 Release/*
 *.user
+*.vsp
+_UpgradeReport_Files/*
+*.sln.old

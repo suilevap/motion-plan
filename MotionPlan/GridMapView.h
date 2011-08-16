@@ -3,16 +3,10 @@
 #ifndef MOTIONPLAN_GRIDMAPVIEW_H_
 #define MOTIONPLAN_GRIDMAPVIEW_H_
 
-#include <stack>
 #include <vector>
-#include <string>
 #include "MapView.h"
 #include "Point.h"
 #include "EdgeInfo.h"
-#include "DistanceEvaluator.h"
-
-
-//typedef float CellType;
 
 template<class CellType, typename CoordType = float>
 class GridMapView: 

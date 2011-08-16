@@ -14,5 +14,13 @@
 //h in equilateral triangle
 #define SQRT_075 0.86602540378443864676f
 
+#ifndef max
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
 
 #endif

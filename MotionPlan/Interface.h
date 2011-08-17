@@ -1,4 +1,4 @@
-#define DllExport extern "C" __declspec( dllexport )
+#include "DllExport.h"
 
 DllExport double InitGM();
 DllExport double CloseGM();

@@ -27,14 +27,14 @@ void GridMapView<CellType, CoordType>::GetNeighbors(int& node, std::vector<AStar
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::TransformPointToCell(Point<CoordType>& pointFrom, Point<int>& pointTo)
 {
-	pointTo.X = static_cast<int>(pointFrom.X * _scale.X + 0.5);
-	pointTo.Y = static_cast<int>(pointFrom.Y * _scale.Y + 0.5);	
+	pointTo.X = static_cast<int>(pointFrom.X * _scale.X + 0.5*0);
+	pointTo.Y = static_cast<int>(pointFrom.Y * _scale.Y + 0.5*0);	
 }
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::TransformPointToWorld(Point<int>& pointFrom, Point<CoordType>& pointTo)
 {
-	pointTo.X = static_cast<CoordType>((pointFrom.X + 0) * _cellSize.X );
-	pointTo.Y = static_cast<CoordType>((pointFrom.Y + 0) * _cellSize.Y );
+	pointTo.X = static_cast<CoordType>((pointFrom.X + 0.5) * _cellSize.X );
+	pointTo.Y = static_cast<CoordType>((pointFrom.Y + 0.5) * _cellSize.Y );
 }
 
 template<class CellType, typename CoordType>
@@ -93,10 +93,13 @@ template<class CellType, typename CoordType>
 Point<CoordType> GridMapView<CellType, CoordType>::GetMaxPoint()
 {
 	Point<int> p;
-	p.X = _width - _border * 2;
-	p.Y = _height - _border * 2;
+	p.X = _width - _border * 2 - 1;
+	p.Y = _height - _border * 2 - 1;
 	Point<CoordType> result;
 	TransformPointToWorld(p, result);
+	result.X += _cellSize.X / 2;
+	result.Y += _cellSize.Y / 2;
+
 	return result;
 }
 
@@ -104,7 +107,7 @@ template<class CellType, typename CoordType>
 bool GridMapView<CellType, CoordType>::OnMap(Point<CoordType>& point)
 {
 	Point<CoordType> maxPoint = GetMaxPoint();
-	return ((point.X >= 0) &&(point.Y>=0)&&(point.X<= maxPoint.X)&&(point.Y<= maxPoint.Y));
+	return ((point.X >= 0) &&(point.Y >= 0)&&(point.X < maxPoint.X)&&(point.Y < maxPoint.Y));
 }
 
 template<class CellType, typename CoordType>

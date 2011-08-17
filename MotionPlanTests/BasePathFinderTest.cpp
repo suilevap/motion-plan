@@ -58,6 +58,22 @@ TEST(PathFinder, PathFindGoalNotExsist)
 	delete pathFinder;
 	delete map;
 }
+TEST(PathFinder, PathFindStartGoalNotExsist)
+{
+	GridMapView<int>* map = new GridMapView<int>(10, 10);
+
+	AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
+
+	AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(0.2f,9.6f), Point<float>(5,5));
+	ASSERT_GE(path->Count(), 0);
+	delete path;
+
+	path = pathFinder->Find(Point<float>(0.2f,10.0f), Point<float>(5,5));
+	ASSERT_EQ(0, path->Count());
+	delete path;
+	delete pathFinder;
+	delete map;
+}
 
 TEST(PathFinder, PathFindFuzzy)
 {

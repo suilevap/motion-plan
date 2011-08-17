@@ -106,6 +106,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BasePathFinderTest.cpp" />
     <ClCompile Include="GridMapViewTest.cpp" />
     <ClCompile Include="MotionPlanTests.cpp" />
   </ItemGroup>

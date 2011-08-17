@@ -11,6 +11,9 @@
     <ClCompile Include="MapView.cpp">
       <Filter>AStar</Filter>
     </ClCompile>
+    <ClCompile Include="RayCast.cpp">
+      <Filter>Visibility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -63,6 +66,12 @@
     <ClInclude Include="PathFinder.h">
       <Filter>AStar</Filter>
     </ClInclude>
+    <ClInclude Include="DllExport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RayCast.h">
+      <Filter>Visibility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -106,6 +115,9 @@
     </Filter>
     <Filter Include="AStar">
       <UniqueIdentifier>{bf28566e-b543-4638-a02d-48003c55b6be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visibility">
+      <UniqueIdentifier>{36f1dd3a-1199-4fda-8ee7-8ebf5650ca2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

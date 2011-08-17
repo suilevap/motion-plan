@@ -109,6 +109,7 @@
     <ClCompile Include="BasePathFinderTest.cpp" />
     <ClCompile Include="GridMapViewTest.cpp" />
     <ClCompile Include="MotionPlanTests.cpp" />
+    <ClCompile Include="RayCastTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,6 +9,8 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	TestSparsePerformance(true);
+
 	clock_t time0, time1, times;
 	//FileStruct f("map2.txt");
 

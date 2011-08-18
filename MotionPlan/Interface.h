@@ -25,6 +25,7 @@ DllExport double DestroyPath(double pathIndex);
 DllExport void TestGmInterface();
 DllExport void TestPerformance(bool outputMap);
 DllExport void TestHexPerformance(bool outputMap);
+DllExport void TestSparsePerformance(bool outputMap);
 
 
 DllExport double Test();

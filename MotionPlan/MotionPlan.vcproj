@@ -259,6 +259,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SparseGridMapView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SparseGridMapView.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>

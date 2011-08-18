@@ -178,7 +178,8 @@ void GridMapView<CellType, CoordType>::SetCellRegion(Point<CoordType>& point, Ce
 	{
 		for (float k = point.Y; k < (point.Y + size.Y); k += _cellSize.Y/2)
 		{
-			_map[GetNode(Point<CoordType>(i,k))] = cell;
+			int node = GetNode(Point<CoordType>(i,k));
+			SetCell(node, cell);
 		}
 	}
 }

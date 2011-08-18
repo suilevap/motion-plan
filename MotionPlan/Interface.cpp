@@ -14,6 +14,8 @@
 #include "BidirectionalPathFinder.h"
 #include "GridMapView.h"
 #include "HexGridMapView.h"
+#include "SparseGridMapView.h"
+
 
 #include "Interface.h"
 
@@ -115,6 +117,18 @@ double CreateHexMap(double width, double height, double cellSize)
 	int cellSize2 = static_cast<int>(cellSize);
 
 	GridMapView<int>* map = new HexGridMapView<int>(width, height, cellSize);
+
+	int result = _maps.Add(map);
+
+	return static_cast<double>(result);
+}
+
+double CreateSparseMap(double width, double height, double cellSize)
+{
+
+	int cellSize2 = static_cast<int>(cellSize);
+
+	GridMapView<int>* map = new SparseGridMapView<int>(width, height, cellSize);
 
 	int result = _maps.Add(map);
 
@@ -443,6 +457,61 @@ void TestHexPerformance(bool outputMap)
 			float x = GetXPath(path, i);
 			float y = GetYPath(path, i);
 			m.SetCellPoint(Point<float>(x, y), (static_cast<int>(i))%10+1);
+		}
+		m.ToOutput();
+
+	}
+
+	DestroyMap(map);
+	DestroyPathFinder(pathFinder);
+	DestroyPath(path);
+#ifdef _DEBUG
+	DestroyMap(mapDebug);
+#endif
+}
+
+
+void TestSparsePerformance(bool outputMap)
+{
+	int cellSize = 16;
+	int w = 40;
+	int h = 100;
+	double map = CreateSparseMap(w*cellSize,h*cellSize,cellSize);
+	//map = CreateMap(w*cellSize,h*cellSize,cellSize);
+	SetCellMap(map, 4*cellSize, 4*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 4*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 5*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 6*cellSize, 1);
+	SetCellMap(map, 5*cellSize, 7*cellSize, 1);
+	SetCellMap(map, 4*cellSize, 7*cellSize, 1);
+	SetCellMapRegion(map, (w/2)*cellSize, 0*cellSize, 2*cellSize, (h*0.75)*cellSize, 1);
+	//SetCellMapRegion(map, (w/2)*cellSize, (h/2+1)*cellSize, 2*cellSize, (h/2-2)*cellSize, 1);
+#ifndef _DEBUG
+	double pathFinder = CreatePathFinder(map);
+#else
+	double mapDebug = CreateMap(w*cellSize,h*cellSize,cellSize);
+	double pathFinder = CreatePathFinderDebug(map, mapDebug);
+#endif	
+	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w-2)*cellSize, 2.0*cellSize);
+
+	if (outputMap)
+	{
+		//char* pathOutput = ConvertToGmPath(_paths.Get(static_cast<int>(path)));
+		//printf(pathOutput);
+
+		//TODO: AAAaa
+		GridMapView<int>* mapObst = _maps.Get(static_cast<int>(map));
+		mapObst->ToOutput();
+		/*Map<float>* mapDist = _pathFinders.Get(AStar::BasePathFinder<Point<float>, int, float>)->GetItem()->GetMapDist();
+		mapDist->ToOutput();*/
+
+		GridMapView<int> m(mapObst->GetMaxPoint().X, mapObst->GetMaxPoint().Y, mapObst->GetCellSize().X);
+		double n = static_cast<int>(GetNPath(path));
+		for (double i = 0; i < n; ++i)
+		{
+			float x = GetXPath(path, i);
+			float y = GetYPath(path, i);
+			m.SetCellPoint(Point<float>(x, y), (static_cast<int>(i+1))%100);
 		}
 		m.ToOutput();
 

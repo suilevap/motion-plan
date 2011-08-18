@@ -27,8 +27,8 @@ void GridMapView<CellType, CoordType>::GetNeighbors(int& node, std::vector<AStar
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::TransformPointToCell(Point<CoordType>& pointFrom, Point<int>& pointTo)
 {
-	pointTo.X = static_cast<int>(pointFrom.X * _scale.X + 0.5*0);
-	pointTo.Y = static_cast<int>(pointFrom.Y * _scale.Y + 0.5*0);	
+	pointTo.X = static_cast<int>(pointFrom.X * _scale.X );
+	pointTo.Y = static_cast<int>(pointFrom.Y * _scale.Y );	
 }
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::TransformPointToWorld(Point<int>& pointFrom, Point<CoordType>& pointTo)
@@ -132,8 +132,8 @@ void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height
 	TransformPointToCell(Point<CoordType>(width, height), mapSize);
 
 	_border = border;
-	_width = mapSize.X + _border * 2;
-	_height = mapSize.Y + _border * 2;
+	_width = mapSize.X + 1 + _border * 2;
+	_height = mapSize.Y + 1 + _border * 2;
 	int size = _width * _height;
 	_map = new CellType[size];
 	Clear(0,1);
@@ -178,7 +178,7 @@ void GridMapView<CellType, CoordType>::SetCellRegion(Point<CoordType>& point, Ce
 	{
 		for (float k = point.Y; k < (point.Y + size.Y); k += _cellSize.Y/2)
 		{
-			int node = GetNode(Point<CoordType>(i,k));
+			int node = GetNodeWrite(Point<CoordType>(i,k));
 			SetCell(node, cell);
 		}
 	}

@@ -67,10 +67,28 @@ double ConvertToGmPath(double pathIndex, double gmPathId)
 	{
 		x = it->X;
 		y = it->Y;
-		gm::path_add_point(gmPathId2, x, y, 100);
+		gm::path_add_point(gmPathId2, x, y, 100);		
 	}
 	return path->Count();
 }
+
+double DrawMap(double mapIndex)
+{
+    GridMapView<int>* map = _maps.Get(static_cast<int>(mapIndex));
+    Point<float> maxP = map->GetMaxPoint();
+    Point<float> size = map->GetCellSize();
+    Point<float> p;
+    for (p.X = 0; p.X < maxP.X; p.X += size.X)
+    {
+        for (p.Y = 0; p.Y < maxP.Y; p.Y += size.Y)
+        {
+            int cell = map->GetCellPoint(p);
+            gm::draw_rectangle_color(p.X,p.Y,p.X+size.X, p.Y + size.Y, 5, 5, 5, 5, (cell==0)?true:false);
+        }
+    }
+    return 0;
+}
+
 #endif
 
 
@@ -247,6 +265,7 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 double DestroyPathFinder(double pathFinderIndex)
 {
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
+
 
 	double result = _pathFinders.Free(pathFinderIndex2)? 1.0: 0.0;
 	return result;

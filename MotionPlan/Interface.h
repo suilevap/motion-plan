@@ -12,6 +12,8 @@ DllExport double SetCellMap(double mapIndex, double x, double y, double cell);
 DllExport double SetCellMapRegion(double mapIndex, double x, double y, double w, double h, double cell);
 DllExport double GetCellMap(double mapIndex, double x, double y);
 DllExport double DestroyMap(double mapIndex);
+DllExport double DrawMap(double mapIndex);
+
 
 DllExport double CreatePathFinder(double mapIndex);
 DllExport double FindPath(double pathFinderIndex, double x, double y, double goalX, double goalY);

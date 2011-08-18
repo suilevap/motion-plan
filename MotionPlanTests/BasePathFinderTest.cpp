@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "GridMapView.h"
+#include "SparseGridMapView.h"
 #include "BasePathFinder.h"
 #include "Point.h"
 #include "Path.h"
@@ -94,3 +95,24 @@ TEST(PathFinder, PathFindFuzzy)
 	delete pathFinder;
 	delete map;
 }
+
+TEST(BasePathFinderSparseGrid, PathFindFuzzy)
+{
+	SparseGridMapView<int>* map = new SparseGridMapView<int>(10, 10, 1);
+
+	AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
+
+	AStar::Path<Point<float>>* path;
+	for (double x = -10; x<20; x+=0.2)
+	{
+		for (double y = -10; y<20; y+=0.2)
+		{
+			path = pathFinder->Find(Point<float>(x,y), Point<float>(5,5));
+			//ASSERT_EQ(0, path->Count());
+			delete path;
+		}
+	}
+	delete pathFinder;
+	delete map;
+}
+

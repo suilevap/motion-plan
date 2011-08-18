@@ -5,6 +5,8 @@ DllExport double CloseGM();
 
 DllExport double CreateMap(double width, double height, double cellSize);
 DllExport double CreateHexMap(double width, double height, double cellSize);
+DllExport double CreateSparseMap(double width, double height, double cellSize);
+
 
 DllExport double SetCellMap(double mapIndex, double x, double y, double cell);
 DllExport double SetCellMapRegion(double mapIndex, double x, double y, double w, double h, double cell);

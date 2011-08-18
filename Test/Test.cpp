@@ -16,12 +16,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//char * result = Action(f.GetBuffer());
 	//printf(result);
-	TestPerformance(true);
+	//TestPerformance(true);
+	TestSparsePerformance(true);
 	times = clock();
 	time0 = times;
 	for (int i=1; i < 100000; i++)
 	{
-		TestPerformance(false);
+		//TestPerformance(false);
+		TestSparsePerformance(false);
 		if (i%1000 == 0)
 		{
 			time1 = clock();

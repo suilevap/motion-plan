@@ -186,6 +186,12 @@ SparseGridMapView<CellType>::SparseGridMapView(float width, float height, float 
 }
 
 template<class CellType>
+SparseGridMapView<CellType>::~SparseGridMapView()
+{
+	delete _mapSparse;
+}
+
+template<class CellType>
 void SparseGridMapView<CellType>::SetCell(int& node, CellType cell)
 {
 	GridMapView<CellType>::SetCell(node, cell);

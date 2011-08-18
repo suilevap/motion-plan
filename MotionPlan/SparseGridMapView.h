@@ -36,7 +36,7 @@ protected:
 		float sparceCellD);
 public:
 	SparseGridMapView(float width, float height, float cellSize);
-	//virtual ~SparseGridMapView(void);
+	virtual ~SparseGridMapView(void);
 
 	virtual Point<float> GetPoint(int& node);	
 	virtual int GetNode(Point<float>& point);

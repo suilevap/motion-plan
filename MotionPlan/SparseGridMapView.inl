@@ -181,8 +181,9 @@ template<class CellType>
 SparseGridMapView<CellType>::SparseGridMapView(float width, float height, float cellWidth)
 {
 	InitMap(width, height, 4, Point<float>(cellWidth, cellWidth));
-	_mapSparse = new int[(_width * _height) / 4];
-	memset(_mapSparse,0, (_width * _height * sizeof(_mapSparse[0])) / 4);
+	int sparceSize = (_width * _height) / 4;
+	_mapSparse = new int[sparceSize];
+	memset(_mapSparse, 0, sparceSize * sizeof(_mapSparse[0]));
 }
 
 template<class CellType>

@@ -27,7 +27,7 @@ TEST(PathFinder, PathFindPathNotExsist)
 
 	AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
 
-	AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(0,0), Point<float>(9,9));
+	AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(0,0), Point<float>(11,11));
 	ASSERT_EQ(0, path->Count());
 	delete path;
 	delete pathFinder;
@@ -65,11 +65,11 @@ TEST(PathFinder, PathFindStartGoalNotExsist)
 
 	AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
 
-	AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(0.2f,9.6f), Point<float>(5,5));
+	AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(-0.2f,9.6f), Point<float>(5,5));
 	ASSERT_GE(path->Count(), 0);
 	delete path;
 
-	path = pathFinder->Find(Point<float>(0.2f,10.0f), Point<float>(5,5));
+	path = pathFinder->Find(Point<float>(0.2f,15.0f), Point<float>(5,5));
 	ASSERT_EQ(0, path->Count());
 	delete path;
 	delete pathFinder;

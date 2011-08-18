@@ -80,6 +80,9 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath)  $(SolutionDir)\GM </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -116,6 +119,9 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath)  $(SolutionDir)\GM </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -150,6 +156,7 @@
     <ClInclude Include="PathNode.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="RayCast.h" />
+    <ClInclude Include="SparseGridMapView.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="DistanceEvaluator.h" />
@@ -167,6 +174,7 @@
     <None Include="Path.inl" />
     <None Include="ReadMe.txt" />
     <None Include="DistanceEvaluator.inl" />
+    <None Include="SparseGridMapView.inl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.vcxproj">

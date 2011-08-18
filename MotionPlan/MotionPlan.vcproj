@@ -90,6 +90,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy $(TargetPath)  $(SolutionDir)\GM "
 			/>
 		</Configuration>
 		<Configuration

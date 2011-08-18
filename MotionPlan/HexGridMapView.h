@@ -23,7 +23,7 @@ protected:
 	int GetYOffset(const Point<float>& point);
 public:
 	HexGridMapView(float width, float height, float cellSize);
-	//virtual ~HexGridMapView(void);
+    virtual ~HexGridMapView(void) {};
 
 	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<float> GetPoint(int& node);	

@@ -72,6 +72,9 @@
     <ClInclude Include="RayCast.h">
       <Filter>Visibility</Filter>
     </ClInclude>
+    <ClInclude Include="SparseGridMapView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -99,6 +102,9 @@
     </None>
     <None Include="CellQueueRanked.inl">
       <Filter>AStar</Filter>
+    </None>
+    <None Include="SparseGridMapView.inl">
+      <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

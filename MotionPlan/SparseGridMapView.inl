@@ -69,6 +69,13 @@ int SparseGridMapView<CellType>::GetNode(Point<float>& point)
 }
 
 template<class CellType>
+int SparseGridMapView<CellType>::GetNodeWrite(Point<float>& point)
+{
+	int node = GridMapView<CellType,float>::GetNode(point);
+	return node;
+}
+
+template<class CellType>
 void SparseGridMapView<CellType>::GetNeighborsPartialFromSparsed(
 	int nodeNeighboor1, 
 	int nodeNeighboor2, 
@@ -99,7 +106,6 @@ void SparseGridMapView<CellType>::GetNeighborsPartialFromNotSparsed(
 	{
 		nodeNeighboor = GetSparseMainNode(nodeNeighboor);
 		neighbors.push_back(AStar::EdgeInfo<int,float>(nodeNeighboor, sparceCellD, AStar::NodeStatus::Open));
-
 	}
 	else
 	{
@@ -195,14 +201,19 @@ SparseGridMapView<CellType>::~SparseGridMapView()
 template<class CellType>
 void SparseGridMapView<CellType>::SetCell(int& node, CellType cell)
 {
-	GridMapView<CellType>::SetCell(node, cell);
-	if (cell == 1)
+	int oldCell = GridMapView<CellType>::GetCell(node);
+
+	if (oldCell != cell)
 	{
-		AddCellSparse(node);
-	}
-	else
-	{
-		RemoveCellSparse(node);
+		GridMapView<CellType>::SetCell(node, cell);
+		if (cell == 1)
+		{
+			AddCellSparse(node);
+		}
+		else
+		{
+			RemoveCellSparse(node);
+		}
 	}
 }
 

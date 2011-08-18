@@ -40,6 +40,8 @@ public:
 
 	virtual Point<float> GetPoint(int& node);	
 	virtual int GetNode(Point<float>& point);
+	virtual int GetNodeWrite(Point<float>& point);
+
 
 	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 

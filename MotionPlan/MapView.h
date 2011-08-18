@@ -23,6 +23,8 @@ public:
 	virtual void GetNeighbors(NodeInfo& node, std::vector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
 	virtual PointInfo GetPoint(NodeInfo& node)= 0;	
 	virtual NodeInfo GetNode(PointInfo& point)= 0;
+	virtual NodeInfo GetNodeWrite(PointInfo& point) {return GetNode(point);};
+
 	virtual CellType GetCell(NodeInfo& node)= 0;
 	virtual void SetCell(NodeInfo& index, CellType cell)= 0;
 	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
@@ -42,7 +44,7 @@ public:
 	}
 	void SetCellPoint(PointInfo& point, CellType cell)
 	{
-		NodeInfo node = GetNode(point);
+		NodeInfo node = GetNodeWrite(point);
 		SetCell(node, cell);
 	}
 	

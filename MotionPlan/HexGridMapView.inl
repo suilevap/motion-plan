@@ -13,7 +13,7 @@ template<class CellType>
 inline int HexGridMapView<CellType>::GetYOffset(const Point<float>& point)
 {
 	//check that column is even
-	return static_cast<int>(point.X * _scale.X +0.5 ) & 0x01;
+	return static_cast<int>(point.X * _scale.X ) & 0x01;
 }
 
 template<class CellType>

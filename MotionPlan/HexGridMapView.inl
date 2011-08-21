@@ -17,7 +17,7 @@ inline int HexGridMapView<CellType>::GetYOffset(const Point<float>& point)
 }
 
 template<class CellType>
-void HexGridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
+int HexGridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
 {
 	neighbors.resize(6);
 	int offset = GetYOffset(node);
@@ -31,7 +31,7 @@ void HexGridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeIn
 
 	neighbors[4] = AStar::EdgeInfo<int,float>(node + _width, 1, AStar::NodeStatus::Close);
 	neighbors[5] = AStar::EdgeInfo<int,float>(node - _width, 1, AStar::NodeStatus::Close);
-	
+	return 6;
 }
 
 template<class CellType>

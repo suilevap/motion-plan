@@ -115,7 +115,7 @@ void SparseGridMapView<CellType>::GetNeighborsPartialFromNotSparsed(
 
 
 template<class CellType>
-void SparseGridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
+int SparseGridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
 {
 	neighbors.clear();
 
@@ -179,7 +179,8 @@ void SparseGridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::Edg
 			stepToSplased, 
 			step1 * 2);
 	
-	}	
+	}
+    return 4;
 }
 
 

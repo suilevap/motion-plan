@@ -43,7 +43,7 @@ public:
 	virtual int GetNodeWrite(Point<float>& point);
 
 
-	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual int GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 
 	virtual void SetCell(int& node, CellType cell);
 

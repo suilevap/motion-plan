@@ -9,21 +9,20 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TestSparsePerformance(true);
 
 	clock_t time0, time1, times;
 	//FileStruct f("map2.txt");
 
 	//char * result = Action(f.GetBuffer());
 	//printf(result);
-	//TestPerformance(true);
-	TestSparsePerformance(true);
+	TestPerformance(true);
+	//TestSparsePerformance(true);
 	times = clock();
 	time0 = times;
 	for (int i=1; i < 100000; i++)
 	{
-		//TestPerformance(false);
-		TestSparsePerformance(false);
+		TestPerformance(false);
+		//TestSparsePerformance(false);
 		if (i%1000 == 0)
 		{
 			time1 = clock();

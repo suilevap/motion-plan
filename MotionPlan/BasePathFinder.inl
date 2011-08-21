@@ -44,6 +44,7 @@ template<
 void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
 FindStart(NodeInfo start, NodeInfo goal)
 {
+    //_neighbors.resize(12);
 	_start = start;
 	_goal = goal;
 	//TODO: donot use vector explicitly
@@ -145,14 +146,25 @@ void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
 Step(NodeInfo& node, NodeInfo& goal)
 {
 	_mapCost[node].Status = NodeStatus::Close;
-	_map->GetNeighbors(node, _neighbors);
-	for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
+	int count = _map->GetNeighbors(node, _neighbors);
+
+  //  for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
+  //  {
+  //      if (_mapCost[it->To].Status == NodeStatus::Open)
+		//{
+		//	CheckNeighbor(node, *it, goal);
+		//	//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
+		//}
+  //  }
+    for (int i = 0; i < count; ++i)
 	{
-		if (_mapCost[it->To].Status == NodeStatus::Open)
+        AStar::EdgeInfo<NodeInfo,CostInfo>& edge = _neighbors[i];
+        if (_mapCost[edge.To].Status == NodeStatus::Open)
 		{
-			CheckNeighbor(node, *it, goal);
+			CheckNeighbor(node, edge, goal);
 			//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
 		}
+
 	}
 }
 
@@ -167,7 +179,7 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal
 	bool result = false;
 	NodeInfo newNode = edge.To;
 	//TODO: fix magic if cell==0
-	if (_map->GetCell(newNode) == 0)
+	//if (_map->GetCell(newNode) == 0)
 	{
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
 		NodeState<NodeInfo,CostInfo>& bestResult = _mapCost[newNode];

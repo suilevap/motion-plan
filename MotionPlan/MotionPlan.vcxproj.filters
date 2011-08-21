@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapView.cpp">
+      <Filter>AStar</Filter>
+    </ClCompile>
+    <ClCompile Include="RayCast.cpp">
+      <Filter>Visibility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridMapView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BasePathFinder.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="DistanceEvaluator.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="EdgeInfo.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="MapView.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="MathConstants.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="PathNode.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeState.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="HexGridMapView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bidirectionalpathfinder.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="CellQueueRanked.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="CellQueueSimple.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinder.h">
+      <Filter>AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="DllExport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RayCast.h">
+      <Filter>Visibility</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseGridMapView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="MotionPlan.vcxproj" />
+    <None Include="BasePathFinder.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="Path.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="GridMapView.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="DistanceEvaluator.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="HexGridMapView.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="CellQueueSimple.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="bidirectionalpathfinder.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="CellQueueRanked.inl">
+      <Filter>AStar</Filter>
+    </None>
+    <None Include="SparseGridMapView.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Inline Files">
+      <UniqueIdentifier>{64460ad1-bdd8-4d22-a2df-ad03c1ecbb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AStar">
+      <UniqueIdentifier>{bf28566e-b543-4638-a02d-48003c55b6be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visibility">
+      <UniqueIdentifier>{36f1dd3a-1199-4fda-8ee7-8ebf5650ca2c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

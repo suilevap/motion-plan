@@ -53,11 +53,18 @@ void Test1()
     data.push_back(std::pair<int,float>(1,0.1));
     data.push_back(std::pair<int,float>(1,0.1));
 
-    for (std::vector<std::pair<int,float>>::const_iterator it = data.begin(); it != data.end(); ++it)
+    //for (std::vector<std::pair<int,float>>::const_iterator it = data.begin(); it != data.end(); ++it)
+    //{
+    //    //std::pair<int,float> p = *it;
+    //    //sum += p.first + p.second;
+    //    sum += it->first + it->second;
+    //}
+
+    int count = data.size();
+    for (int i=0; i < count; ++i)
     {
-        //std::pair<int,float> p = *it;
-        //sum += p.first + p.second;
-        sum += it->first + it->second;
+        std::pair<int,float>& p = data[i];
+        sum += p.first + p.second;
     }
 }
 
@@ -80,7 +87,8 @@ void Test2()
 
     for (int i=0; i < count; ++i)
     {
-        sum += data[i].first + data[i].second;
+        std::pair<int,float>& p = data[i];
+        sum += p.first + p.second;
     }
 }
 
@@ -89,44 +97,59 @@ class MyVector
 {
 public:
     int index;
-    std::vector<std::pair<int,float>> _data;
+    std::vector<T> _data;
 
-    typedef std::vector<std::pair<int,float>>::iterator iter;
+    typedef std::vector<std::pair<int, float>>::iterator iter;
+    iter current;
 
     MyVector()
     {
         index = 0;
+        current = _data.begin();
     }
 
-    inline iter begin()
-    {
-        return _data.begin();
-    }
+    //inline iter begin()
+    //{
+    //    return _data.begin();
+    //}
 
-    inline iter end()
-    {
-        return (_data.begin()+index);
-    }
+    //inline T front()
+    //{
+    //    return _data.front();
+    //}
+
+    //inline iter end()
+    //{
+    //    return (current);
+    //}
 
     inline void clear(int s)
     {
         index = 0;
-        //_data.resize(s);
+        _data.resize(s);
+        current = _data.begin();
+    }
+
+    inline int size()
+    {
+        return index;
+        //return current-_data.begin();
     }
 
     inline void push_back(const T& item)
     {
-        if (index < _data.size())
-        {
-            _data[index] = item;
-        }
-        else
-        {
-            _data.push_back(item);
-        }
-        // _data[index] = item;
-
-        index++;
+        //if (index < _data.size())
+        //{
+        //    _data[index] = item;
+        //}
+        //else
+        //{
+        //    _data.push_back(item);
+        //}
+        //*current = item;
+        //++current;
+        //index++;
+        _data[index++] = item;
 
     }
     inline T operator[](int i)
@@ -149,19 +172,26 @@ void Test3()
     data.push_back(std::pair<int,float>(1,0.1));
     data.push_back(std::pair<int,float>(1,0.1));
 
-    std::vector<std::pair<int,float>>::const_iterator end = data.end();
-    for (std::vector<std::pair<int,float>>::const_iterator it = data.begin(); 
-        it != end; ++it)
-    {
-        //std::pair<int,float> p = *it;
-        //sum += p.first + p.second;
-        sum += it->first + it->second;
-    }
-
-    //int count = data.index;
-    //for (int i=0; i < count; ++i)
+    //std::vector<std::pair<int,float>>::const_iterator& end = data.end();
+    //for (std::vector<std::pair<int,float>>::const_iterator it = data.begin(); 
+    //    it != end; ++it)
     //{
-    //    std::pair<int,float>& p = data[i];
+    //    std::pair<int,float> p = *it;
+    //    sum += p.first + p.second;
+    //    //sum += it->first + it->second;
+    //}
+
+    int count = data.size();
+    for (int i=0; i < count; ++i)
+    {
+        std::pair<int,float>& p = data[i];
+        sum += p.first + p.second;
+    }
+    //const int num = data.index;
+    //const std::pair<int,float>* ptr = (num != 0) ? &data.front() : NULL;
+    //for(int i = 0; i < num; i++)
+    //{
+    //    std::pair<int,float> p = ptr[i];
     //    sum += p.first + p.second;
     //}
 }

@@ -19,8 +19,9 @@ class MapView
 {	
 	
 public:
+    //typedef std::vector<EdgeInfo<NodeInfo,CostInfo>>::iterator EdgeIterator;
 
-	virtual int GetNeighbors(NodeInfo& node, std::vector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
+	virtual std::vector<AStar::EdgeInfo<int,float>>::iterator GetNeighbors(NodeInfo& node, std::vector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
 	virtual PointInfo GetPoint(NodeInfo& node)= 0;	
 	virtual NodeInfo GetNode(PointInfo& point)= 0;
 	virtual NodeInfo GetNodeWrite(PointInfo& point) {return GetNode(point);};

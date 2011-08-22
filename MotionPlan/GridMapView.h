@@ -30,9 +30,10 @@ protected:
 
 	Point<int> GetMapPoint(int node);
 	int GetNodeFromMapPoint(const Point<int>& point);
-    int AddNeighbor(int node, float d, std::vector<AStar::EdgeInfo<int,float>>& neighbors, int i);
+    std::vector<AStar::EdgeInfo<int,float>>::iterator AddNeighbor(int node, float d, std::vector<AStar::EdgeInfo<int,float>>& neighbors, 
+        std::vector<AStar::EdgeInfo<int,float>>::iterator& it);
 public:
-	virtual int GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual std::vector<AStar::EdgeInfo<int,float>>::iterator GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<CoordType> GetPoint(int& node);	
 	virtual int GetNode(Point<CoordType>& point);
 	virtual CellType GetCell(int& node);

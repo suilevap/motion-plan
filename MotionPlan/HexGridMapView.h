@@ -25,7 +25,7 @@ public:
 	HexGridMapView(float width, float height, float cellSize);
     virtual ~HexGridMapView(void) {};
 
-	virtual int GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual std::vector<AStar::EdgeInfo<int,float>>::iterator GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<float> GetPoint(int& node);	
 	virtual int GetNode(Point<float>& point);
 	virtual float GetCost(const int& nodeStart,const int& nodeGoal);

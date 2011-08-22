@@ -146,26 +146,28 @@ void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
 Step(NodeInfo& node, NodeInfo& goal)
 {
 	_mapCost[node].Status = NodeStatus::Close;
-	int count = _map->GetNeighbors(node, _neighbors);
+	std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator end = _map->GetNeighbors(node, _neighbors);
 
-  //  for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
-  //  {
-  //      if (_mapCost[it->To].Status == NodeStatus::Open)
-		//{
-		//	CheckNeighbor(node, *it, goal);
-		//	//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
-		//}
-  //  }
-    for (int i = 0; i < count; ++i)
-	{
-        AStar::EdgeInfo<NodeInfo,CostInfo>& edge = _neighbors[i];
-        if (_mapCost[edge.To].Status == NodeStatus::Open)
+    for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != end; ++it)
+    {
+        if (_mapCost[it->To].Status == NodeStatus::Open)
 		{
-			CheckNeighbor(node, edge, goal);
+			CheckNeighbor(node, *it, goal);
 			//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
 		}
+    }
 
-	}
+	//int count = _map->GetNeighbors(node, _neighbors);
+ //   for (int i = 0; i < count; ++i)
+	//{
+ //       AStar::EdgeInfo<NodeInfo,CostInfo>& edge = _neighbors[i];
+ //       if (_mapCost[edge.To].Status == NodeStatus::Open)
+	//	{
+	//		CheckNeighbor(node, edge, goal);
+	//		//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
+	//	}
+
+	//}
 }
 
 template<

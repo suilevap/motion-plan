@@ -4,6 +4,7 @@
 
 #include "GridMapView.h"
 #include <vector>
+#include "FastVector.h"
 #include "Point.h"
 #include "EdgeInfo.h"
 #include "DistanceEvaluator.h"
@@ -25,7 +26,7 @@ public:
 	HexGridMapView(float width, float height, float cellSize);
     virtual ~HexGridMapView(void) {};
 
-	virtual void GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual void GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<float> GetPoint(int& node);	
 	virtual int GetNode(Point<float>& point);
 	virtual float GetCost(const int& nodeStart,const int& nodeGoal);

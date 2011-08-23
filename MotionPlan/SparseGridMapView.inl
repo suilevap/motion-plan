@@ -76,10 +76,10 @@ int SparseGridMapView<CellType>::GetNodeWrite(Point<float>& point)
 }
 
 template<class CellType>
-void SparseGridMapView<CellType>::GetNeighborsPartialFromSparsed(
+inline void SparseGridMapView<CellType>::GetNeighborsPartialFromSparsed(
 	int nodeNeighboor1, 
 	int nodeNeighboor2, 
-	std::vector<AStar::EdgeInfo<int,float>>& neighbors, 
+	FastVector<AStar::EdgeInfo<int,float>>& neighbors, 
 	float d, 
 	float sparceCellD)
 {
@@ -96,9 +96,9 @@ void SparseGridMapView<CellType>::GetNeighborsPartialFromSparsed(
 }
 
 template<class CellType>
-void SparseGridMapView<CellType>::GetNeighborsPartialFromNotSparsed(
+inline void SparseGridMapView<CellType>::GetNeighborsPartialFromNotSparsed(
 	int nodeNeighboor,  
-	std::vector<AStar::EdgeInfo<int,float>>& neighbors, 
+	FastVector<AStar::EdgeInfo<int,float>>& neighbors, 
 	float d, 
 	float sparceCellD)
 {
@@ -115,9 +115,10 @@ void SparseGridMapView<CellType>::GetNeighborsPartialFromNotSparsed(
 
 
 template<class CellType>
-void SparseGridMapView<CellType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
+void SparseGridMapView<CellType>::GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
 	neighbors.clear();
+    neighbors.resize(16);
 
 	static float step1 = 1;//_cellSize.X;
 	static float stepD = SQRT_2;//_cellSize.X * SQRT_2;

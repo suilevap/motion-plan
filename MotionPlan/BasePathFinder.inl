@@ -146,11 +146,14 @@ Step(NodeInfo& node, NodeInfo& goal)
 {
 	_mapCost[node].Status = NodeStatus::Close;
 	_map->GetNeighbors(node, _neighbors);
-	for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
+	//for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
+    int size = _neighbors.size();
+    for (int i=0; i < size; ++i)
 	{
-		if (_mapCost[it->To].Status == NodeStatus::Open)
+        EdgeInfo<NodeInfo,CostInfo>& edge = _neighbors[i];
+		if (_mapCost[edge.To].Status == NodeStatus::Open)
 		{
-			CheckNeighbor(node, *it, goal);
+			CheckNeighbor(node, edge, goal);
 			//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
 		}
 	}
@@ -166,29 +169,27 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal
 {
 	bool result = false;
 	NodeInfo newNode = edge.To;
-	//TODO: fix magic if cell==0
-	if (_map->GetCell(newNode) == 0)
+
+	//TODO: fix hardcoded _mapDist for NodeInfo == int
+	NodeState<NodeInfo,CostInfo>& bestResult = _mapCost[newNode];
+
+	CostInfo cost = GetDistance(node, edge);
+	if ((bestResult.ParentNode == 0) 
+		|| (bestResult.Cost > cost))
 	{
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
-		NodeState<NodeInfo,CostInfo>& bestResult = _mapCost[newNode];
-
-		CostInfo cost = GetDistance(node, edge);
-		if ((bestResult.ParentNode == 0) 
-			|| (bestResult.Cost > cost))
+		CostInfo estimate = 0;
+		if (CellQueue::UseHeuristic)
 		{
-			//TODO: fix hardcoded _mapDist for NodeInfo == int
-			CostInfo estimate = 0;
-			if (CellQueue::UseHeuristic)
-			{
-				estimate = GetEstimateDistance(newNode, goal);//*96.0f/128;
-			}
-			
-			PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
-			_queue->Push(pathNode);
-			_mapCost[newNode] = NodeState<NodeInfo, CostInfo>(node, cost);
-			result = true;
+			estimate = GetEstimateDistance(newNode, goal);//*96.0f/128;
 		}
+		
+		PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
+		_queue->Push(pathNode);
+		_mapCost[newNode] = NodeState<NodeInfo, CostInfo>(node, cost);
+		result = true;
 	}
+
 	return result;
 }
 

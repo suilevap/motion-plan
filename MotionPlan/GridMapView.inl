@@ -6,23 +6,34 @@
 #include "MathConstants.h"
 
 template<class CellType, typename CoordType>
-void GridMapView<CellType, CoordType>::GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
+void GridMapView<CellType, CoordType>::GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
+    neighbors.clear();
 	neighbors.resize(8);
 
 	static float step1 = 1;//_cellSize.X;
 	static float stepD = SQRT_2;//_cellSize.X * SQRT_2;
+    AddNeighbor(node + 1, step1, neighbors);
+    AddNeighbor(node - 1, step1, neighbors);
+    AddNeighbor(node + _width, step1, neighbors);
+    AddNeighbor(node - _width, step1, neighbors);
 
-	neighbors[0] = AStar::EdgeInfo<int,float>(node + 1, step1, AStar::NodeStatus::Close);
-	neighbors[1] = AStar::EdgeInfo<int,float>(node - 1, step1, AStar::NodeStatus::Close);
-	neighbors[2] = AStar::EdgeInfo<int,float>(node + _width, step1, AStar::NodeStatus::Close);
-	neighbors[3] = AStar::EdgeInfo<int,float>(node - _width, step1, AStar::NodeStatus::Close);
-
-	neighbors[4] = AStar::EdgeInfo<int,float>(node + 1 + _width, stepD, AStar::NodeStatus::Open);
-	neighbors[5] = AStar::EdgeInfo<int,float>(node - 1 + _width, stepD, AStar::NodeStatus::Open);
-	neighbors[6] = AStar::EdgeInfo<int,float>(node + 1 - _width, stepD, AStar::NodeStatus::Open);
-	neighbors[7] = AStar::EdgeInfo<int,float>(node - 1 - _width, stepD, AStar::NodeStatus::Open);	
+    AddNeighbor(node + 1 + _width, stepD, neighbors);
+    AddNeighbor(node + 1 - _width, stepD, neighbors);
+    AddNeighbor(node - 1 + _width, stepD, neighbors);
+    AddNeighbor(node - 1 - _width, stepD, neighbors);
+	
 }
+
+template<class CellType, typename CoordType>
+inline void GridMapView<CellType, CoordType>::AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
+{
+    if (GetCell(node) != 1)
+    {
+        neighbors.push_back(AStar::EdgeInfo<int,float>(node, d));
+    }
+}
+
 
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::TransformPointToCell(Point<CoordType>& pointFrom, Point<int>& pointTo)

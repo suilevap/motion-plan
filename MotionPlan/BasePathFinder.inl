@@ -178,15 +178,21 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal
 		|| (bestResult.Cost > cost))
 	{
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
-		CostInfo estimate = 0;
+		CostInfo estimate;
 		if (CellQueue::UseHeuristic)
 		{
 			estimate = GetEstimateDistance(newNode, goal);//*96.0f/128;
 		}
+        else
+        {
+            estimate = 0;
+        }
 		
 		PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
 		_queue->Push(pathNode);
-		_mapCost[newNode] = NodeState<NodeInfo, CostInfo>(node, cost);
+
+        bestResult.ParentNode = node;
+        bestResult.Cost = cost;
 		result = true;
 	}
 

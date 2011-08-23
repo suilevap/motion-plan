@@ -5,6 +5,8 @@
 
 #include "MapView.h"
 #include <vector>
+#include "FastVector.h"
+
 #include "PathNode.h"
 #include "CellQueueRanked.h"
 #include "CellQueueSimple.h"
@@ -33,7 +35,7 @@ protected:
 
 	std::vector<NodeState<NodeInfo,CostInfo>> _mapCost;
 
-	std::vector<EdgeInfo<NodeInfo,CostInfo>> _neighbors;
+	FastVector<EdgeInfo<NodeInfo,CostInfo>> _neighbors;
 	
 	PointInfo _goalPoint;
 	PointInfo _startPoint;

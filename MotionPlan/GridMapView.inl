@@ -6,54 +6,34 @@
 #include "MathConstants.h"
 
 template<class CellType, typename CoordType>
-std::vector<AStar::EdgeInfo<int,float>>::iterator
-GridMapView<CellType, CoordType>::GetNeighbors(
-    int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors)
+void GridMapView<CellType, CoordType>::GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
+    neighbors.clear();
 	neighbors.resize(8);
 
 	static float step1 = 1;//_cellSize.X;
 	static float stepD = SQRT_2;//_cellSize.X * SQRT_2;
-    int i = 0;
-    std::vector<AStar::EdgeInfo<int,float>>::iterator it = neighbors.begin();
-    AddNeighbor(node + 1, step1, neighbors, it);
-    AddNeighbor(node - 1, step1, neighbors, it);
-    AddNeighbor(node + _width, step1, neighbors, it);
-    AddNeighbor(node - _width, step1, neighbors, it);
+    AddNeighbor(node + 1, step1, neighbors);
+    AddNeighbor(node - 1, step1, neighbors);
+    AddNeighbor(node + _width, step1, neighbors);
+    AddNeighbor(node - _width, step1, neighbors);
 
-    AddNeighbor(node + 1 + _width, stepD, neighbors, it);
-    AddNeighbor(node - 1 + _width, stepD, neighbors, it);
-    AddNeighbor(node + 1 - _width, stepD, neighbors, it);
-    AddNeighbor(node - 1 - _width, stepD, neighbors, it);
-
-    return it;
-	//neighbors[0] = AStar::EdgeInfo<int,float>(node + 1, step1, AStar::NodeStatus::Close);
-	//neighbors[1] = AStar::EdgeInfo<int,float>(node - 1, step1, AStar::NodeStatus::Close);
-	//neighbors[2] = AStar::EdgeInfo<int,float>(node + _width, step1, AStar::NodeStatus::Close);
-	//neighbors[3] = AStar::EdgeInfo<int,float>(node - _width, step1, AStar::NodeStatus::Close);
-
-	//neighbors[4] = AStar::EdgeInfo<int,float>(node + 1 + _width, stepD, AStar::NodeStatus::Open);
-	//neighbors[5] = AStar::EdgeInfo<int,float>(node - 1 + _width, stepD, AStar::NodeStatus::Open);
-	//neighbors[6] = AStar::EdgeInfo<int,float>(node + 1 - _width, stepD, AStar::NodeStatus::Open);
-	//neighbors[7] = AStar::EdgeInfo<int,float>(node - 1 - _width, stepD, AStar::NodeStatus::Open);	
+    AddNeighbor(node + 1 + _width, stepD, neighbors);
+    AddNeighbor(node + 1 - _width, stepD, neighbors);
+    AddNeighbor(node - 1 + _width, stepD, neighbors);
+    AddNeighbor(node - 1 - _width, stepD, neighbors);
+	
 }
+
 template<class CellType, typename CoordType>
-inline std::vector<AStar::EdgeInfo<int,float>>::iterator GridMapView<CellType, CoordType>::
-AddNeighbor(int node, float d, std::vector<AStar::EdgeInfo<int,float>>& neighbors, std::vector<AStar::EdgeInfo<int,float>>::iterator& it)
+inline void GridMapView<CellType, CoordType>::AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
     if (GetCell(node) != 1)
     {
-        //neighbors[i] =(AStar::EdgeInfo<int,float>(node, d, AStar::NodeStatus::Open));
-        //neighbors[i].Cost = d;
-        //neighbors[i].To = node;
-        it->Cost = d;
-        it->To = node;
-        ++it;
-        //neighbors.push_back(AStar::EdgeInfo<int,float>(node, d, AStar::NodeStatus::Open));
-        //i++;
+        neighbors.push_back(AStar::EdgeInfo<int,float>(node, d));
     }
-    return it;
 }
+
 
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::TransformPointToCell(Point<CoordType>& pointFrom, Point<int>& pointTo)

@@ -7,6 +7,7 @@
 #include "MapView.h"
 #include "Point.h"
 #include "EdgeInfo.h"
+#include "FastVector.h"
 
 template<class CellType, typename CoordType = float>
 class GridMapView: 
@@ -30,10 +31,12 @@ protected:
 
 	Point<int> GetMapPoint(int node);
 	int GetNodeFromMapPoint(const Point<int>& point);
-    std::vector<AStar::EdgeInfo<int,float>>::iterator AddNeighbor(int node, float d, std::vector<AStar::EdgeInfo<int,float>>& neighbors, 
-        std::vector<AStar::EdgeInfo<int,float>>::iterator& it);
+
+	void AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
+
 public:
-	virtual std::vector<AStar::EdgeInfo<int,float>>::iterator GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual void GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
+
 	virtual Point<CoordType> GetPoint(int& node);	
 	virtual int GetNode(Point<CoordType>& point);
 	virtual CellType GetCell(int& node);

@@ -7,6 +7,8 @@
 #include "Point.h"
 #include "EdgeInfo.h"
 #include "DistanceEvaluator.h"
+#include "FastVector.h"
+
 //     _
 
 template<class CellType>
@@ -26,12 +28,12 @@ protected:
 	void GetNeighborsPartialFromSparsed(
 		int nodeNeighboor1, 
 		int nodeNeighboor2, 
-		std::vector<AStar::EdgeInfo<int,float>>& neighbors, 
+		FastVector<AStar::EdgeInfo<int,float>>& neighbors, 
 		float d, 
 		float sparceCellD);
 	void GetNeighborsPartialFromNotSparsed(
 		int nodeNeighboor1, 
-		std::vector<AStar::EdgeInfo<int,float>>& neighbors, 
+		FastVector<AStar::EdgeInfo<int,float>>& neighbors, 
 		float d, 
 		float sparceCellD);
 public:
@@ -43,7 +45,7 @@ public:
 	virtual int GetNodeWrite(Point<float>& point);
 
 
-	virtual std::vector<AStar::EdgeInfo<int,float>>::iterator GetNeighbors(int& node, std::vector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual void GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
 
 	virtual void SetCell(int& node, CellType cell);
 

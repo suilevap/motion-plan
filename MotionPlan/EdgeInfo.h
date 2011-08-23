@@ -28,6 +28,12 @@ public:
 		Cost(cost),
 		InitStatus(status)
 	{}
+
+    EdgeInfo(NodeInfo node, CostInfo cost)
+		:To(node),
+		Cost(cost),
+		InitStatus(NodeStatus::Open)
+	{}
 };
 
 }

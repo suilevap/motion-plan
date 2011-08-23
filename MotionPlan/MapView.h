@@ -4,6 +4,7 @@
 #define MOTIONPLAN_ASTAR_MAPVIEW_H
 
 #include <vector>
+#include "FastVector.h"
 #include "EdgeInfo.h"
 //#include "Point.h"
 
@@ -19,9 +20,8 @@ class MapView
 {	
 	
 public:
-    //typedef std::vector<EdgeInfo<NodeInfo,CostInfo>>::iterator EdgeIterator;
 
-	virtual std::vector<AStar::EdgeInfo<int,float>>::iterator GetNeighbors(NodeInfo& node, std::vector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
+	virtual void GetNeighbors(NodeInfo& node, FastVector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
 	virtual PointInfo GetPoint(NodeInfo& node)= 0;	
 	virtual NodeInfo GetNode(PointInfo& point)= 0;
 	virtual NodeInfo GetNodeWrite(PointInfo& point) {return GetNode(point);};

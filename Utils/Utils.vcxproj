@@ -96,6 +96,7 @@
     <None Include="Transformable.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FastVector.h" />
     <ClInclude Include="FileStruct.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

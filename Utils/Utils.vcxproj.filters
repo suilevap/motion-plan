@@ -1,47 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="FileStruct.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="FileStruct.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FastVector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileStruct.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectIdPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scalable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transformable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="FileStruct.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="ObjectIdPool.h" />
+    <ClInclude Include="Scalable.h" />
+    <ClInclude Include="Transformable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="ObjectIdPool.inl">
-      <Filter>Inline Files</Filter>
-    </None>
-    <None Include="Scalable.inl">
-      <Filter>Inline Files</Filter>
-    </None>
-    <None Include="Transformable.inl">
-      <Filter>Inline Files</Filter>
-    </None>
+    <None Include="ObjectIdPool.inl" />
+    <None Include="Scalable.inl" />
+    <None Include="Transformable.inl" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

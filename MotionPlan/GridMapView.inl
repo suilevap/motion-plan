@@ -4,6 +4,7 @@
 
 #include "DistanceEvaluator.h"
 #include "MathConstants.h"
+#include "MathHelper.h"
 
 template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
@@ -52,20 +53,22 @@ template<class CellType, typename CoordType>
 inline Point<int> GridMapView<CellType, CoordType>::GetMapPoint(int node)
 {
 	Point<int> pointMap;
-	pointMap.X = node % _width - _border;
-	pointMap.Y = node / _width - _border;
+	//pointMap.X = (node - ((node>>_wRank)<<_wRank)) - _border;
+   
+    pointMap.X = (node & (_widthReal-1)) - _border;
+	pointMap.Y = (node >> _wRank) - _border;
 	return pointMap;
 }
 template<class CellType, typename CoordType>
 inline int GridMapView<CellType, CoordType>:: GetNodeFromMapPoint(const Point<int>& pointMap)
 {
-	return (pointMap.X + _border) + (pointMap.Y + _border) * _width ;
+	return (pointMap.X + _border) + ((pointMap.Y + _border)<<_wRank) ;
 }
 
 template<class CellType, typename CoordType>
 inline int GridMapView<CellType, CoordType>::GetNodeDxDy(int node, int dx, int dy)
 {
-    return node + dx + dy * _width;
+    return node + dx + (dy<<_wRank);
 }
 
 template<class CellType, typename CoordType>
@@ -130,7 +133,7 @@ bool GridMapView<CellType, CoordType>::OnMap(Point<CoordType>& point)
 template<class CellType, typename CoordType>
 int GridMapView<CellType, CoordType>::GetMaxNode()
 {
-	return _width * _height;
+	return _height<<_wRank;
 }
 
 template<class CellType, typename CoordType>
@@ -151,7 +154,11 @@ void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height
 	_border = border;
 	_width = mapSize.X + 1 + _border * 2;
 	_height = mapSize.Y + 1 + _border * 2;
-	int size = _width * _height;
+    
+    _wRank = MathHelper::UpperRankOfTwo(_width);
+    _widthReal = 1 << _wRank;
+
+	int size = _widthReal * _height;
 	//_map = new CellType[size];
     _map.resize(size);
 	Clear(0,1);
@@ -205,7 +212,7 @@ void GridMapView<CellType, CoordType>::SetCellRegion(Point<CoordType>& point, Ce
 template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorder)
 {
-	int size = _width*_height;
+	int size = _height<<_wRank;
 	int sizeCell = sizeof(_map[0]);
 	//memset(_map, value, sizeCell*size);
     _map.assign(size, value);
@@ -215,16 +222,16 @@ void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorde
 		{
 			for (int k = 0; k < _border; ++k)
 			{
-				_map[i * _width + k] = valueBorder;
-				_map[i * _width + _width - k - 1] = valueBorder;
+				_map[GetNodeDxDy(0, k, i)] = valueBorder;
+				_map[GetNodeDxDy(0, - k - 1,i+1)] = valueBorder;
 			}
 		}
 		for (int k = _border; k < _width - _border; ++k)
 		{
 			for (int i = 0; i < _border; ++i)
 			{
-				_map[i * _width + k] = valueBorder;
-				_map[(_height - i - 1) * _width + k] = valueBorder;
+				_map[GetNodeDxDy(0, k, i)] = valueBorder;
+                _map[GetNodeDxDy(0, k, (_height - i - 1))] = valueBorder;
 			}
 		}
 

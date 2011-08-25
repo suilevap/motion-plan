@@ -24,6 +24,9 @@ protected:
 	int _height;
 	int _border;
 
+	int _wRank;
+	int _widthReal;
+
 	Point<float> _scale;
 	Point<CoordType> _cellSize;
 

@@ -146,7 +146,8 @@ void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height
 	_width = mapSize.X + 1 + _border * 2;
 	_height = mapSize.Y + 1 + _border * 2;
 	int size = _width * _height;
-	_map = new CellType[size];
+	//_map = new CellType[size];
+    _map.resize(size);
 	Clear(0,1);
 
 }
@@ -178,7 +179,7 @@ GridMapView<CellType, CoordType>::GridMapView()
 template<class CellType, typename CoordType>
 GridMapView<CellType, CoordType>::~GridMapView(void)
 {
-	delete[] _map;
+	//delete[] _map;
 }
 
 template<class CellType, typename CoordType>
@@ -200,7 +201,8 @@ void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorde
 {
 	int size = _width*_height;
 	int sizeCell = sizeof(_map[0]);
-	memset(_map, value, sizeCell*size);
+	//memset(_map, value, sizeCell*size);
+    _map.assign(size, value);
 	if (value != valueBorder)
 	{
 		for (int i = 0; i < _height; ++i)

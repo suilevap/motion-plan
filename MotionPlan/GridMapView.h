@@ -14,7 +14,8 @@ class GridMapView:
 	public AStar::MapView<Point<CoordType>, CellType, int, float>
 {
 private:
-	CellType* _map;
+	//CellType* _map;
+    std::vector<CellType> _map;
 	
 protected:
 	int _width;

@@ -1,0 +1,18 @@
+syntax: glob
+Debug/*
+ipch
+*.sdf
+*.suo
+*.opensdf
+*.obj
+*.idb
+*.pdb
+*.ncb
+*.pch
+Release/*
+*.user
+*.vsp
+_UpgradeReport_Files/*
+*.sln.old
+*.orig
+*.XML

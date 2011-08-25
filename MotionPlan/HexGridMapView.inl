@@ -25,14 +25,14 @@ void HexGridMapView<CellType>::GetNeighbors(int& node, FastVector<AStar::EdgeInf
 	int secondNeighborOffset = _width * (-1 + offset*2);
 	static float step1 = 1;//_cellSize.X;
 
-    AddNeighbor(node + 1, 1, neighbors);
-    AddNeighbor(node + 1 + secondNeighborOffset, 1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 1, 0), 1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 1 + secondNeighborOffset, 0) , 1, neighbors);
 
-    AddNeighbor(node - 1, 1, neighbors);
-    AddNeighbor(node - 1 + secondNeighborOffset, 1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, -1, 0), 1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, -1 + secondNeighborOffset, 0), 1, neighbors);
 
-    AddNeighbor(node + _width, 1, neighbors);
-    AddNeighbor(node - _width, 1, neighbors);	
+    AddNeighbor( GetNodeDxDy(node, 0, 1), 1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 0, -1), 1, neighbors);	
 }
 
 template<class CellType>

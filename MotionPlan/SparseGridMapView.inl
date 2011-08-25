@@ -130,22 +130,22 @@ void SparseGridMapView<CellType>::GetNeighbors(int& node, FastVector<AStar::Edge
 	if (!IsCellSparse(node))
 	{
 		GetNeighborsPartialFromNotSparsed(
-			node + 1, 
+			GetNodeDxDy(node, 1, 0), 
 			neighbors, 
 			step1, 
 			stepToSplased);
 		GetNeighborsPartialFromNotSparsed(
-			node - 1, 
+			GetNodeDxDy(node, -1, 0),  
 			neighbors, 
 			step1, 
 			stepToSplased);
 		GetNeighborsPartialFromNotSparsed(
-			node + _width, 
+			GetNodeDxDy(node, 0, 1),  
 			neighbors, 
 			step1, 
 			stepToSplased);
 		GetNeighborsPartialFromNotSparsed(
-			node - _width, 
+			GetNodeDxDy(node, 0, -1),  
 			neighbors, 
 			step1, 
 			stepToSplased);
@@ -153,29 +153,29 @@ void SparseGridMapView<CellType>::GetNeighbors(int& node, FastVector<AStar::Edge
 	else
 	{
 		GetNeighborsPartialFromSparsed(
-			node + 2,
-			node + 2 + _width, 
+			GetNodeDxDy(node, 2, 0),
+			GetNodeDxDy(node, 2, 1),  
 			neighbors, 
 			stepToSplased, 
 			step1 * 2);
 
 		GetNeighborsPartialFromSparsed(
-			node - 1,
-			node - 1 + _width, 
+			GetNodeDxDy(node, -1, 0),
+			GetNodeDxDy(node, -1, 1),  
 			neighbors, 
 			stepToSplased, 
 			step1 * 2);
 
 		GetNeighborsPartialFromSparsed(
-			node + _width * 2,
-			node + _width * 2 + 1, 
+            GetNodeDxDy(node, 0, 2),
+			GetNodeDxDy(node, 1, 2), 
 			neighbors, 
 			stepToSplased, 
 			step1 * 2);
 
 		GetNeighborsPartialFromSparsed(
-			node - _width * 2,
-			node - _width * 2 + 1, 
+            GetNodeDxDy(node, 0, -2),
+			GetNodeDxDy(node, 1, -2), 
 			neighbors, 
 			stepToSplased, 
 			step1 * 2);

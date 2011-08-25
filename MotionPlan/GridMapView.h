@@ -9,6 +9,8 @@
 #include "EdgeInfo.h"
 #include "FastVector.h"
 
+#include <valarray>
+
 template<class CellType, typename CoordType = float>
 class GridMapView: 
 	public AStar::MapView<Point<CoordType>, CellType, int, float>
@@ -16,7 +18,7 @@ class GridMapView:
 private:
 	//CellType* _map;
     std::vector<CellType> _map;
-	
+    
 protected:
 	int _width;
 	int _height;
@@ -34,7 +36,7 @@ protected:
 	int GetNodeFromMapPoint(const Point<int>& point);
 
 	void AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
-
+    int GetNodeDxDy(int node, int dx, int dy);
 public:
 	virtual void GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
 

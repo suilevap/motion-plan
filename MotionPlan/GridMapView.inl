@@ -13,15 +13,15 @@ void GridMapView<CellType, CoordType>::GetNeighbors(int& node, FastVector<AStar:
 
 	static float step1 = 1;//_cellSize.X;
 	static float stepD = SQRT_2;//_cellSize.X * SQRT_2;
-    AddNeighbor(node + 1, step1, neighbors);
-    AddNeighbor(node - 1, step1, neighbors);
-    AddNeighbor(node + _width, step1, neighbors);
-    AddNeighbor(node - _width, step1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 1, 0) , step1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, - 1, 0) , step1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 0, 1) , step1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 0, -1) , step1, neighbors);
 
-    AddNeighbor(node + 1 + _width, stepD, neighbors);
-    AddNeighbor(node + 1 - _width, stepD, neighbors);
-    AddNeighbor(node - 1 + _width, stepD, neighbors);
-    AddNeighbor(node - 1 - _width, stepD, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 1, 1), stepD, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 1, -1), stepD, neighbors);
+    AddNeighbor( GetNodeDxDy(node, -1, 1), stepD, neighbors);
+    AddNeighbor( GetNodeDxDy(node, -1, -1), stepD, neighbors);
 	
 }
 
@@ -57,9 +57,15 @@ inline Point<int> GridMapView<CellType, CoordType>::GetMapPoint(int node)
 	return pointMap;
 }
 template<class CellType, typename CoordType>
-int GridMapView<CellType, CoordType>:: GetNodeFromMapPoint(const Point<int>& pointMap)
+inline int GridMapView<CellType, CoordType>:: GetNodeFromMapPoint(const Point<int>& pointMap)
 {
 	return (pointMap.X + _border) + (pointMap.Y + _border) * _width ;
+}
+
+template<class CellType, typename CoordType>
+inline int GridMapView<CellType, CoordType>::GetNodeDxDy(int node, int dx, int dy)
+{
+    return node + dx + dy * _width;
 }
 
 template<class CellType, typename CoordType>

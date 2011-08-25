@@ -64,7 +64,7 @@
 				AdditionalDependencies="..\lib\gmapi2008\*.lib"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="LIBCMTD;LIBCMT"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -141,6 +141,7 @@
 				AdditionalDependencies="..\lib\gmapi2008\*.lib"
 				LinkIncremental="1"
 				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames="LIBCMTD;LIBCMT"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -192,6 +193,10 @@
 			</File>
 			<File
 				RelativePath=".\GridMapViewTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MathTest.cpp"
 				>
 			</File>
 			<File

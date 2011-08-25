@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionPlanTests", "MotionPlanTests\MotionPlanTests.vcproj", "{EEC96EDB-9587-429F-A962-CA9882D8F0DA}"
 	ProjectSection(ProjectDependencies) = postProject
+		{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1} = {E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7} = {C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}
 	EndProjectSection
 EndProject

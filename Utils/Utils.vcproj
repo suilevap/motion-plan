@@ -153,6 +153,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MathHelper.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -184,6 +188,10 @@
 			</File>
 			<File
 				RelativePath=".\FileStruct.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MathHelper.h"
 				>
 			</File>
 			<File

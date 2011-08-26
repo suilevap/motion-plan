@@ -86,12 +86,12 @@ inline void SparseGridMapView<CellType>::GetNeighborsPartialFromSparsed(
 	if (IsCellSparse(nodeNeighboor1))
 	{
 		nodeNeighboor1 = GetSparseMainNode(nodeNeighboor1);
-		neighbors.push_back(AStar::EdgeInfo<int,float>(nodeNeighboor1, sparceCellD, AStar::NodeStatus::Open));
+		AddNeighbor(nodeNeighboor1, sparceCellD, neighbors);
 	}
 	else
 	{
-		neighbors.push_back(AStar::EdgeInfo<int,float>(nodeNeighboor1, d, AStar::NodeStatus::Open));
-		neighbors.push_back(AStar::EdgeInfo<int,float>(nodeNeighboor2, d, AStar::NodeStatus::Open));
+		AddNeighbor(nodeNeighboor1, d, neighbors);
+		AddNeighbor(nodeNeighboor2, d, neighbors);
 	}
 }
 
@@ -105,11 +105,11 @@ inline void SparseGridMapView<CellType>::GetNeighborsPartialFromNotSparsed(
 	if (IsCellSparse(nodeNeighboor))
 	{
 		nodeNeighboor = GetSparseMainNode(nodeNeighboor);
-		neighbors.push_back(AStar::EdgeInfo<int,float>(nodeNeighboor, sparceCellD, AStar::NodeStatus::Open));
+		AddNeighbor(nodeNeighboor, sparceCellD, neighbors);
 	}
 	else
 	{
-		neighbors.push_back(AStar::EdgeInfo<int,float>(nodeNeighboor, d, AStar::NodeStatus::Open));
+		AddNeighbor(nodeNeighboor, d, neighbors);
 	}
 }
 

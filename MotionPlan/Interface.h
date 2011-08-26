@@ -26,24 +26,7 @@ DllExport char* GetGmPath(double pathIndex);
 DllExport double ConvertToGmPath(double pathIndex, double gmPathId);
 DllExport double DestroyPath(double pathIndex);
 
-DllExport void TestGmInterface();
-DllExport void TestPerformance(bool outputMap);
-DllExport void TestHexPerformance(bool outputMap);
-DllExport void TestSparsePerformance(bool outputMap);
-
 
 DllExport double Test();
 
-//extern "C"
-//{
-
-	//class doubleerface
-	//{
-
-	//public:
-		//static 
-			DllExport char* Action(char * map);
-
-	//};
-
-//}
+void OutputPath(double mapObstInd, double path);

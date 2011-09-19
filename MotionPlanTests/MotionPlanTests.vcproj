@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PoolTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\RayCastTest.cpp"
 				>
 			</File>

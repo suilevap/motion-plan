@@ -9,6 +9,7 @@
 
 #include "PathNode.h"
 #include "CellQueueRanked.h"
+#include "CellQueueRankedV2.h"
 #include "CellQueueSimple.h"
 
 #include "EdgeInfo.h"
@@ -24,7 +25,7 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo,
-	typename CellQueue = CellQueueRanked<int, CostInfo>> 
+	typename CellQueue = CellQueueRankedV2<int, CostInfo>> 
 class BasePathFinder : public PathFinder<PointInfo, CellType, int, CostInfo>
 {
 public:

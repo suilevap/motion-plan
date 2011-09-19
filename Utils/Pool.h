@@ -17,7 +17,7 @@ private:
     int _index;
 	std::vector<Chunk> _items;
 
-	std::stack<T*> _freeIds;
+	std::vector<T*> _freeItems;
 public:
 	Pool();
 	~Pool();

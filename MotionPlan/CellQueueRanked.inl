@@ -47,10 +47,7 @@ void CellQueueRanked<NodeInfo, CostInfo>::Clear()
 	{
 		delete _queue;
 	}
-	_queue = new std::priority_queue<
-			PathNode<NodeInfo,CostInfo>*,
-			std::vector<PathNode<NodeInfo,CostInfo>*>,
-			std::greater<PathNode<NodeInfo,CostInfo>> >();
+	_queue = new RankedQueue();
 }
 
 

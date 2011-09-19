@@ -5,6 +5,8 @@
 #include <vector>
 #include <set>
 #include "PathNode.h"
+#include "Comparators.h"
+
 
 //typedef priority_queue<PathPoint,vector<PathPoint>,less<vector<PathPoint>::value_type>> CellQueueRanked;
 namespace AStar
@@ -20,10 +22,17 @@ private:
 		PathNode<NodeInfo,CostInfo>,
 		std::vector<PathNode<NodeInfo,CostInfo>>,
 		std::greater<std::vector<PathNode<NodeInfo,CostInfo>>::value_type>> _queue;*/
-	std::priority_queue<
+	//std::priority_queue<
+	//	PathNode<NodeInfo,CostInfo>*,
+	//	std::vector<PathNode<NodeInfo,CostInfo>*>,
+	//	std::greater<PathNode<NodeInfo,CostInfo>>* >* _queue2;
+	
+    typedef std::priority_queue<
 		PathNode<NodeInfo,CostInfo>*,
 		std::vector<PathNode<NodeInfo,CostInfo>*>,
-		std::greater<PathNode<NodeInfo,CostInfo>> >* _queue;
+        GreaterByRef<PathNode<NodeInfo,CostInfo>>> RankedQueue;
+
+    RankedQueue* _queue;
 	
 	//std::vector<PathPoint> _unsortedQueue;
 

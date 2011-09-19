@@ -16,7 +16,7 @@ CellQueueRankedV2<NodeInfo, CostInfo>::~CellQueueRankedV2()
 
 template<typename NodeInfo,typename CostInfo> 
 void CellQueueRankedV2<NodeInfo, CostInfo>::
-Push(const PathNode<NodeInfo, CostInfo>* node)
+Push(PathNode<NodeInfo, CostInfo>* node)
 {
     _queue.push_back(node);
     BubbleUp(_queue.size()-1, node);
@@ -46,11 +46,11 @@ void CellQueueRankedV2<NodeInfo, CostInfo>::Clear()
 
 template<typename NodeInfo,typename CostInfo> 
 void CellQueueRankedV2<NodeInfo, CostInfo>::
-BubbleUp(int i, const PathNode<NodeInfo,CostInfo>* node)
+BubbleUp(int i, PathNode<NodeInfo,CostInfo>* node)
 {
     int parent = (i-1)/2;
     // note: (index > 0) means there is a parent
-    while ((i > 0) && (_queue[parent] > node))
+    while ((i > 0) && (*_queue[parent] > *node))
     {
         _queue[i] = _queue[parent];
         i = parent;
@@ -61,14 +61,14 @@ BubbleUp(int i, const PathNode<NodeInfo,CostInfo>* node)
 
 template<typename NodeInfo,typename CostInfo> 
 void CellQueueRankedV2<NodeInfo, CostInfo>::
-TrickleDown(int i, const PathNode<NodeInfo,CostInfo>* node)
+TrickleDown(int i, PathNode<NodeInfo,CostInfo>* node)
 {
     int child = (i*2)+1;
     int size = _queue.size();
     while (child < size)
     {
         if (((child+1) < size) && 
-                (_queue[child] > _queue[child+1]))
+                (*_queue[child] > *_queue[child+1]))
         {
                 child++;
         }

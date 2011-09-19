@@ -1,7 +1,7 @@
 #ifndef UTILS_FASTVECTOR_H_
 #define UTILS_FASTVECTOR_H_
 
-template <typename T>
+template <typename T, bool AutoResize = false>
 class FastVector
 {
 private:
@@ -12,11 +12,20 @@ public:
     FastVector()
     {
         index = 0;
+        if (AutoResize)
+        {
+            resize(4);
+        }
     }
 
     inline void clear()
     {
         index = 0;
+    }
+
+    inline bool empty()
+    {
+        return (index == 0);
     }
 
     inline void resize(int size)
@@ -31,9 +40,26 @@ public:
 
     inline void push_back(const T& item)
     {
+        if (AutoResize)
+        {
+            if (index >= _data.size())
+            {
+                resize(_data.size()*2);
+            }
+        }
         _data[index++] = item;
-
     }
+
+    inline T back()
+    {
+        return _data[index-1];
+    }
+
+    inline void pop_back()
+    {
+        index--;
+    }
+
     inline T operator[](int i)
     {
         return _data[i];

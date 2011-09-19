@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Pool.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Scalable.h"
 				>
 			</File>
@@ -220,6 +224,10 @@
 			>
 			<File
 				RelativePath=".\ObjectIdPool.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\Pool.inl"
 				>
 			</File>
 			<File

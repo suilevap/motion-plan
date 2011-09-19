@@ -14,8 +14,8 @@ struct PathNode
 
 public:
 	NodeInfo Node;
-	CostInfo Cost;
-	CostInfo EstimateAditionalCost;
+	//CostInfo Cost;
+	//CostInfo EstimateAditionalCost;
 	CostInfo Rank;
 
 
@@ -33,16 +33,16 @@ public:
 
 	PathNode(NodeInfo node, CostInfo cost, CostInfo estimateAddCost)
 		:Node(node),
-		Cost(cost),
-		EstimateAditionalCost(estimateAddCost),
+		//Cost(cost),
+		//EstimateAditionalCost(estimateAddCost),
 		Rank(cost+estimateAddCost)
 	{
 	}
 
 	PathNode()
 		:Node(0),
-		Cost(0),
-		EstimateAditionalCost(0),
+		//Cost(0),
+		//EstimateAditionalCost(0),
 		Rank(0)
 	{
 	}

@@ -57,7 +57,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		{
 			time1 = clock();
 			printf("%3dk time: %4d, avg time: %4d\n",i/1000, (time1 - time0), (time1 - times)/(i/1000) );
-			time0 = time1;
+			time0 = clock();
 		}
 	}
 	getchar();	

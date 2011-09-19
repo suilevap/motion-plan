@@ -14,10 +14,11 @@ template<class T>
 class Pool
 {
 private:
-    static const int CHUNK_SIZE = 512;
+    static const int CHUNK_INIT_SIZE = 32;
     typedef T* Chunk;
     int _index;
     int _chunkIndex;
+    Chunk _currentChunk;
 
 	std::vector<Chunk> _items;
 

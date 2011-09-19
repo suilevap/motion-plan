@@ -16,18 +16,19 @@ CellQueueSimple<NodeInfo, CostInfo>::~CellQueueSimple()
 }
 
 template<typename NodeInfo,typename CostInfo> 
-void CellQueueSimple<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& node)
+void CellQueueSimple<NodeInfo, CostInfo>::
+Push(const PathNode<NodeInfo, CostInfo>* node)
 {
-
 	_queue->push(node);
 	_count++;
 }
 
 template<typename NodeInfo,typename CostInfo> 
-PathNode<NodeInfo, CostInfo> CellQueueSimple<NodeInfo, CostInfo>::Pop()
+PathNode<NodeInfo, CostInfo>* CellQueueSimple<NodeInfo, CostInfo>::
+Pop()
 {
 
-	PathNode<NodeInfo, CostInfo> result = _queue->front();
+	PathNode<NodeInfo, CostInfo>* result = _queue->front();
 	_queue->pop();
 	
 	return result; 
@@ -47,7 +48,7 @@ void CellQueueSimple<NodeInfo, CostInfo>::Clear()
 		delete _queue;
 	}
 	
-	_queue = new std::queue<PathNode<NodeInfo,CostInfo>>();
+	_queue = new std::queue<PathNode<NodeInfo,CostInfo>*>();
 	
 }
 

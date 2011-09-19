@@ -11,10 +11,17 @@ Pool<T>::Pool()
 template<class T>
 Pool<T>::~Pool()
 {
+    Clear();
+}
+
+template<class T>
+void Pool<T>::Clear()
+{
 	for (int i = 0; i < _items.size(); ++i) 
 	{
 		delete[] _items[i];
 	}
+    _index = CHUNK_SIZE;
 }
 
 template<class T>

@@ -52,11 +52,13 @@ FindStart(NodeInfo start, NodeInfo goal)
 	_mapCost.resize(_map->GetMaxNode(),NodeState<NodeInfo,CostInfo>());
 	
 	_queue->Clear();	
-
+    _pathNodePool.Clear();
 	 //_mapParent[_start] = _start;
 
-	PathNode<int,float> pathNode(_start, 0, 0);
-
+	//PathNode<int,float> pathNode(_start, 0, 0);
+    PathNode<NodeInfo, CostInfo>* pathNode = _pathNodePool.Allocate();
+    pathNode->Node = _start;
+    pathNode->Rank = 0;
 	_mapCost[start] = NodeState<NodeInfo, CostInfo>(_start, 0);
 
 	_queue->Push(pathNode);
@@ -81,9 +83,10 @@ FindStep()
 	NodeInfo node = NULL;
 	if (!_queue->Empty())
 	{
-		PathNode<int,float> pathNode = _queue->Pop();
-		node = pathNode.Node;
+		PathNode<NodeInfo, CostInfo>* pathNode = _queue->Pop();
+		node = pathNode->Node;
 		Step(node, _goal);
+        _pathNodePool.Free(pathNode);
 	}
 	return node;
 }
@@ -187,8 +190,10 @@ CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal
         {
             estimate = 0;
         }
-		
-		PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
+		PathNode<NodeInfo, CostInfo>* pathNode = _pathNodePool.Allocate();
+        pathNode->Node = newNode;
+        pathNode->Rank = cost + estimate;
+		//PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
 		_queue->Push(pathNode);
 
         bestResult.ParentNode = node;

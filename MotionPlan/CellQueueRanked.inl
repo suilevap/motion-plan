@@ -18,18 +18,17 @@ CellQueueRanked<NodeInfo, CostInfo>::~CellQueueRanked()
 }
 
 template<typename NodeInfo,typename CostInfo> 
-void CellQueueRanked<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& node)
+void CellQueueRanked<NodeInfo, CostInfo>::Push(PathNode<NodeInfo, CostInfo>* node)
 {
-
 	_queue->push(node);
 	_count++;
 }
 
 template<typename NodeInfo,typename CostInfo> 
-PathNode<NodeInfo, CostInfo> CellQueueRanked<NodeInfo, CostInfo>::Pop()
+PathNode<NodeInfo, CostInfo>* CellQueueRanked<NodeInfo, CostInfo>::Pop()
 {
 
-	PathNode<NodeInfo, CostInfo> result = _queue->top();
+	PathNode<NodeInfo, CostInfo>* result = _queue->top();
 	_queue->pop();
 	
 	return result; 
@@ -49,8 +48,8 @@ void CellQueueRanked<NodeInfo, CostInfo>::Clear()
 		delete _queue;
 	}
 	_queue = new std::priority_queue<
-			PathNode<NodeInfo,CostInfo>,
-			std::vector<PathNode<NodeInfo,CostInfo>>,
+			PathNode<NodeInfo,CostInfo>*,
+			std::vector<PathNode<NodeInfo,CostInfo>*>,
 			std::greater<PathNode<NodeInfo,CostInfo>> >();
 }
 

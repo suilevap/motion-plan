@@ -24,6 +24,7 @@ public:
     
     T* Allocate();
     bool Free(T* obj);
+    void Clear();
 };
 
 #include "Pool.inl"

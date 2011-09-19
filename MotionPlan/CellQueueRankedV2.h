@@ -17,19 +17,19 @@ class CellQueueRankedV2
 {
 private:
 
-	std::vector<PathNode<NodeInfo,CostInfo>> _queue;
+	std::vector<PathNode<NodeInfo,CostInfo>*> _queue;
 
 	int _count;
 
-    void BubbleUp(int i,const PathNode<NodeInfo,CostInfo>& point);
-    void TrickleDown(int i,const PathNode<NodeInfo,CostInfo>& point);
+    void BubbleUp(int i, const PathNode<NodeInfo,CostInfo>* point);
+    void TrickleDown(int i, const PathNode<NodeInfo,CostInfo>* point);
 
 public:
 	CellQueueRankedV2();
 	~CellQueueRankedV2();
 
-	void Push(const PathNode<NodeInfo,CostInfo>& point);
-	PathNode<NodeInfo,CostInfo> Pop();
+	void Push(const PathNode<NodeInfo,CostInfo>* point);
+	PathNode<NodeInfo,CostInfo>* Pop();
 	bool Empty();
 
 	void Clear();

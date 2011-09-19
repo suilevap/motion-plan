@@ -6,6 +6,7 @@
 #include "MapView.h"
 #include <vector>
 #include "FastVector.h"
+#include "Pool.h"
 
 #include "PathNode.h"
 #include "CellQueueRanked.h"
@@ -25,7 +26,7 @@ template<
 	typename PointInfo, 
 	typename CellType, 	
 	typename CostInfo,
-	typename CellQueue = CellQueueRankedV2<int, CostInfo>> 
+	typename CellQueue = CellQueueRanked<int, CostInfo>> 
 class BasePathFinder : public PathFinder<PointInfo, CellType, int, CostInfo>
 {
 public:
@@ -42,6 +43,7 @@ protected:
 	PointInfo _startPoint;
 
 	CellQueue* _queue;
+    Pool<PathNode<NodeInfo, CostInfo>> _pathNodePool;
 
 	bool CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal);
 	CostInfo GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge);

@@ -15,7 +15,8 @@ CellQueueRankedV2<NodeInfo, CostInfo>::~CellQueueRankedV2()
 }
 
 template<typename NodeInfo,typename CostInfo> 
-void CellQueueRankedV2<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostInfo>& node)
+void CellQueueRankedV2<NodeInfo, CostInfo>::
+Push(const PathNode<NodeInfo, CostInfo>* node)
 {
     _queue.push_back(node);
     BubbleUp(_queue.size()-1, node);
@@ -23,9 +24,9 @@ void CellQueueRankedV2<NodeInfo, CostInfo>::Push(const PathNode<NodeInfo, CostIn
 }
 
 template<typename NodeInfo,typename CostInfo> 
-PathNode<NodeInfo, CostInfo> CellQueueRankedV2<NodeInfo, CostInfo>::Pop()
+PathNode<NodeInfo, CostInfo>* CellQueueRankedV2<NodeInfo, CostInfo>::Pop()
 {
-    PathNode<NodeInfo, CostInfo> result = _queue[0];
+    PathNode<NodeInfo, CostInfo>* result = _queue[0];
     TrickleDown(0, _queue[_queue.size()-1]);
     _queue.pop_back();
     return result;
@@ -45,37 +46,37 @@ void CellQueueRankedV2<NodeInfo, CostInfo>::Clear()
 
 template<typename NodeInfo,typename CostInfo> 
 void CellQueueRankedV2<NodeInfo, CostInfo>::
-BubbleUp(int i, const PathNode<NodeInfo,CostInfo>& node)
+BubbleUp(int i, const PathNode<NodeInfo,CostInfo>* node)
 {
-        int parent = (i-1)/2;
-        // note: (index > 0) means there is a parent
-        while ((i > 0) && (_queue[parent] > node))
-        {
-                _queue[i] = _queue[parent];
-                i = parent;
-                parent = (i-1)/2;
-        }
-        _queue[i] = node;
+    int parent = (i-1)/2;
+    // note: (index > 0) means there is a parent
+    while ((i > 0) && (_queue[parent] > node))
+    {
+        _queue[i] = _queue[parent];
+        i = parent;
+        parent = (i-1)/2;
+    }
+    _queue[i] = node;
 }
 
 template<typename NodeInfo,typename CostInfo> 
 void CellQueueRankedV2<NodeInfo, CostInfo>::
-TrickleDown(int i, const PathNode<NodeInfo,CostInfo>& node)
+TrickleDown(int i, const PathNode<NodeInfo,CostInfo>* node)
 {
-        int child = (i*2)+1;
-        int size = _queue.size();
-        while (child < size)
+    int child = (i*2)+1;
+    int size = _queue.size();
+    while (child < size)
+    {
+        if (((child+1) < size) && 
+                (_queue[child] > _queue[child+1]))
         {
-                if (((child+1) < size) && 
-                        (_queue[child] > _queue[child+1]))
-                {
-                        child++;
-                }
-                _queue[i] = _queue[child];
-                i = child;
-                child = (i*2)+1;
+                child++;
         }
-        BubbleUp(i, node);
+        _queue[i] = _queue[child];
+        i = child;
+        child = (i*2)+1;
+    }
+    BubbleUp(i, node);
 }
 
 #endif

@@ -14,7 +14,7 @@ class CellQueueSimple
 {
 private:
 
-	std::queue<PathNode<NodeInfo,CostInfo>>* _queue;
+	std::queue<PathNode<NodeInfo,CostInfo>*>* _queue;
 
 
 	int _count;
@@ -24,8 +24,8 @@ public:
 	~CellQueueSimple();
 
 
-	void Push(const PathNode<NodeInfo,CostInfo>& point);
-	PathNode<NodeInfo,CostInfo> Pop();
+	void Push(const PathNode<NodeInfo,CostInfo>* point);
+	PathNode<NodeInfo,CostInfo>* Pop();
 	bool Empty();
 
 	void Clear();

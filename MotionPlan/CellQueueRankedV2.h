@@ -21,14 +21,14 @@ private:
 
 	int _count;
 
-    void BubbleUp(int i, const PathNode<NodeInfo,CostInfo>* point);
-    void TrickleDown(int i, const PathNode<NodeInfo,CostInfo>* point);
+    void BubbleUp(int i, PathNode<NodeInfo,CostInfo>* point);
+    void TrickleDown(int i, PathNode<NodeInfo,CostInfo>* point);
 
 public:
 	CellQueueRankedV2();
 	~CellQueueRankedV2();
 
-	void Push(const PathNode<NodeInfo,CostInfo>* point);
+	void Push(PathNode<NodeInfo,CostInfo>* point);
 	PathNode<NodeInfo,CostInfo>* Pop();
 	bool Empty();
 

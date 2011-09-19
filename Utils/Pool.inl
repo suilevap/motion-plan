@@ -21,6 +21,8 @@ void Pool<T>::Clear()
 	{
 		delete[] _items[i];
 	}
+    _items.clear();
+    _freeItems.clear();
     _index = CHUNK_SIZE;
 }
 
@@ -29,16 +31,16 @@ T* Pool<T>::Allocate()
 {    
     T* result = NULL;
 	int index;
-	if (!_freeIds.empty())
+	if (!_freeItems.empty())
 	{
-		result = _freeIds.top();
-		_freeIds.pop();
+        result = _freeItems.back();
+        _freeItems.pop_back();
 	}
 	else
 	{
         if (_index < CHUNK_SIZE - 1)
         {
-            Chunk chunk = *(_items.rbegin());
+            Chunk chunk = _items.back();
             result = &chunk[_index];
         }
         else
@@ -62,7 +64,7 @@ bool Pool<T>::Free(T* obj)
 	//if ((id>=0) &&(id<_items.size()))
 	//{
         //TODO: fix issue with multiple free one object in pool
-		_freeIds.push(obj);
+		_freeItems.push_back(obj);
 		isSucceed = true;
 //	}
 	return isSucceed;

@@ -17,7 +17,7 @@ CellQueueSimple<NodeInfo, CostInfo>::~CellQueueSimple()
 
 template<typename NodeInfo,typename CostInfo> 
 void CellQueueSimple<NodeInfo, CostInfo>::
-Push(const PathNode<NodeInfo, CostInfo>* node)
+Push( PathNode<NodeInfo, CostInfo>* node)
 {
 	_queue->push(node);
 	_count++;

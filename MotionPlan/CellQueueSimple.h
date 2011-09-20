@@ -24,7 +24,7 @@ public:
 	~CellQueueSimple();
 
 
-	void Push(const PathNode<NodeInfo,CostInfo>* point);
+	void Push(PathNode<NodeInfo,CostInfo>* point);
 	PathNode<NodeInfo,CostInfo>* Pop();
 	bool Empty();
 

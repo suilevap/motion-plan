@@ -153,10 +153,11 @@ Step(NodeInfo node, NodeInfo goal)
     int size = _neighbors.size();
     for (int i=0; i < size; ++i)
 	{
-        EdgeInfo<NodeInfo,CostInfo>& edge = _neighbors[i];
-		if (_mapCost[edge.To].Status == NodeStatus::Open)
+		//TODO: fix C4238: nonstandard extension used : class rvalue used as lvalue	
+        EdgeInfo<NodeInfo,CostInfo>* edge = &(_neighbors[i]);
+		if (_mapCost[edge->To].Status == NodeStatus::Open)
 		{
-			CheckNeighbor(node, edge, goal);
+			CheckNeighbor(node, *edge, goal);
 			//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
 		}
 	}
@@ -174,11 +175,11 @@ CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo goal)
 	NodeInfo newNode = edge.To;
 
 	//TODO: fix hardcoded _mapDist for NodeInfo == int
-	NodeState<NodeInfo,CostInfo>& bestResult = _mapCost[newNode];
+	NodeState<NodeInfo,CostInfo>* bestResult = &(_mapCost[newNode]);
 
 	CostInfo cost = GetDistance(node, edge);
-	if ((bestResult.ParentNode == 0) 
-		|| (bestResult.Cost > cost))
+	if ((bestResult->ParentNode == 0) 
+		|| (bestResult->Cost > cost))
 	{
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
 		CostInfo estimate;
@@ -196,8 +197,8 @@ CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo goal)
 		//PathNode<NodeInfo, CostInfo> pathNode(newNode, cost, estimate );
 		_queue->Push(pathNode);
 
-        bestResult.ParentNode = node;
-        bestResult.Cost = cost;
+        bestResult->ParentNode = node;
+        bestResult->Cost = cost;
 		result = true;
 	}
 

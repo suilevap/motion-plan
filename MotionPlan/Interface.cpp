@@ -23,6 +23,7 @@
 //#include "Transformable.h"
 //#include "Scalable.h"
 
+#pragma warning( disable : 4244 )
 
 ObjectIdPool<GridMapView<int>> _maps;
 ObjectIdPool<AStar::PathFinder<Point<float>, int, float>> _pathFinders;
@@ -94,8 +95,6 @@ double DrawMap(double mapIndex)
 double CreateMap(double width, double height, double cellSize)
 {
 
-	int cellSize2 = static_cast<int>(cellSize);
-
 	GridMapView<int>* map = new GridMapView<int>(width, height, cellSize);
 
 	int result = _maps.Add(map);
@@ -106,8 +105,6 @@ double CreateMap(double width, double height, double cellSize)
 double CreateHexMap(double width, double height, double cellSize)
 {
 
-	int cellSize2 = static_cast<int>(cellSize);
-
 	GridMapView<int>* map = new HexGridMapView<int>(width, height, cellSize);
 
 	int result = _maps.Add(map);
@@ -117,8 +114,6 @@ double CreateHexMap(double width, double height, double cellSize)
 
 double CreateSparseMap(double width, double height, double cellSize)
 {
-
-	int cellSize2 = static_cast<int>(cellSize);
 
 	GridMapView<int>* map = new SparseGridMapView<int>(width, height, cellSize);
 
@@ -149,7 +144,9 @@ double SetCellMapRegion(double mapIndex, double x, double y, double w, double h,
 	GridMapView<int>* map = _maps.Get(mapIndex2);
 	if (map!= NULL)
 	{
-		map->SetCellRegion(Point<float>(x, y), cell2, Point<float>(w, h));
+		Point<float> pointStart(x, y);
+		Point<float> size(w, h);
+		map->SetCellRegion(pointStart, cell2, size);
 	}
 	return cell;
 }
@@ -162,7 +159,8 @@ double GetCellMap(double mapIndex, double x, double y)
 	GridMapView<int>* map = _maps.Get(mapIndex2);
 	if (map != NULL)
 	{
-		result = map->GetCellPoint(Point<float>(x, y));
+		Point<float> point(x, y);
+		result = map->GetCellPoint(point);
 	}
 	return static_cast<double>(result);
 }
@@ -207,9 +205,9 @@ double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
 
 	if (mapDebug != NULL)
 	{
-		AStar::PathFinder<Point<float>, int, float>* pathFinder = _pathFinders.Get(pathFinderIndex);
 
 #ifdef _DEBUG
+		AStar::PathFinder<Point<float>, int, float>* pathFinder = _pathFinders.Get(pathFinderIndex);
 		pathFinder->InitDebug(mapDebug);
 #endif
 		result = pathFinderIndex;
@@ -331,8 +329,12 @@ void OutputPath(double mapObstInd, double path)
     {
 	    float x = GetXPath(path, i);
 	    float y = GetYPath(path, i);
-	    m.SetCellPoint(Point<float>(x, y), (static_cast<int>(i+1))%100);
+		Point<float> point(x, y);
+	    m.SetCellPoint(point, (static_cast<int>(i+1))%100);
     }
     m.ToOutput();
 
 }
+
+#pragma warning( default : 4244 )
+

@@ -2,6 +2,8 @@
 #error "Include from ObjectIdPoll.h only."
 #else
 
+#pragma warning( disable : 4018 )
+
 template<class T>
 ObjectIdPool<T>::ObjectIdPool(void)
 {
@@ -69,5 +71,7 @@ bool ObjectIdPool<T>::Free(int id)
 	}
 	return isSucceed;
 }
+
+#pragma warning( default : 4018 )
 
 #endif

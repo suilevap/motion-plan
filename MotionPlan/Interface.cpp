@@ -25,7 +25,7 @@
 
 
 ObjectIdPool<GridMapView<int>> _maps;
-ObjectIdPool<AStar::PathFinder<Point<float>, int, int, float>> _pathFinders;
+ObjectIdPool<AStar::PathFinder<Point<float>, int, float>> _pathFinders;
 ObjectIdPool<AStar::Path<Point<float>>> _paths;
 
 char* ConvertToGmPath(AStar::Path<Point<float>>* p);
@@ -207,7 +207,7 @@ double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
 
 	if (mapDebug != NULL)
 	{
-		AStar::PathFinder<Point<float>, int, int, float>* pathFinder = _pathFinders.Get(pathFinderIndex);
+		AStar::PathFinder<Point<float>, int, float>* pathFinder = _pathFinders.Get(pathFinderIndex);
 
 #ifdef _DEBUG
 		pathFinder->InitDebug(mapDebug);
@@ -223,7 +223,7 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
 
 	int result = -1;
-	AStar::PathFinder<Point<float>, int, int, float>* pathFinder  = _pathFinders.Get(pathFinderIndex2);
+	AStar::PathFinder<Point<float>, int, float>* pathFinder  = _pathFinders.Get(pathFinderIndex2);
 
 	if (pathFinder != NULL)
 	{

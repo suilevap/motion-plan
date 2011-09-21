@@ -17,7 +17,7 @@ inline int HexGridMapView<CellType>::GetYOffset(const Point<float>& point)
 }
 
 template<class CellType>
-void HexGridMapView<CellType>::GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
+void HexGridMapView<CellType>::GetNeighbors(int node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
     neighbors.clear();
 	neighbors.resize(6);
@@ -36,7 +36,7 @@ void HexGridMapView<CellType>::GetNeighbors(int& node, FastVector<AStar::EdgeInf
 }
 
 template<class CellType>
-Point<float> HexGridMapView<CellType>::GetPoint(int& node)
+Point<float> HexGridMapView<CellType>::GetPoint(int node)
 {
 	Point<float> p = GridMapView<CellType,float>::GetPoint(node);
 	int offset = GetYOffset(node);
@@ -55,7 +55,7 @@ int HexGridMapView<CellType>::GetNode(Point<float>& point)
 }
 
 template<class CellType>
-float HexGridMapView<CellType>::GetCost(const int& nodeStart,const int& nodeGoal)
+float HexGridMapView<CellType>::GetCost(int nodeStart,int nodeGoal)
 {
 	Point<int> p1 = GetMapPoint(nodeStart);
 	Point<int> p2 = GetMapPoint(nodeGoal);

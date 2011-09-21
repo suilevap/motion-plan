@@ -9,7 +9,7 @@ template<
 	typename CellQueueStart,
 	typename CellQueueGoal> 
 BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
-BidirectionalPathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
+BidirectionalPathFinder(MapView<PointInfo, CellType, CostInfo>* map)
 {
 	Init(map);
 }
@@ -34,7 +34,7 @@ template<
 	typename CellQueueStart,
 	typename CellQueueGoal>
 void BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
-Init(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
+Init(MapView<PointInfo, CellType, CostInfo>* map)
 {
     _map = map;
 	_pathFinderStart = new AStar::BasePathFinder<PointInfo, CellType, CostInfo, CellQueueStart>(_map);
@@ -78,7 +78,7 @@ template<
 	typename CellQueueStart,
 	typename CellQueueGoal>
 bool BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
-IsGoal(NodeInfo& node)
+IsGoal(NodeInfo node)
 {
 	bool result = (_pathFinderGoal->FindIsPathExists(node));
 	return result;
@@ -91,7 +91,7 @@ template<
 	typename CellQueueStart,
 	typename CellQueueGoal>
 bool BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
-FindIsPathExists(NodeInfo& node)
+FindIsPathExists(NodeInfo node)
 {
 	bool result = (_pathFinderStart->FindIsPathExists(node));
 	return result;
@@ -105,7 +105,7 @@ template<
 	typename CellQueueStart,
 	typename CellQueueGoal>
 Path<PointInfo>* BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
-FindEnd(NodeInfo& node)
+FindEnd(NodeInfo node)
 {
 	Path<PointInfo>* result;
 	if (FindIsPathExists(node))

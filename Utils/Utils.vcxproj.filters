@@ -55,7 +55,7 @@
       <Filter>Inline Files</Filter>
     </None>
     <None Include="Pool.inl">
-      <Filter>Header Files</Filter>
+      <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

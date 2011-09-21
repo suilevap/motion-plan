@@ -6,7 +6,7 @@
 #include "MathConstants.h"
 
 template<class CellType, typename CoordType>
-void GridMapView<CellType, CoordType>::GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
+void GridMapView<CellType, CoordType>::GetNeighbors(int node, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
     neighbors.clear();
 	neighbors.resize(8);
@@ -28,7 +28,7 @@ void GridMapView<CellType, CoordType>::GetNeighbors(int& node, FastVector<AStar:
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
-    if (GetCell(node) != 1)
+    if (GetCell(node) != 1)	
     {
         neighbors.push_back(AStar::EdgeInfo<int,float>(node, d));
     }
@@ -69,7 +69,7 @@ inline int GridMapView<CellType, CoordType>::GetNodeDxDy(int node, int dx, int d
 }
 
 template<class CellType, typename CoordType>
-Point<CoordType> GridMapView<CellType, CoordType>::GetPoint(int& node)
+Point<CoordType> GridMapView<CellType, CoordType>::GetPoint(int node)
 {
 	Point<CoordType> pointWorld;
 	Point<int> pointMap = GetMapPoint(node);
@@ -78,7 +78,7 @@ Point<CoordType> GridMapView<CellType, CoordType>::GetPoint(int& node)
 	return pointWorld;
 }
 template<class CellType, typename CoordType>
-float GridMapView<CellType, CoordType>::GetCost(const int& nodeStart,const int& nodeGoal)
+float GridMapView<CellType, CoordType>::GetCost(int nodeStart,int nodeGoal)
 {
 	Point<int> p1 = GetMapPoint(nodeStart);
 	Point<int> p2 = GetMapPoint(nodeGoal);
@@ -94,17 +94,6 @@ int GridMapView<CellType, CoordType>::GetNode(Point<CoordType>& pointWorld)
 	return GetNodeFromMapPoint(pointMap);
 }
 
-template<class CellType, typename CoordType>
-CellType GridMapView<CellType, CoordType>::GetCell(int& node)
-{
-	return _map[node] ;
-}
-
-template<class CellType, typename CoordType>
-void GridMapView<CellType, CoordType>::SetCell(int& node, CellType cell)
-{
-	_map[node] = cell;	
-}
 
 template<class CellType, typename CoordType>
 Point<CoordType> GridMapView<CellType, CoordType>::GetMaxPoint()

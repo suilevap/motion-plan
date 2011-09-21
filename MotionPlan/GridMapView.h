@@ -13,11 +13,10 @@
 
 template<class CellType, typename CoordType = float>
 class GridMapView: 
-	public AStar::MapView<Point<CoordType>, CellType, int, float>
+	public AStar::MapView<Point<CoordType>, CellType, float>
 {
 private:
 	//CellType* _map;
-    std::vector<CellType> _map;
     
 protected:
 	int _width;
@@ -38,16 +37,14 @@ protected:
 	void AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
     int GetNodeDxDy(int node, int dx, int dy);
 public:
-	virtual void GetNeighbors(int& node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
+	virtual void GetNeighbors(int node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
 
-	virtual Point<CoordType> GetPoint(int& node);	
+	virtual Point<CoordType> GetPoint(int node);	
 	virtual int GetNode(Point<CoordType>& point);
-	virtual CellType GetCell(int& node);
-	virtual void SetCell(int& node, CellType cell);
 	virtual void SetCellRegion(Point<CoordType>& point, CellType cell, Point<CoordType>& size);
 	virtual Point<CoordType> GetMaxPoint();
 	virtual int GetMaxNode();
-	virtual float GetCost(const int& nodeStart,const int& nodeGoal);
+	virtual float GetCost(int nodeStart,int nodeGoal);
 	virtual bool OnMap(Point<CoordType>& point);
 
 	Point<CoordType>& GetCellSize() {return _cellSize;}

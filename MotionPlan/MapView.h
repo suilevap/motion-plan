@@ -14,27 +14,38 @@ namespace AStar
 template<
 	typename PointInfo, 
 	typename CellType, 
-	typename NodeInfo = int, 
 	typename CostInfo = float> 
 class MapView
 {	
-	
-public:
+protected:
+    std::vector<CellType> _map;
 
-	virtual void GetNeighbors(NodeInfo& node, FastVector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
-	virtual PointInfo GetPoint(NodeInfo& node)= 0;	
+public:
+	typedef int NodeInfo;
+
+	virtual void GetNeighbors(NodeInfo node, FastVector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
+	virtual PointInfo GetPoint(NodeInfo node)= 0;	
 	virtual NodeInfo GetNode(PointInfo& point)= 0;
 	virtual NodeInfo GetNodeWrite(PointInfo& point) {return GetNode(point);};
 
-	virtual CellType GetCell(NodeInfo& node)= 0;
-	virtual void SetCell(NodeInfo& index, CellType cell)= 0;
 	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
-	virtual CostInfo GetCost(const NodeInfo& nodeStart,const NodeInfo& nodeGoal) = 0;
+	virtual CostInfo GetCost(const NodeInfo nodeStart,const NodeInfo nodeGoal) = 0;
 	virtual bool OnMap(PointInfo& point) = 0;
 
 	virtual void ToOutput() = 0;
+
+	
+	CellType GetCell(NodeInfo node)
+	{
+		return _map[node] ;
+	}
+
+	void SetCell(NodeInfo node, CellType cell)
+	{
+		_map[node] = cell;	
+	}
 
 
 	CellType GetCellPoint(PointInfo& point)

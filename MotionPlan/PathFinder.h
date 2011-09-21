@@ -11,20 +11,22 @@ namespace AStar
 
 template<
 	typename PointInfo, 
-	typename CellType, 	
-	typename NodeInfo,
+	typename CellType,
 	typename CostInfo> 
 class PathFinder
 {
+
 protected:	
-	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
+	typedef int NodeInfo;
+
+	MapView<PointInfo, CellType, CostInfo>* _map;
 	NodeInfo _start;
 	NodeInfo _goal;
 
 	//for debug
-	MapView<PointInfo, CellType, NodeInfo, CostInfo>* _mapForStateDebug;
+	MapView<PointInfo, CellType, CostInfo>* _mapForStateDebug;
 	
-	virtual bool IsGoal(NodeInfo& goal) = 0;	
+	virtual bool IsGoal(NodeInfo goal) = 0;	
 public:
 
 	Path<PointInfo>* Find(PointInfo start, PointInfo goal)
@@ -54,13 +56,13 @@ public:
 	}
 
 	virtual ~PathFinder(){};
-	virtual void Init(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map) = 0;
+	virtual void Init(MapView<PointInfo, CellType, CostInfo>* map) = 0;
 	virtual void FindStart(NodeInfo start, NodeInfo goal) = 0;
 	virtual NodeInfo FindStep() = 0;
-	virtual bool FindIsPathExists(NodeInfo& node) = 0;
-	virtual Path<PointInfo>* FindEnd(NodeInfo& node) = 0;
+	virtual bool FindIsPathExists(NodeInfo node) = 0;
+	virtual Path<PointInfo>* FindEnd(NodeInfo node) = 0;
 
-	virtual void InitDebug(MapView<PointInfo, CellType, NodeInfo, CostInfo>* mapForStateDebug)
+	virtual void InitDebug(MapView<PointInfo, CellType, CostInfo>* mapForStateDebug)
 	{
 		_mapForStateDebug = mapForStateDebug; 
 	}

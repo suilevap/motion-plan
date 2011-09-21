@@ -23,7 +23,7 @@ template<
 	typename CostInfo,
 	typename CellQueueStart = CellQueueSimple<int, CostInfo>,
 	typename CellQueueGoal = CellQueueSimple<int, CostInfo>> 
-class BidirectionalPathFinder: public AStar::PathFinder<PointInfo, CellType, int, CostInfo>
+class BidirectionalPathFinder: public AStar::PathFinder<PointInfo, CellType,  CostInfo>
 {
 public:
 	typedef int NodeInfo;
@@ -31,18 +31,18 @@ public:
 protected:	
 	AStar::BasePathFinder<PointInfo, CellType, CostInfo, CellQueueStart>* _pathFinderStart;
 	AStar::BasePathFinder<PointInfo, CellType, CostInfo, CellQueueGoal>* _pathFinderGoal;
-	virtual bool IsGoal(NodeInfo& goal);
+	virtual bool IsGoal(NodeInfo goal);
 public:
-	BidirectionalPathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map);
+	BidirectionalPathFinder(MapView<PointInfo, CellType, CostInfo>* map);
 	~BidirectionalPathFinder();
 
-	virtual void Init(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map);
+	virtual void Init(MapView<PointInfo, CellType, CostInfo>* map);
 	virtual void FindStart(NodeInfo start, NodeInfo goal);
 	virtual NodeInfo FindStep();
-	virtual bool FindIsPathExists(NodeInfo& node) ;
-	virtual Path<PointInfo>* FindEnd(NodeInfo& curNode);
+	virtual bool FindIsPathExists(NodeInfo node) ;
+	virtual Path<PointInfo>* FindEnd(NodeInfo curNode);
 
-	virtual void InitDebug(MapView<PointInfo, CellType, NodeInfo, CostInfo>* mapForStateDebug)
+	virtual void InitDebug(MapView<PointInfo, CellType, CostInfo>* mapForStateDebug)
 	{
 		_pathFinderStart->InitDebug(mapForStateDebug);
 		_pathFinderGoal->InitDebug(mapForStateDebug);

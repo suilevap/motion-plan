@@ -135,7 +135,8 @@ void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height
 	_scale = Point<float>(1.0f / _cellSize.X, 1.0f / _cellSize.Y);
 
 	Point<int> mapSize;
-	TransformPointToCell(Point<CoordType>(width, height), mapSize);
+	Point<CoordType> dataSize(width, height);
+	TransformPointToCell(dataSize, mapSize);
 
 	_border = border;
 	_width = mapSize.X + 1 + _border * 2;
@@ -185,7 +186,8 @@ void GridMapView<CellType, CoordType>::SetCellRegion(Point<CoordType>& point, Ce
 	{
 		for (float k = point.Y; k < (point.Y + size.Y); k += _cellSize.Y/2)
 		{
-			int node = GetNodeWrite(Point<CoordType>(i,k));
+			Point<CoordType> curPoint(i,k);
+			int node = GetNodeWrite(curPoint);
 			SetCell(node, cell);
 		}
 	}
@@ -195,8 +197,6 @@ template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorder)
 {
 	int size = _width*_height;
-	int sizeCell = sizeof(_map[0]);
-	//memset(_map, value, sizeCell*size);
     _map.assign(size, value);
 	if (value != valueBorder)
 	{
@@ -204,6 +204,7 @@ void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorde
 		{
 			for (int k = 0; k < _border; ++k)
 			{
+				//TODO: use SetCell
 				_map[i * _width + k] = valueBorder;
 				_map[i * _width + _width - k - 1] = valueBorder;
 			}
@@ -212,6 +213,7 @@ void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorde
 		{
 			for (int i = 0; i < _border; ++i)
 			{
+				//TODO: use SetCell
 				_map[i * _width + k] = valueBorder;
 				_map[(_height - i - 1) * _width + k] = valueBorder;
 			}
@@ -233,7 +235,8 @@ void GridMapView<CellType, CoordType>::ToOutput()
 		for (float i =0; i < w; i += _cellSize.X)
 		{
 			//printf("%3d",(int)( (int)(GetCell(i , k)*10 )%100 ));
-			printf("%2d",(int)GetCellPoint(Point<CoordType>(i , k)));
+			Point<CoordType> point(i , k);
+			printf("%2d",(int)GetCellPoint(point));
 		}
 		printf("\n");
 	}

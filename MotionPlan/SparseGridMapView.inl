@@ -123,8 +123,8 @@ void SparseGridMapView<CellType>::GetNeighbors(int node, FastVector<AStar::EdgeI
 	static float step1 = 1;//_cellSize.X;
 	static float stepD = SQRT_2;//_cellSize.X * SQRT_2;
 
-	static float stepToSplased = SQRT_2 * SQRT_5 / 2;
-	static float stepToSplasedD = stepD * 3 / 2;
+	static float stepToSplased = (float) (SQRT_2 * SQRT_5 / 2);
+	static float stepToSplasedD = (float) (stepD * 3 / 2);
 
 
 	if (!IsCellSparse(node))

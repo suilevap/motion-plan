@@ -81,7 +81,7 @@ T* Pool<T>::Allocate()
 	else
 	{
          //get next new object
-        if (_index < CHUNK_INIT_SIZE<<_chunkIndex - 1)
+        if (_index < (CHUNK_INIT_SIZE<<_chunkIndex) - 1)
         {
             result = &(_currentChunk[_index]);
         }

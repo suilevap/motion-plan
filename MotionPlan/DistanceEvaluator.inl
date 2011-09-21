@@ -21,8 +21,8 @@ inline static T DistanceEvaluator::DiagonalDistance(const Point<P>& p1, const Po
 { 
 	P xd = std::abs(p1.X - p2.X);
 	P yd = std::abs(p1.Y - p2.Y);
-	T diagonal = min(xd, yd);
-	T straight = xd + yd;
+	P diagonal = min(xd, yd);
+	P straight = xd + yd;
 	return (T)((SQRT_2 * diagonal) + (straight - (2 * diagonal)));
 }
 

@@ -27,7 +27,7 @@ public:
 	CostInfo Cost;
 	NodeStatus::Status Status;
 
-	NodeState(const NodeInfo& parent,const CostInfo& cost):
+	NodeState(const NodeInfo parent,const CostInfo& cost):
 		ParentNode(parent),
 		Cost(cost),
 		Status(NodeStatus::Open)

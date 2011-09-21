@@ -8,7 +8,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-BasePathFinder(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
+BasePathFinder(MapView<PointInfo, CellType, CostInfo>* map)
 {
 	Init(map);
 }
@@ -30,7 +30,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-Init(MapView<PointInfo, CellType, NodeInfo, CostInfo>* map)
+Init(MapView<PointInfo, CellType, CostInfo>* map)
 {
     _map = map;
 	_queue = new CellQueue();
@@ -98,7 +98,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 bool BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-IsGoal(NodeInfo& node)
+IsGoal(NodeInfo node)
 {
 	return (node == _goal);
 }
@@ -109,7 +109,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 bool BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-FindIsPathExists(NodeInfo& node)
+FindIsPathExists(NodeInfo node)
 {
 	return ((node!=NULL) && (_mapCost[node].Status == NodeStatus::Close));
 }
@@ -121,7 +121,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-FindEnd(NodeInfo& node)
+FindEnd(NodeInfo node)
 {
 	Path<PointInfo>* result;
 	if (FindIsPathExists(node))
@@ -145,7 +145,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-Step(NodeInfo& node, NodeInfo& goal)
+Step(NodeInfo node, NodeInfo goal)
 {
 	_mapCost[node].Status = NodeStatus::Close;
 	_map->GetNeighbors(node, _neighbors);
@@ -168,7 +168,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 bool BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-CheckNeighbor(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo& goal)
+CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo goal)
 {
 	bool result = false;
 	NodeInfo newNode = edge.To;
@@ -210,7 +210,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 CostInfo BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-GetDistance(NodeInfo& node, EdgeInfo<NodeInfo, CostInfo>& edge)
+GetDistance(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge)
 {
 	return _mapCost[node].Cost + edge.Cost;
 }
@@ -221,7 +221,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 inline CostInfo BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-GetEstimateDistance(NodeInfo& node1, NodeInfo& node2)
+GetEstimateDistance(NodeInfo node1, NodeInfo node2)
 {
 	return _map->GetCost(node1, node2);
 }
@@ -232,7 +232,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-ExtractPath(NodeInfo& toPoint)
+ExtractPath(NodeInfo toPoint)
 {
 	PointInfo point;
 	

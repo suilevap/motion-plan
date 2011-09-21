@@ -133,6 +133,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="InterfaceForTest.cpp" />
     <ClCompile Include="MapView.cpp" />
     <ClCompile Include="RayCast.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -144,12 +145,14 @@
     <ClInclude Include="BasePathFinder.h" />
     <ClInclude Include="BidirectionalPathfinder.h" />
     <ClInclude Include="CellQueueRanked.h" />
+    <ClInclude Include="CellQueueRankedV2.h" />
     <ClInclude Include="CellQueueSimple.h" />
     <ClInclude Include="DllExport.h" />
     <ClInclude Include="EdgeInfo.h" />
     <ClInclude Include="GridMapView.h" />
     <ClInclude Include="HexGridMapView.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="InterfaceForTest.h" />
     <ClInclude Include="MapView.h" />
     <ClInclude Include="NodeState.h" />
     <ClInclude Include="PathFinder.h" />
@@ -167,6 +170,7 @@
     <None Include="BasePathFinder.inl" />
     <None Include="BidirectionalPathfinder.inl" />
     <None Include="CellQueueRanked.inl" />
+    <None Include="CellQueueRankedV2.inl" />
     <None Include="CellQueueSimple.inl" />
     <None Include="GridMapView.inl" />
     <None Include="HexGridMapView.inl" />

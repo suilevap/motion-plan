@@ -7,6 +7,9 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MathHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FastVector.h">
@@ -30,6 +33,15 @@
     <ClInclude Include="Transformable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Comparators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -41,6 +53,9 @@
     </None>
     <None Include="Transformable.inl">
       <Filter>Inline Files</Filter>
+    </None>
+    <None Include="Pool.inl">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

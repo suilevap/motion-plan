@@ -90,14 +90,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="Pool.inl" />
     <None Include="ReadMe.txt" />
     <None Include="ObjectIdPool.inl" />
     <None Include="Scalable.inl" />
     <None Include="Transformable.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Comparators.h" />
     <ClInclude Include="FastVector.h" />
     <ClInclude Include="FileStruct.h" />
+    <ClInclude Include="MathHelper.h" />
+    <ClInclude Include="Pool.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ObjectIdPool.h" />
@@ -106,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileStruct.cpp" />
+    <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

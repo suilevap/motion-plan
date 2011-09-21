@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MotionPlan"
 	ProjectGUID="{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
 	RootNamespace="MotionPlan"
@@ -126,7 +126,7 @@
 				EnableFunctionLevelLinking="true"
 				FloatingPointModel="0"
 				UsePrecompiledHeader="2"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -384,6 +384,18 @@
 				RelativePath=".\PathNode.h"
 				>
 			</File>
+			<Filter
+				Name="NavRect"
+				>
+				<File
+					RelativePath=".\NavigationRectangle.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NavigationRectangle.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Visibility"

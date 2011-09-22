@@ -23,7 +23,7 @@ protected:
     PointInfo _rightBottomPoint;
 
     std::vector<EdgeInfo<int, CostInfo>> _links;
-
+    int _index;
 
 public:
     PointInfo GetLeftTopPoint() { return _leftTopPoint; }
@@ -33,9 +33,10 @@ public:
     CellType GetValue() { return _value;}
     void SetValue(CellType value) { _value = value;}
     std::vector<EdgeInfo<int, CostInfo>> GetNeighboors() { return _links; };
+    int GetId() { return _index;}
 
-    bool IsNeighbor(NavigationRectangle<PointInfo, CellType, CostInfo> navRect);
-    void FindNeighbors(std::vector<NavigationRectangle<PointInfo, CellType, CostInfo>> navRects);
+    bool IsNeighbor(NavigationRectangle<PointInfo, CellType, CostInfo>* navRect);
+    void FindNeighbors(std::vector<NavigationRectangle<PointInfo, CellType, CostInfo>*> navRects);
 
     NavigationRectangle(PointInfo point1, PointInfo point2);
 

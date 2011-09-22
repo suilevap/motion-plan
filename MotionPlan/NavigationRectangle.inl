@@ -25,8 +25,8 @@ IsNeighbor(NavigationRectangle<PointInfo, CellType, CostInfo> navRect)
     PointInfo rect2Start = navRect.GetLeftTopPoint();
     PointInfo rect1End = GetRightBottomPoint();
     PointInfo rect2End = navRect.GetRightBottomPoint();
-    result = !(rect2Start.X > rect1End.X || rect2End.X < rect1Start.X 
-        || rect2Start.Y > rect1End.Y || rect2End.Y < rect1Start.Y);         
+    result = !(rect2Start.X > rect1End.X+1 || rect2End.X < rect1Start.X-1 
+        || rect2Start.Y > rect1End.Y+1 || rect2End.Y < rect1Start.Y-1);         
     return result;
 }
 

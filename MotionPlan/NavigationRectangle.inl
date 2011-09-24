@@ -2,51 +2,54 @@
 #error "Include from NavigationRectangle.h only."
 #else
 
+#include "DistanceEvaluator.h"
+
 template<
-	typename PointInfo, 
+	typename PointT, 
 	typename CellType, 
 	typename CostInfo> 
-NavigationRectangle<PointInfo, CellType, CostInfo>::
-NavigationRectangle(PointInfo point1, PointInfo point2)
+NavigationRectangle<PointT, CellType, CostInfo>::
+NavigationRectangle(Point<PointT> point1, Point<PointT> point2, int index, CellType value)
+    :Rectangle<PointT>(point1, point2)
 {
-	_leftTopPoint = point1;
-	_rightBottomPoint = point2;
+    _index = index;
+    _value = value;
 }
 
 template<
-	typename PointInfo, 
+	typename PointT, 
 	typename CellType, 
 	typename CostInfo> 
-bool NavigationRectangle<PointInfo, CellType, CostInfo>::
-IsNeighbor(NavigationRectangle<PointInfo, CellType, CostInfo>* navRect)
+NavigationRectangle<PointT, CellType, CostInfo>::
+NavigationRectangle(Rectangle<PointT>& rect, int index, CellType value)
+    :Rectangle<PointT>(rect.LefTopPoint, rect.RightBottomPoint)
 {
-    bool result = false;
-    PointInfo rect1Start = GetLeftTopPoint();
-    PointInfo rect2Start = navRect->GetLeftTopPoint();
-    PointInfo rect1End = GetRightBottomPoint();
-    PointInfo rect2End = navRect->GetRightBottomPoint();
-    result = !(rect2Start.X > rect1End.X+1 || rect2End.X < rect1Start.X-1 
-        || rect2Start.Y > rect1End.Y+1 || rect2End.Y < rect1Start.Y-1);         
-    return result;
+    _index = index;
+    _value = value;
 }
 
 template<
-	typename PointInfo, 
+	typename PointT, 
 	typename CellType, 
 	typename CostInfo> 
-void NavigationRectangle<PointInfo, CellType, CostInfo>::
-FindNeighbors(std::vector<NavigationRectangle<PointInfo, CellType, CostInfo>*> navRects)
+void NavigationRectangle<PointT, CellType, CostInfo>::
+FindNeighbors(std::vector<NavigationRectangle<PointT, CellType, CostInfo>*> navRects)
 {
-    for (std::vector<NavigationRectangle<PointInfo, CellType, CostInfo>*>::iterator it = navRects.begin(); it != navRects.end(); ++it)
+    for (
+        std::vector<NavigationRectangle<PointT, CellType, CostInfo>*>::iterator 
+        it = navRects.begin(); 
+        it != navRects.end(); 
+        ++it)
     {
         if (IsNeighbor(*it))
         {
-            CostInfo d = 0;
+            CostInfo d = DistanceEvaluator::EuclideanDistance<CostInfo, PointT>(
+                GetCenter(), 
+                it->GetCenter());
+
             _links.pushk_back(EdgeInfo<int, CostInfo>(it->GetId(),d));
         }
     }
 }
-
-
 
 #endif

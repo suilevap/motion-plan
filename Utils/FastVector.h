@@ -64,6 +64,12 @@ public:
     {
         return _data[i];
     }
+
+    inline void set(std::vector<T> values)
+    {
+        //TODO: check performance!!
+        _data = values;
+    }
 };
 
 #endif//UTILS_FASTVECTOR_H_

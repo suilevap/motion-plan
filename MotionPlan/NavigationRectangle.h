@@ -6,39 +6,36 @@
 #include <vector>
 #include "FastVector.h"
 #include "EdgeInfo.h"
-//#include "Point.h"
+#include "Point.h"
+#include "Rectangle.h"
+
 
 namespace AStar
 {
 
 template<
-	typename PointInfo, 
+	typename PointT, 
 	typename CellType, 
 	typename CostInfo = float> 
-class NavigationRectangle
+class NavigationRectangle : public Rectangle<PointT>
 {	
 protected:
     CellType _value;
-    PointInfo _leftTopPoint;
-    PointInfo _rightBottomPoint;
 
     std::vector<EdgeInfo<int, CostInfo>> _links;
     int _index;
 
 public:
-    PointInfo GetLeftTopPoint() { return _leftTopPoint; }
-    PointInfo GetRightBottomPoint() { return _rightBottomPoint; }
-    PointInfo GetCenter() {return (_leftTopPoint+_leftTopPoint) / 2;}
-
     CellType GetValue() { return _value;}
     void SetValue(CellType value) { _value = value;}
     std::vector<EdgeInfo<int, CostInfo>> GetNeighboors() { return _links; };
     int GetId() { return _index;}
 
-    bool IsNeighbor(NavigationRectangle<PointInfo, CellType, CostInfo>* navRect);
-    void FindNeighbors(std::vector<NavigationRectangle<PointInfo, CellType, CostInfo>*> navRects);
+    void FindNeighbors(std::vector<NavigationRectangle<PointT, CellType, CostInfo>*> navRects);
 
-    NavigationRectangle(PointInfo point1, PointInfo point2);
+    NavigationRectangle(Point<PointT> point1, Point<PointT> point2, int index, CellType value);
+    NavigationRectangle(Rectangle<PointT>& rect, int index, CellType value);
+    NavigationRectangle(){}
 
 
 };

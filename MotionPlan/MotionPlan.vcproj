@@ -395,6 +395,22 @@
 					RelativePath=".\NavigationRectangle.inl"
 					>
 				</File>
+				<File
+					RelativePath=".\NavRectMapView.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NavRectMapView.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Rectangle.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Rectangle.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

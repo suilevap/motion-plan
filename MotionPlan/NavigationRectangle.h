@@ -28,7 +28,7 @@ protected:
 public:
     CellType GetValue() { return _value;}
     void SetValue(CellType value) { _value = value;}
-    std::vector<EdgeInfo<int, CostInfo>> GetNeighboors() { return _links; };
+    std::vector<EdgeInfo<int, CostInfo>>* GetNeighboors() { return &(_links); };
     int GetId() { return _index;}
 
     void FindNeighbors(std::vector<NavigationRectangle<PointT, CellType, CostInfo>*> navRects);

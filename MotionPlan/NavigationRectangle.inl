@@ -22,7 +22,7 @@ template<
 	typename CostInfo> 
 NavigationRectangle<PointT, CellType, CostInfo>::
 NavigationRectangle(Rectangle<PointT>& rect, int index, CellType value)
-    :Rectangle<PointT>(rect.LefTopPoint, rect.RightBottomPoint)
+    :Rectangle<PointT>(rect.GetLeftTopPoint(), rect.GetRightBottomPoint())
 {
     _index = index;
     _value = value;
@@ -41,13 +41,14 @@ FindNeighbors(std::vector<NavigationRectangle<PointT, CellType, CostInfo>*> navR
         it != navRects.end(); 
         ++it)
     {
-        if (IsNeighbor(*it))
+        NavigationRectangle<PointT, CellType, CostInfo>* navRect = *it;
+        if (IsNeighbor(navRect))
         {
-            CostInfo d = DistanceEvaluator::EuclideanDistance<CostInfo, PointT>(
+            CostInfo d = AStar::DistanceEvaluator::EuclideanDistance<CostInfo, PointT>(
                 GetCenter(), 
-                it->GetCenter());
+                navRect->GetCenter());
 
-            _links.pushk_back(EdgeInfo<int, CostInfo>(it->GetId(),d));
+            _links.push_back(EdgeInfo<int, CostInfo>(navRect->GetId(),d));
         }
     }
 }

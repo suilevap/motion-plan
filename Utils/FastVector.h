@@ -65,10 +65,11 @@ public:
         return _data[i];
     }
 
-    inline void set(std::vector<T> values)
+    inline void set(std::vector<T>* values)
     {
         //TODO: check performance!!
-        _data = values;
+        _data = *values;
+        index = _data.size();
     }
 };
 

@@ -4,6 +4,8 @@
 
 #include "Rectangle.h"
 #include "NavRectMapView.h"
+#include "BasePathFinder.h"
+#include "Path.h"
 #include "Point.h"
 
 
@@ -17,3 +19,25 @@ TEST(NavRectMapView, Init)
     delete map;
 }
 
+//TEST(NavRectMapView, OnePath)
+//{
+//    std::vector<AStar::Rectangle<int>> rects;
+//
+//    rects.push_back(AStar::Rectangle<int>(Point<int>(1,1),Point<int>(3,3)));
+//    rects.push_back(AStar::Rectangle<int>(Point<int>(4,2),Point<int>(6,4)));
+//    rects.push_back(AStar::Rectangle<int>(Point<int>(6,5),Point<int>(8,8)));
+//    rects.push_back(AStar::Rectangle<int>(Point<int>(1,8),Point<int>(5,8)));
+//    rects.push_back(AStar::Rectangle<int>(Point<int>(1,5),Point<int>(2,7)));
+// 
+//    AStar::NavRectMapView<int,int>* map;
+//    map = new AStar::NavRectMapView<int,int>(rects);
+//
+//	AStar::BasePathFinder<Point<int>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
+//
+//	AStar::Path<Point<int>>* path = pathFinder->Find(Point<int>(2,2), Point<int>(2,6));
+//	ASSERT_EQ(5, path->Count());
+//	delete path;
+//	delete pathFinder;
+//	delete map;
+//
+//}

@@ -36,7 +36,7 @@ GetNode(Point<CoordType>& point)
     int result = 0;
     //TODO: implement smth clever than that simple brut force    
     int count = GetMaxNode();
-    for (int i = 0; i < count; ++i)
+    for (int i = 1; i < count; ++i)
     {
 	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
         if (navRect->IsInside(point))
@@ -68,30 +68,38 @@ template<class CellType, typename CoordType>
 NavRectMapView<CellType, CoordType>::
 NavRectMapView(std::vector<Rectangle<CoordType>> rectangles)
 {    
-    //for (std::vector<Rectangle<CoordType>>::iterator it = rectangles.begin(); 
-    //    it != rectangles.end(); 
-    //    ++it)
-    //{
-    //    int index = _map.size();
-    //    _navRects.push_back( 
-    //        new NavigationRectangle<CoordType, CellType, float>(*it, index, 1));    
-    //}
-    //_map.resize(_navRects.size());
+    //Point<CoordType> minP(0,0);
+    //Pont<CoordType> maxP(0,0);
+    //_navRects.push_back(
+    //    new NavigationRectangle<CoordType, CellType, float>(
+    //        Point<CoordType>(0,0),Point<CoordType>(0,0), 0, 0));
 
-    ////TODO: implement smth clever than that simple brut force
-    //int count = GetMaxNode();
-    //for (int i = 0; i < count; ++i)
-    //{
-	   // NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
-    //    navRect->FindNeighbors(_navRects);
-    //}
+    _navRects.push_back(NULL);
+
+    for (std::vector<Rectangle<CoordType>>::iterator it = rectangles.begin(); 
+        it != rectangles.end(); 
+        ++it)
+    {
+        int index = _navRects.size();
+        _navRects.push_back( 
+            new NavigationRectangle<CoordType, CellType, float>(*it, index, 1));    
+    }
+    _map.resize(_navRects.size());
+
+    //TODO: implement smth clever than that simple brut force
+    int count = GetMaxNode();
+    for (int i = 1; i < count; ++i)
+    {
+	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
+        navRect->FindNeighbors(_navRects);
+    }
 }
 
 template<class CellType, typename CoordType>
 NavRectMapView<CellType, CoordType>::~NavRectMapView()
 {
     int count = GetMaxNode();
-    for (int i = 0; i < count; ++i)
+    for (int i = 1; i < count; ++i)
     {
 	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
         delete navRect;

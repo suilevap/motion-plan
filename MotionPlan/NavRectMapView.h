@@ -46,12 +46,12 @@ public:
     }
     virtual int GetMaxNode()  
     { 
-        return _map.size()-1; 
+        return _map.size();//-1; 
     }
 	virtual float GetCost(int nodeStart,int nodeGoal);
 	virtual bool OnMap(Point<CoordType>& point)
     {
-        return _global.IsInside(point);
+        return true;//_global.IsInside(point);
     }
 
     void ToOutput()

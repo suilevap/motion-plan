@@ -60,6 +60,9 @@ public:
 
 	virtual ~GridMapView();
 	void Clear(CellType value, CellType valueBorder);
+    bool IsCellRegionIsotropic(Point<CoordType>& point1, Point<CoordType>& point2, CellType* cell);
+
+
 	virtual void ToOutput();
 	void ToOutputField();
 	static GridMapView<int>* LoadFrom(std::string &data, std::vector<Point<CoordType>>* specialPoints);

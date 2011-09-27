@@ -222,6 +222,32 @@ void GridMapView<CellType, CoordType>::Clear(CellType value, CellType valueBorde
 	}
 }
 
+template<class CellType, typename CoordType>
+bool GridMapView<CellType, CoordType>::
+IsCellRegionIsotropic(Point<CoordType>& point1, Point<CoordType>& point2, CellType* cell)
+{
+    bool result;
+    CellType baseCell = GetCellPoint(point1);
+    CellType currentCell;
+    Point<CoordType> cellSize = GetCellSize();
+	for (float i = point1.X; i < point2.X; i += cellSize.X/2)
+	{
+		for (float k = point1.Y; k < point2.Y; k += cellSize.Y/2)
+		{
+			Point<CoordType> curPoint(i,k);
+			currentCell = GetCellPoint(curPoint);
+			if (currentCell != baseCell)
+            {
+                //TODO: several return - baad
+                return false;
+            }
+		}
+	}
+    cell = baseCell;
+    return true;
+}
+
+
 //only for test!!
 template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::ToOutput()

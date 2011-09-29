@@ -59,9 +59,11 @@ public:
         printf("Not implemented=(");
     }
 
-    NavRectMapView(std::vector<Rectangle<CoordType>> rectangles);
+    NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
 
 	virtual ~NavRectMapView();
+
+     
 };
 
 #include "NavRectMapView.inl"

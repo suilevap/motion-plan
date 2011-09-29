@@ -14,10 +14,10 @@ namespace AStar
 {
 
 template<
-	typename PointT, 
+	typename CoordType, 
 	typename CellType, 
 	typename CostInfo = float> 
-class NavigationRectangle : public Rectangle<PointT>
+class NavigationRectangle : public Rectangle<CoordType>
 {	
 protected:
     CellType _value;
@@ -31,10 +31,10 @@ public:
     std::vector<EdgeInfo<int, CostInfo>>* GetNeighboors() { return &(_links); };
     int GetId() { return _index;}
 
-    void FindNeighbors(std::vector<NavigationRectangle<PointT, CellType, CostInfo>*> navRects);
+    void FindNeighbors(std::vector<NavigationRectangle<CoordType, CellType, CostInfo>*> navRects, CoordType step);
 
-    NavigationRectangle(Point<PointT> point1, Point<PointT> point2, int index, CellType value);
-    NavigationRectangle(Rectangle<PointT>& rect, int index, CellType value);
+    NavigationRectangle(Point<CoordType> point1, Point<CoordType> point2, int index, CellType value);
+    NavigationRectangle(Rectangle<CoordType>& rect, int index, CellType value);
     NavigationRectangle(){}
 
 

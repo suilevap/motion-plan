@@ -66,7 +66,7 @@ NavRectMapView()
     
 template<class CellType, typename CoordType>
 NavRectMapView<CellType, CoordType>::
-NavRectMapView(std::vector<Rectangle<CoordType>> rectangles)
+NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 {    
     //Point<CoordType> minP(0,0);
     //Pont<CoordType> maxP(0,0);
@@ -91,7 +91,7 @@ NavRectMapView(std::vector<Rectangle<CoordType>> rectangles)
     for (int i = 1; i < count; ++i)
     {
 	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
-        navRect->FindNeighbors(_navRects);
+        navRect->FindNeighbors(_navRects, step);
     }
 }
 
@@ -105,5 +105,19 @@ NavRectMapView<CellType, CoordType>::~NavRectMapView()
         delete navRect;
     }
 }
+
+//template<class CellType, typename CoordType>
+//NavRectMapView<CellType, CoordType>* NavRectMapView<CellType, CoordType>::
+//LoadFrom(GridMapView<CellType, CoordType> map)
+//{
+//    NavRectMapView<CellType, CoordType>* navRectMap;
+//    std::vector<AStar::Rectangle<CoordType>> rects;
+//
+//
+//
+//    navRectMap = new NavRectMapView<CellType, CoordType>(rects);
+//    return navRectMap;
+//}
+
 
 #endif

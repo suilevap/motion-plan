@@ -2,37 +2,37 @@
 #error "Include from Rectangle.h only."
 #else
 
-template<typename PointT>
-Rectangle<PointT>::
-Rectangle(Point<PointT> point1, Point<PointT> point2)
+template<typename CoordType>
+Rectangle<CoordType>::
+Rectangle(Point<CoordType> point1, Point<CoordType> point2)
 {
 	_leftTopPoint = point1;
 	_rightBottomPoint = point2;
-    _center = Point<PointT>::Avg(point1, point2);
+    _center = Point<CoordType>::Avg(point1, point2);
 }
 
-template<typename PointT>
-bool Rectangle<PointT>::
-IsInside(const Point<PointT>& point)
+template<typename CoordType>
+bool Rectangle<CoordType>::
+IsInside(const Point<CoordType>& point)
 {
     return (point.X >= _leftTopPoint.X && point.Y >= _leftTopPoint.Y 
         && point.X <= _rightBottomPoint.X && point.Y <= _rightBottomPoint.Y);
 }
 
-template<typename PointT>
-bool Rectangle<PointT>::
-IsNeighbor(Rectangle<PointT>* navRect)
+template<typename CoordType>
+bool Rectangle<CoordType>::
+IsNeighbor(Rectangle<CoordType>* navRect, CoordType step)
 {
     if ((navRect == NULL)||(navRect == this))
         return false;
 
     bool result = false;
-    Point<PointT> rect1Start = GetLeftTopPoint();
-    Point<PointT> rect2Start = navRect->GetLeftTopPoint();
-    Point<PointT> rect1End = GetRightBottomPoint();
-    Point<PointT> rect2End = navRect->GetRightBottomPoint();
-    result = !(rect2Start.X > rect1End.X+1 || rect2End.X+1 < rect1Start.X 
-        || rect2Start.Y > rect1End.Y+1 || rect2End.Y+1 < rect1Start.Y); 
+    Point<CoordType> rect1Start = GetLeftTopPoint();
+    Point<CoordType> rect2Start = navRect->GetLeftTopPoint();
+    Point<CoordType> rect1End = GetRightBottomPoint();
+    Point<CoordType> rect2End = navRect->GetRightBottomPoint();
+    result = !(rect2Start.X > rect1End.X+step || rect2End.X+step < rect1Start.X 
+        || rect2Start.Y > rect1End.Y+step || rect2End.Y+step < rect1Start.Y); 
 
     return result;
 }

@@ -5,7 +5,7 @@
 template<class CellType, typename CoordType>
 QuadNavRectMapView<CellType, CoordType>::
 QuadNavRectMapView(GridMapView<CellType, CoordType>* fromMap)
-    :base(LoadFrom(fromMap))
+:base(LoadFrom(fromMap), fromMap->GetCellSize().X)
 {
 
 }
@@ -38,6 +38,9 @@ AddQuadsFrom(Point<CoordType>& point1, Point<CoordType>& point2, std::vector<Rec
     else
     {
         Point<CoordType> pointCenter((point1.X + point2.X)/2,(point1.Y + point2.Y)/2) ;
+        //round
+        pointCenter = map->GetPoint(map->GetNode(pointCenter));
+
         Point<CoordType> d = point2 - point1;
         if (d.X > map->GetCellSize()/2)
         {

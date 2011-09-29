@@ -9,30 +9,30 @@
 namespace AStar
 {
 
-template<typename PointT>
+template<typename CoordType>
 class Rectangle
 {	
 protected:
-    Point<PointT> _leftTopPoint;
-    Point<PointT> _rightBottomPoint;
-    Point<PointT> _center;
+    Point<CoordType> _leftTopPoint;
+    Point<CoordType> _rightBottomPoint;
+    Point<CoordType> _center;
 public:
-    Point<PointT> GetLeftTopPoint() { return _leftTopPoint; }
-    Point<PointT> GetRightBottomPoint() { return _rightBottomPoint; }
-    Point<PointT> GetCenter() {return _center;}
+    Point<CoordType> GetLeftTopPoint() { return _leftTopPoint; }
+    Point<CoordType> GetRightBottomPoint() { return _rightBottomPoint; }
+    Point<CoordType> GetCenter() {return _center;}
 
-    bool IsNeighbor(Rectangle<PointT>* rect);
+    bool IsNeighbor(Rectangle<CoordType>* rect, CoordType step);
 
-    Rectangle(Point<PointT> point1, Point<PointT> point2);
+    Rectangle(Point<CoordType> point1, Point<CoordType> point2);
 
     Rectangle() 
     {
-        _leftTopPoint = Point<PointT>::Zero();
-        _rightBottomPoint = Point<PointT>::Zero();
-        _center = Point<PointT>::Zero();
+        _leftTopPoint = Point<CoordType>::Zero();
+        _rightBottomPoint = Point<CoordType>::Zero();
+        _center = Point<CoordType>::Zero();
     }
 
-    bool IsInside(const Point<PointT>& point);
+    bool IsInside(const Point<CoordType>& point);
 
 };
 

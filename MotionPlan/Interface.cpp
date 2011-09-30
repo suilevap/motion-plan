@@ -56,13 +56,8 @@ char* GetGmPath(double pathIndex)
 	char * buffer = ConvertToGmPath(p);
 	return buffer;
 }
-
-double ConvertToGmPath(double pathIndex, double gmPathId)
+double ConvertPathToGmPath(AStar::Path<Point<float>>* path, int gmPathId)
 {
-	int pathIndex2 = static_cast<int>(pathIndex);
-	int gmPathId2 = static_cast<int>(gmPathId);
-
-	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);	
 	std::vector<Point<float>> points = path->GetPoints();
 	double x;
 	double y;
@@ -70,9 +65,19 @@ double ConvertToGmPath(double pathIndex, double gmPathId)
 	{
 		x = it->X;
 		y = it->Y;
-		gm::path_add_point(gmPathId2, x, y, 100);		
+		gm::path_add_point(gmPathId, x, y, 100);		
 	}
 	return path->Count();
+}
+
+double ConvertToGmPath(double pathIndex, double gmPathId)
+{
+	int pathIndex2 = static_cast<int>(pathIndex);
+	int gmPathId2 = static_cast<int>(gmPathId);
+
+	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);	
+    double result = ConvertPathToGmPath(path, gmPathId2);
+    return result;
 }
 
 double DrawMap(double mapIndex)
@@ -249,8 +254,25 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 
 		AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(x, y), Point<float>(goalX, goalY));
 
-		//TODO: change to matrix transformation 
 		result = _paths.Add(path);
+	}
+	return static_cast<double>(result);
+}
+
+double FindPathGM(double pathFinderIndex, double x, double y, double goalX, double goalY, double gmPath)
+{
+	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
+
+	double result = -1;
+	AStar::PathFinder<Point<float>, int, float>* pathFinder  = _pathFinders.Get(pathFinderIndex2);
+
+	if (pathFinder != NULL)
+	{
+
+		AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(x, y), Point<float>(goalX, goalY));
+
+		result = ConvertPathToGmPath(path, gmPath);
+        delete path;
 	}
 	return static_cast<double>(result);
 }

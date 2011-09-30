@@ -19,6 +19,7 @@ DllExport double DrawMap(double mapIndex);
 DllExport double CreatePathFinder(double mapIndex);
 double CreatePathFinderDebug(double mapIndex, double mapDebugIndex);
 DllExport double FindPath(double pathFinderIndex, double x, double y, double goalX, double goalY);
+DllExport double FindPathGM(double pathFinderIndex, double x, double y, double goalX, double goalY, double gmPath);
 DllExport double DestroyPathFinder(double pathFinderIndex);
 
 DllExport double GetXPath(double pathIndex, double n);

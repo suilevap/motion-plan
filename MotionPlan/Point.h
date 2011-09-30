@@ -20,24 +20,24 @@ public:
         return Point<T>(0, 0);
     }
 
-	bool operator+ ( const Point<T> &point)
+	Point<T> operator+ ( const Point<T> &point)
 	{
-		return Point(X + point.X, Y + point.Y );
+		return Point<T>(X + point.X, Y + point.Y );
 	}
 
-	bool operator- ( const Point<T> &point)
+	Point<T> operator- ( const Point<T> &point)
 	{
-		return Point(X - point.X, Y - point.Y );
+		return Point<T>(X - point.X, Y - point.Y );
 	}
 
-	bool operator/ ( const T v)
+	Point<T> operator/ ( const T v)
 	{
-		return Point(X / v, Y / v );
+		return Point<T>(X / v, Y / v );
 	}
 
-    bool operator* ( const T v)
+    Point<T> operator* ( const T v)
 	{
-		return Point(X * v, Y * v );
+		return Point<T>(X * v, Y * v );
 	}
 
     bool operator<( const Point<T> point)

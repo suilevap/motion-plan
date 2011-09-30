@@ -68,8 +68,12 @@ template<class CellType, typename CoordType>
 NavRectMapView<CellType, CoordType>::
 NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 {    
-    //Point<CoordType> minP(0,0);
-    //Pont<CoordType> maxP(0,0);
+    if (rectangles.size() == 0)
+        return;
+    _stepSize = step;
+
+    Point<CoordType> minP = rectangles[0].GetLeftTopPoint();
+    Point<CoordType> maxP = rectangles[0].GetRightBottomPoint();
     //_navRects.push_back(
     //    new NavigationRectangle<CoordType, CellType, float>(
     //        Point<CoordType>(0,0),Point<CoordType>(0,0), 0, 0));
@@ -83,6 +87,13 @@ NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
         int index = _navRects.size();
         _navRects.push_back( 
             new NavigationRectangle<CoordType, CellType, float>(*it, index, 1));    
+
+        //TODO: need refactoring
+        minP.X = min(minP.X, it->GetLeftTopPoint().X);
+        minP.Y = min(minP.Y, it->GetLeftTopPoint().Y);
+
+        maxP.X = max(maxP.X, it->GetRightBottomPoint().X);
+        maxP.Y = max(maxP.Y, it->GetRightBottomPoint().Y);
     }
     _map.resize(_navRects.size());
 
@@ -91,8 +102,10 @@ NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
     for (int i = 1; i < count; ++i)
     {
 	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
-        navRect->FindNeighbors(_navRects, step);
+        navRect->FindNeighbors(_navRects, _stepSize);
     }
+
+    _global = Rectangle<CoordType>(minP, maxP);
 }
 
 template<class CellType, typename CoordType>
@@ -106,18 +119,27 @@ NavRectMapView<CellType, CoordType>::~NavRectMapView()
     }
 }
 
-//template<class CellType, typename CoordType>
-//NavRectMapView<CellType, CoordType>* NavRectMapView<CellType, CoordType>::
-//LoadFrom(GridMapView<CellType, CoordType> map)
-//{
-//    NavRectMapView<CellType, CoordType>* navRectMap;
-//    std::vector<AStar::Rectangle<CoordType>> rects;
-//
-//
-//
-//    navRectMap = new NavRectMapView<CellType, CoordType>(rects);
-//    return navRectMap;
-//}
+template<class CellType, typename CoordType>
+void NavRectMapView<CellType, CoordType>::
+ToOutput()
+{
+    Point<CoordType> startPoint = _global.GetLeftTopPoint();
+    Point<CoordType> endPoint = _global.GetRightBottomPoint();
+    Point<CoordType> curPoint;
 
+	float w = endPoint.X;
+	float h = endPoint.Y;
+	for (CoordType k = startPoint.Y; k <= h; k += _stepSize)
+	{
+		for (CoordType i = startPoint.X; i <= w; i += _stepSize)
+		{
+			//printf("%3d",(int)( (int)(GetCell(i , k)*10 )%100 ));
+			Point<CoordType> point(i , k);
+			printf("%2d",GetNode(point));
+		}
+		printf("\n");
+	}
+	printf("========================\n");
+}
 
 #endif

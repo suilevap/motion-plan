@@ -31,7 +31,7 @@ TEST(NavRectMapView, OnePath)
  
     AStar::NavRectMapView<int,int>* map;
     map = new AStar::NavRectMapView<int,int>(rects, 1);
-
+    map->ToOutput();
 	AStar::BasePathFinder<Point<int>, int, float>* pathFinder = 
         new AStar::BasePathFinder<Point<int>, int, float>(map);
 

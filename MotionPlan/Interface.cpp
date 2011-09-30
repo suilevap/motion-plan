@@ -15,6 +15,8 @@
 #include "GridMapView.h"
 #include "HexGridMapView.h"
 #include "SparseGridMapView.h"
+#include "QuadNavRectMapView.h"
+
 
 
 #include "Interface.h"
@@ -25,7 +27,7 @@
 
 #pragma warning( disable : 4244 )
 
-ObjectIdPool<GridMapView<int>> _maps;
+ObjectIdPool<AStar::MapView<Point<float>,int, float>> _maps;
 ObjectIdPool<AStar::PathFinder<Point<float>, int, float>> _pathFinders;
 ObjectIdPool<AStar::Path<Point<float>>> _paths;
 
@@ -75,7 +77,8 @@ double ConvertToGmPath(double pathIndex, double gmPathId)
 
 double DrawMap(double mapIndex)
 {
-    GridMapView<int>* map = _maps.Get(static_cast<int>(mapIndex));
+    AStar::MapView<Point<float>, int>* map0 = _maps.Get(static_cast<int>(mapIndex));
+    GridMapView<int>* map = dynamic_cast<GridMapView<int>*>(map0);
     Point<float> maxP = map->GetMaxPoint();
     Point<float> size = map->GetCellSize();
     Point<float> p;
@@ -122,13 +125,24 @@ double CreateSparseMap(double width, double height, double cellSize)
 	return static_cast<double>(result);
 }
 
+double CreateQuadMap(int gridMapIndex)
+{
+    AStar::MapView<Point<float>, int>* mapGrid0 = _maps.Get(static_cast<int>(gridMapIndex));
+    GridMapView<int>* mapGrid = dynamic_cast<GridMapView<int>*>(mapGrid0);
+
+    QuadNavRectMapView<int, float>* map = new QuadNavRectMapView<int, float>::Create(gridMap);
+
+	int result = _maps.Add(map);
+
+	return static_cast<double>(result);
+}
 
 double SetCellMap(double mapIndex, double x, double y, double cell)
 {
 	int mapIndex2 = static_cast<int>(mapIndex);
 
 	int cell2 = static_cast<int>(cell);
-	GridMapView<int>* map = _maps.Get(mapIndex2);
+	AStar::MapView<Point<float>, int>* map = _maps.Get(mapIndex2);
 	if (map!= NULL)
 	{
 		Point<float> p(x, y);
@@ -141,7 +155,7 @@ double SetCellMapRegion(double mapIndex, double x, double y, double w, double h,
 {
 	int mapIndex2 = static_cast<int>(mapIndex);
 	int cell2 = static_cast<int>(cell);
-	GridMapView<int>* map = _maps.Get(mapIndex2);
+	AStar::MapView<Point<float>, int>* map = _maps.Get(mapIndex2);
 	if (map!= NULL)
 	{
 		Point<float> pointStart(x, y);
@@ -156,7 +170,7 @@ double GetCellMap(double mapIndex, double x, double y)
 	int result = 0;
 	int mapIndex2 = static_cast<int>(mapIndex);
 
-	GridMapView<int>* map = _maps.Get(mapIndex2);
+	AStar::MapView<Point<float>, int>* map = _maps.Get(mapIndex2);
 	if (map != NULL)
 	{
 		Point<float> point(x, y);
@@ -178,12 +192,19 @@ double CreatePathFinder(double mapIndex)
 
 	int result = -1;
 
-	GridMapView<int>* map = _maps.Get(mapIndex2);
+	AStar::MapView<Point<float>, int>* map = _maps.Get(mapIndex2);
 
 	if (map != NULL)
 	{
+   //     GridMapView<int>* gridMap = dynamic_cast<GridMapView<int>*>(map);
+   //     QuadNavRectMapView<int, float>* quadMap = QuadNavRectMapView<int, float> ::Create(gridMap);
+   //     _maps.Add(quadMap);
+   //     AStar::BasePathFinder<Point<float>, int, float>* pathFinder = 
+			//new AStar::BasePathFinder<Point<float>, int, float>(quadMap);
+
 		AStar::BasePathFinder<Point<float>, int, float>* pathFinder = 
 			new AStar::BasePathFinder<Point<float>, int, float>(map);
+
 		/*AStar::PathFinder<Point<float>, int, int, float>* pathFinder = 
 			new AStar::BidirectionalPathFinder<Point<float>, int, float>(map);*/
 
@@ -199,7 +220,7 @@ double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
 
 	int result = -1;
 
-	GridMapView<int>* mapDebug = _maps.Get(mapDebugIndex2);
+	AStar::MapView<Point<float>, int>* mapDebug = _maps.Get(mapDebugIndex2);
 
 	int pathFinderIndex = static_cast<int>(CreatePathFinder(mapIndex2));
 
@@ -318,7 +339,9 @@ void OutputPath(double mapObstInd, double path)
     //printf(pathOutput);
 
     //TODO: AAAaa
-    GridMapView<int>* mapObst = _maps.Get(static_cast<int>(mapObstInd));
+    AStar::MapView<Point<float>, int>* mapObst0 = _maps.Get(static_cast<int>(mapObstInd));
+    GridMapView<int>* mapObst = dynamic_cast<GridMapView<int>*>(mapObst0);
+
     mapObst->ToOutput();
     /*Map<float>* mapDist = _pathFinders.Get(AStar::BasePathFinder<Point<float>, int, float>)->GetItem()->GetMapDist();
     mapDist->ToOutput();*/

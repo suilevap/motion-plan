@@ -25,17 +25,16 @@ protected:
     Rectangle<CoordType> _global;
     CoordType _stepSize;
     std::vector<NavigationRectangle<CoordType, CellType, float>*> _navRects;
-
-    inline NavigationRectangle<CoordType, CellType, float>* GetNavRect(int index)
-    {
-        return _navRects[index];
-    }
     
     //use static method Create instead constructor
     NavRectMapView() {}
     void Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
 
 public:
+    inline NavigationRectangle<CoordType, CellType, float>* GetNavRect(int index)
+    {
+        return _navRects[index];
+    }
 	virtual void GetNeighbors(int node, FastVector<EdgeInfo<int,float>>& neighbors);
 
 	virtual Point<CoordType> GetPoint(int node);	

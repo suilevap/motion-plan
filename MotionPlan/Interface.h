@@ -6,7 +6,7 @@ DllExport double CloseGM();
 DllExport double CreateMap(double width, double height, double cellSize);
 DllExport double CreateHexMap(double width, double height, double cellSize);
 DllExport double CreateSparseMap(double width, double height, double cellSize);
-DllExport double CreateQuadMap(int gridMapIndex);
+DllExport double CreateQuadMap(double gridMapIndex);
 
 
 DllExport double SetCellMap(double mapIndex, double x, double y, double cell);
@@ -14,6 +14,7 @@ DllExport double SetCellMapRegion(double mapIndex, double x, double y, double w,
 DllExport double GetCellMap(double mapIndex, double x, double y);
 DllExport double DestroyMap(double mapIndex);
 DllExport double DrawMap(double mapIndex);
+DllExport double DrawNavRectMap(double mapIndex);
 
 
 DllExport double CreatePathFinder(double mapIndex);

@@ -22,6 +22,8 @@ protected:
 	MapView<PointInfo, CellType, CostInfo>* _map;
 	NodeInfo _start;
 	NodeInfo _goal;
+    PointInfo _startP;
+    PointInfo _goalP;
 
 	//for debug
 	MapView<PointInfo, CellType, CostInfo>* _mapForStateDebug;
@@ -36,10 +38,12 @@ public:
 		if (_map->OnMap(start))
 		{
 			_start = _map->GetNode(start);
+            _startP = start;
 		}
 		if (_map->OnMap(goal))
 		{
 			_goal = _map->GetNode(goal);
+            _goalP = goal;
 		}
 
 		FindStart(_start, _goal);

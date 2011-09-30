@@ -139,8 +139,8 @@ void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height
 	TransformPointToCell(dataSize, mapSize);
 
 	_border = border;
-	_width = mapSize.X + 1 + _border * 2;
-	_height = mapSize.Y + 1 + _border * 2;
+	_width = mapSize.X + _border * 2;
+	_height = mapSize.Y + _border * 2;
 	int size = _width * _height;
 	//_map = new CellType[size];
     _map.resize(size);
@@ -238,12 +238,12 @@ IsCellRegionIsotropic(Point<CoordType>& point1, Point<CoordType>& point2, CellTy
 			currentCell = GetCellPoint(curPoint);
 			if (currentCell != baseCell)
             {
-                //TODO: several return - baad
+                //TODO: several return - bad
                 return false;
             }
 		}
 	}
-    cell = baseCell;
+    *cell = baseCell;
     return true;
 }
 

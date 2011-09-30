@@ -25,6 +25,8 @@ public:
 
     Rectangle(Point<CoordType> point1, Point<CoordType> point2);
 
+    bool IsEmpty(CoordType stepSize);
+
     Rectangle() 
     {
         _leftTopPoint = Point<CoordType>::Zero();

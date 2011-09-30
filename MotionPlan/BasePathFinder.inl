@@ -239,7 +239,7 @@ ExtractPath(NodeInfo toPoint)
 	
 	std::vector<PointInfo> result;
 	NodeInfo pos = toPoint;
-	
+    result.push_back(_goalP);
 	result.push_back(_map->GetPoint(pos));
 	while (pos != _start)
 	{		
@@ -247,6 +247,7 @@ ExtractPath(NodeInfo toPoint)
 		point = _map->GetPoint(pos);
 		result.push_back(point);
 	}
+    result.push_back(_startP);
 	
 	reverse(result.begin(), result.end());
 	Path<PointInfo>* path = new Path<PointInfo>(result);

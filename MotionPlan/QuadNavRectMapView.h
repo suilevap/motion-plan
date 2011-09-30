@@ -8,20 +8,22 @@
 #include "NavigationRectangle.h"
 #include "NavRectMapView.h"
 #include "GridMapView.h"
+#include "Rectangle.h"
+
 
 template<class CellType, typename CoordType = float>
 class QuadNavRectMapView: 
-    public AStar::NavRectMapView<CoordType, CellType>
+    public AStar::NavRectMapView<CellType, CoordType>
 {
-typedef AStar::NavRectMapView<CoordType, CellType> base;
+typedef AStar::NavRectMapView<CellType, CoordType> base;
 protected:
-    std::vector<Rectangle<CoordType>> LoadFrom(GridMapView<CellType, CoordType>* map);
-    AddQuadsFrom(Point<CoordType>& point1, Point<CoordType>& point2, std::vector<Rectangle<CoordType>>* rects, GridMapView<CellType, CoordType>* map)
-
+    std::vector<AStar::Rectangle<CoordType>> LoadFrom(GridMapView<CellType, CoordType>* map);
+    void AddQuadsFrom(Point<CoordType> point1, Point<CoordType> point2, std::vector<AStar::Rectangle<CoordType>>* rects, GridMapView<CellType, CoordType>* map);
+    QuadNavRectMapView() {}
 public:
-    QuadNavRectMapView(GridMapView<CellType, CoordType>* fromMap);
+    static QuadNavRectMapView<CellType, CoordType>* Create(GridMapView<CellType, CoordType>* fromMap);
 
-}
+};
 
 #include "QuadNavRectMapView.inl"
 

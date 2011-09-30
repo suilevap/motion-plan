@@ -20,7 +20,7 @@ class NavRectMapView:
 	public MapView<Point<CoordType>, CellType, float>
 {
 private:	
-        NavRectMapView();
+
 protected:
     Rectangle<CoordType> _global;
     CoordType _stepSize;
@@ -30,7 +30,11 @@ protected:
     {
         return _navRects[index];
     }
-    //AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
+    
+    //use static method Create instead constructor
+    NavRectMapView() {}
+    void Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
+
 public:
 	virtual void GetNeighbors(int node, FastVector<EdgeInfo<int,float>>& neighbors);
 
@@ -56,7 +60,7 @@ public:
 
     void ToOutput();
 
-    NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
+    static NavRectMapView* CreateCustom(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
 
 	virtual ~NavRectMapView();
 

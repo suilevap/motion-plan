@@ -127,10 +127,10 @@ double CreateSparseMap(double width, double height, double cellSize)
 
 double CreateQuadMap(int gridMapIndex)
 {
-    AStar::MapView<Point<float>, int>* mapGrid0 = _maps.Get(static_cast<int>(gridMapIndex));
-    GridMapView<int>* mapGrid = dynamic_cast<GridMapView<int>*>(mapGrid0);
+    AStar::MapView<Point<float>, int>* gridMap0 = _maps.Get(static_cast<int>(gridMapIndex));
+    GridMapView<int>* gridMap = dynamic_cast<GridMapView<int>*>(gridMap0);
 
-    QuadNavRectMapView<int, float>* map = new QuadNavRectMapView<int, float>::Create(gridMap);
+    QuadNavRectMapView<int, float>* map = QuadNavRectMapView<int, float>::Create(gridMap);
 
 	int result = _maps.Add(map);
 

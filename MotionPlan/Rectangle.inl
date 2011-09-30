@@ -37,4 +37,14 @@ IsNeighbor(Rectangle<CoordType>* navRect, CoordType step)
     return result;
 }
 
+template<typename CoordType>
+bool Rectangle<CoordType>::
+IsEmpty(CoordType stepSize)
+{
+    Point<CoordType> rect1Start = GetLeftTopPoint();
+    Point<CoordType> rect1End = GetRightBottomPoint();
+    return ((rect1Start.X+stepSize > rect1End.X) ||
+        ((rect1Start.Y+stepSize > rect1End.Y)));
+}
+
 #endif

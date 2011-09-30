@@ -22,7 +22,8 @@ class NavRectMapView:
 private:	
         NavRectMapView();
 protected:
-    NavigationRectangle<CoordType, CellType, float> _global;
+    Rectangle<CoordType> _global;
+    CoordType _stepSize;
     std::vector<NavigationRectangle<CoordType, CellType, float>*> _navRects;
 
     inline NavigationRectangle<CoordType, CellType, float>* GetNavRect(int index)
@@ -40,9 +41,8 @@ public:
         throw new std::exception("Not implemented");
     }
 	virtual Point<CoordType> GetMaxPoint()
-    {
-        throw new std::exception("Not implemented");
-        //return null;
+    {        
+        return _global.GetRightBottomPoint();
     }
     virtual int GetMaxNode()  
     { 
@@ -51,13 +51,10 @@ public:
 	virtual float GetCost(int nodeStart,int nodeGoal);
 	virtual bool OnMap(Point<CoordType>& point)
     {
-        return true;//_global.IsInside(point);
+        return _global.IsInside(point);
     }
 
-    void ToOutput()
-    {
-        printf("Not implemented=(");
-    }
+    void ToOutput();
 
     NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
 

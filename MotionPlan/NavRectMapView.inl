@@ -52,21 +52,24 @@ template<class CellType, typename CoordType>
 float NavRectMapView<CellType, CoordType>::
 GetCost(int nodeStart,int nodeGoal)
 {
-    Point<int> p1 = GetPoint(nodeStart);
-	Point<int> p2 = GetPoint(nodeGoal);
+    Point<CoordType> p1 = GetPoint(nodeStart);
+	Point<CoordType> p2 = GetPoint(nodeGoal);
 	float cost = AStar::DistanceEvaluator::EuclideanDistance<float>(p1, p2);
     return cost;
 }
 
 template<class CellType, typename CoordType>
-NavRectMapView<CellType, CoordType>::
-NavRectMapView()
+NavRectMapView<CellType, CoordType>* NavRectMapView<CellType, CoordType>::
+CreateCustom(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 {
+    NavRectMapView<CellType, CoordType>* result = new NavRectMapView<CellType, CoordType>();
+    result->Init(rectangles, step);
+    return result;
 }
-    
+
 template<class CellType, typename CoordType>
-NavRectMapView<CellType, CoordType>::
-NavRectMapView(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
+void NavRectMapView<CellType, CoordType>::
+Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 {    
     if (rectangles.size() == 0)
         return;
@@ -127,11 +130,11 @@ ToOutput()
     Point<CoordType> endPoint = _global.GetRightBottomPoint();
     Point<CoordType> curPoint;
 
-	float w = endPoint.X;
-	float h = endPoint.Y;
-	for (CoordType k = startPoint.Y; k <= h; k += _stepSize)
+	CoordType w = endPoint.X;
+	CoordType h = endPoint.Y;
+	for (CoordType k = startPoint.Y + _stepSize /2; k <= h; k += _stepSize)
 	{
-		for (CoordType i = startPoint.X; i <= w; i += _stepSize)
+		for (CoordType i = startPoint.X + _stepSize /2; i <= w; i += _stepSize)
 		{
 			//printf("%3d",(int)( (int)(GetCell(i , k)*10 )%100 ));
 			Point<CoordType> point(i , k);

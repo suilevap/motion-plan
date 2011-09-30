@@ -14,7 +14,7 @@ TEST(NavRectMapView, Init)
     std::vector<AStar::Rectangle<int>> rects;
 
     AStar::NavRectMapView<int,int>* map;
-    map = new AStar::NavRectMapView<int,int>(rects, 1);
+    map = AStar::NavRectMapView<int,int>::CreateCustom(rects, 1);
 
     delete map;
 }
@@ -30,8 +30,8 @@ TEST(NavRectMapView, OnePath)
     rects.push_back(AStar::Rectangle<int>(Point<int>(1,5),Point<int>(2,7)));
  
     AStar::NavRectMapView<int,int>* map;
-    map = new AStar::NavRectMapView<int,int>(rects, 1);
-    map->ToOutput();
+    map = AStar::NavRectMapView<int,int>::CreateCustom(rects, 1);
+    //map->ToOutput();
 	AStar::BasePathFinder<Point<int>, int, float>* pathFinder = 
         new AStar::BasePathFinder<Point<int>, int, float>(map);
 

@@ -102,6 +102,7 @@ double GenPathFinder(double map, int w, int h, int cellSize)
 void FindPathTest(double map, double pathFinder, int w, int h, int cellSize, bool outputMap)
 {
 	double path = FindPath(pathFinder, 2.0*cellSize, 8.0*cellSize, (w-2)*cellSize, 2.0*cellSize);
+    //double path = FindPath(pathFinder, (w-2)*cellSize, 2.0*cellSize, 2.0*cellSize, 8.0*cellSize);
 
 	if (outputMap)
 	{

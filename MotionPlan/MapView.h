@@ -1,0 +1,67 @@
+#pragma once
+
+#ifndef MOTIONPLAN_ASTAR_MAPVIEW_H
+#define MOTIONPLAN_ASTAR_MAPVIEW_H
+
+#include <vector>
+#include "FastVector.h"
+#include "EdgeInfo.h"
+//#include "Point.h"
+
+namespace AStar
+{
+
+template<
+	typename PointInfo, 
+	typename CellType, 
+	typename CostInfo = float> 
+class MapView
+{	
+protected:
+    std::vector<CellType> _map;
+
+public:
+	typedef int NodeInfo;
+
+	virtual void GetNeighbors(NodeInfo node, FastVector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
+	virtual PointInfo GetPoint(NodeInfo node)= 0;	
+	virtual NodeInfo GetNode(PointInfo& point)= 0;
+	virtual NodeInfo GetNodeWrite(PointInfo& point) {return GetNode(point);};
+
+	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
+	virtual PointInfo GetMaxPoint()= 0;
+	virtual NodeInfo GetMaxNode()= 0;
+	virtual CostInfo GetCost(NodeInfo nodeStart, NodeInfo nodeGoal) = 0;
+	virtual bool OnMap(PointInfo& point) = 0;
+
+	virtual void ToOutput() = 0;
+
+	
+	CellType GetCell(NodeInfo node)
+	{
+		return _map[node] ;
+	}
+
+	void SetCell(NodeInfo node, CellType cell)
+	{
+		_map[node] = cell;	
+	}
+
+
+	CellType GetCellPoint(PointInfo& point)
+	{
+		NodeInfo node = GetNode(point);
+		CellType cell = GetCell(node);
+		return cell;
+	}
+	void SetCellPoint(PointInfo& point, CellType cell)
+	{
+		NodeInfo node = GetNodeWrite(point);
+		SetCell(node, cell);
+	}
+	
+};
+
+}
+
+#endif //MOTIONPLAN_ASTAR_MAPVIEW_H

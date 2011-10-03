@@ -16,6 +16,7 @@
 #include "HexGridMapView.h"
 #include "SparseGridMapView.h"
 #include "QuadNavRectMapView.h"
+#include "NavRectMapView.h"
 
 
 
@@ -56,6 +57,19 @@ char* GetGmPath(double pathIndex)
 	char * buffer = ConvertToGmPath(p);
 	return buffer;
 }
+double ConvertPathToGmPath(AStar::Path<Point<float>>* path, int gmPathId)
+{
+	std::vector<Point<float>>& points = path->GetPoints();
+	double x;
+	double y;
+	for (std::vector<Point<float>>::iterator it = points.begin(); it != points.end(); ++it)
+	{
+		x = it->X;
+		y = it->Y;
+		gm::path_add_point(gmPathId, x, y, 100);		
+	}
+	return path->Count();
+}
 
 double ConvertToGmPath(double pathIndex, double gmPathId)
 {
@@ -63,31 +77,45 @@ double ConvertToGmPath(double pathIndex, double gmPathId)
 	int gmPathId2 = static_cast<int>(gmPathId);
 
 	AStar::Path<Point<float>>* path = _paths.Get(pathIndex2);	
-	std::vector<Point<float>> points = path->GetPoints();
-	double x;
-	double y;
-	for (std::vector<Point<float>>::iterator it = points.begin(); it != points.end(); ++it)
-	{
-		x = it->X;
-		y = it->Y;
-		gm::path_add_point(gmPathId2, x, y, 100);		
-	}
-	return path->Count();
+    double result = ConvertPathToGmPath(path, gmPathId2);
+    return result;
 }
 
 double DrawMap(double mapIndex)
 {
     AStar::MapView<Point<float>, int>* map0 = _maps.Get(static_cast<int>(mapIndex));
     GridMapView<int>* map = dynamic_cast<GridMapView<int>*>(map0);
-    Point<float> maxP = map->GetMaxPoint();
-    Point<float> size = map->GetCellSize();
-    Point<float> p;
-    for (p.X = 0; p.X < maxP.X; p.X += size.X)
+    if (map != NULL)
     {
-        for (p.Y = 0; p.Y < maxP.Y; p.Y += size.Y)
+        Point<float> maxP = map->GetMaxPoint();
+        Point<float> size = map->GetCellSize();
+        Point<float> p;
+        for (p.X = 0; p.X < maxP.X; p.X += size.X)
         {
-            int cell = map->GetCellPoint(p);
-            gm::draw_rectangle_color(p.X,p.Y,p.X+size.X, p.Y + size.Y, 5, 5, 5, 5, (cell==0)?true:false);
+            for (p.Y = 0; p.Y < maxP.Y; p.Y += size.Y)
+            {
+                int cell = map->GetCellPoint(p);
+                gm::draw_rectangle_color(p.X,p.Y,p.X+size.X, p.Y + size.Y, 5, 5, 5, 5, (cell==0)?true:false);
+            }
+        }
+    }
+    return 0;
+}
+double DrawNavRectMap(double mapIndex)
+{
+    AStar::MapView<Point<float>, int>* map0 = _maps.Get(static_cast<int>(mapIndex));
+    AStar::NavRectMapView<int>* map = dynamic_cast<AStar::NavRectMapView<int>*>(map0);
+    if (map != NULL)
+    {
+        int count = map->GetMaxNode();
+        for (int i = 1; i < count; ++i)
+        {
+            AStar::Rectangle<float>* rect = map->GetNavRect(i);
+
+            gm::draw_rectangle_color( rect->GetLeftTopPoint().X+2, rect->GetLeftTopPoint().Y+2,
+                rect->GetRightBottomPoint().X-2, rect->GetRightBottomPoint().Y-2,
+                1, 1, 1, 1, true);
+            
         }
     }
     return 0;
@@ -125,12 +153,12 @@ double CreateSparseMap(double width, double height, double cellSize)
 	return static_cast<double>(result);
 }
 
-double CreateQuadMap(int gridMapIndex)
+double CreateQuadMap(double gridMapIndex)
 {
-    AStar::MapView<Point<float>, int>* mapGrid0 = _maps.Get(static_cast<int>(gridMapIndex));
-    GridMapView<int>* mapGrid = dynamic_cast<GridMapView<int>*>(mapGrid0);
+    AStar::MapView<Point<float>, int>* gridMap0 = _maps.Get(static_cast<int>(gridMapIndex));
+    GridMapView<int>* gridMap = dynamic_cast<GridMapView<int>*>(gridMap0);
 
-    QuadNavRectMapView<int, float>* map = new QuadNavRectMapView<int, float>::Create(gridMap);
+    QuadNavRectMapView<int, float>* map = QuadNavRectMapView<int, float>::Create(gridMap);
 
 	int result = _maps.Add(map);
 
@@ -249,8 +277,25 @@ double FindPath(double pathFinderIndex, double x, double y, double goalX, double
 
 		AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(x, y), Point<float>(goalX, goalY));
 
-		//TODO: change to matrix transformation 
 		result = _paths.Add(path);
+	}
+	return static_cast<double>(result);
+}
+
+double FindPathGM(double pathFinderIndex, double x, double y, double goalX, double goalY, double gmPath)
+{
+	int pathFinderIndex2 = static_cast<int>(pathFinderIndex);
+
+	double result = -1;
+	AStar::PathFinder<Point<float>, int, float>* pathFinder  = _pathFinders.Get(pathFinderIndex2);
+
+	if (pathFinder != NULL)
+	{
+
+		AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(x, y), Point<float>(goalX, goalY));
+        gm::path_clear_points(gmPath);
+		result = ConvertPathToGmPath(path, static_cast<int>(gmPath));
+        delete path;
 	}
 	return static_cast<double>(result);
 }

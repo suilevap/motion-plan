@@ -30,6 +30,16 @@ public:
 		return Point<T>(X - point.X, Y - point.Y );
 	}
 
+    Point<T> operator* ( const Point<T> &point)
+	{
+		return Point<T>(X * point.X, Y * point.Y );
+	}
+
+	Point<T> operator/ ( const Point<T> &point)
+	{
+		return Point<T>(X / point.X, Y / point.Y );
+	}
+
 	Point<T> operator/ ( const T v)
 	{
 		return Point<T>(X / v, Y / v );
@@ -38,6 +48,16 @@ public:
     Point<T> operator* ( const T v)
 	{
 		return Point<T>(X * v, Y * v );
+	}
+
+    Point<T> operator+ ( const T v)
+	{
+		return Point<T>(X + v, Y + v );
+	}
+
+    Point<T> operator- ( const T v)
+	{
+		return Point<T>(X - v, Y - v );
 	}
 
     bool operator<( const Point<T> point)

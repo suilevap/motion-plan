@@ -62,6 +62,11 @@ protected:
 
     QuadNavRectMapView() {}
 
+public:
+    virtual int GetNode(Point<CoordType>& point);
+
+    static QuadNavRectMapView<CellType, CoordType, UseFastNodeSearch>* Create(GridMapView<CellType, CoordType>* fromMap);
+
     ~QuadNavRectMapView() 
     {
         delete _root;
@@ -70,11 +75,6 @@ protected:
             delete _fastNodeSearch;
         }
     }
-
-public:
-    virtual int GetNode(Point<CoordType>& point);
-
-    static QuadNavRectMapView<CellType, CoordType, UseFastNodeSearch>* Create(GridMapView<CellType, CoordType>* fromMap);
 
 };
 

@@ -45,3 +45,20 @@ TEST(NavigationRectangle, CheckNeighboors)
 
 }
 
+TEST(NavigationRectangle, CheckIntersect)
+{
+    AStar::NavigationRectangle<int, int, float> rect1(Point<int>(5,5),Point<int>(15,15), 1, 0);
+    AStar::NavigationRectangle<int, int, float> rect2(Point<int>(5,5),Point<int>(15,15), 2, 0);
+    AStar::Rectangle<int> result;
+    int step = 1;
+    rect2 = AStar::NavigationRectangle<int, int, float>(Point<int>(1,6),Point<int>(6,8), 2, 0);
+    result = rect1.GetIntersection(&rect2, step);
+    EXPECT_EQ(5, result.GetLeftTopPoint().X);
+    EXPECT_EQ(6, result.GetLeftTopPoint().Y);
+    EXPECT_EQ(7, result.GetRightBottomPoint().X);
+    EXPECT_EQ(9, result.GetRightBottomPoint().Y);
+
+    
+
+}
+

@@ -3,6 +3,8 @@
 #ifndef MOTIONPLAN_ASTAR_RECTANGLE_H
 #define MOTIONPLAN_ASTAR_RECTANGLE_H
 
+#include <algorithm>
+#include <vector>
 
 #include "Point.h"
 
@@ -22,7 +24,7 @@ public:
     Point<CoordType> GetCenter() {return _center;}
 
     bool IsNeighbor(Rectangle<CoordType>* rect, CoordType step);
-
+    Rectangle<CoordType> GetIntersection(Rectangle<CoordType>* rect, CoordType step);
     Rectangle(Point<CoordType> point1, Point<CoordType> point2);
 
     bool IsEmpty(CoordType stepSize);

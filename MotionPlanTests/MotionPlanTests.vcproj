@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MotionPlanTests"
 	ProjectGUID="{EEC96EDB-9587-429F-A962-CA9882D8F0DA}"
 	RootNamespace="MotionPlanTests"
@@ -221,6 +221,10 @@
 			</File>
 			<File
 				RelativePath=".\RayCastTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RVOTest.cpp"
 				>
 			</File>
 		</Filter>

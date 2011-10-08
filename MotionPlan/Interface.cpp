@@ -404,5 +404,13 @@ void OutputPath(double mapObstInd, double path)
 
 }
 
+//RVO
+//RVO
+DllExport double RVO_SetCellMapRegion(double x0, double y0, double w, double h);
+DllExport double RVO_AddAgent(double gmObjId, double radius, double maxSpeed, double h);
+DllExport double RVO_Start(double neighborDist, double maxNeighbors, double timeHorizon, double timeHorizonObst);
+DllExport double RVO_UpdateAgentSpeed();
+
+
 #pragma warning( default : 4244 )
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MotionPlan"
 	ProjectGUID="{9E559D00-4DBD-45F6-B3C2-3E36638D1EB1}"
 	RootNamespace="MotionPlan"
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Utils;..\include"
+				AdditionalIncludeDirectories="..\Utils;..\include;..\RVO"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MOTIONPLAN_EXPORTS;USE_GMAPI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -120,7 +120,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\Utils;..\include"
+				AdditionalIncludeDirectories="..\Utils;..\include;..\RVO"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MOTIONPLAN_EXPORTS;USE_GMAPI"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -181,6 +181,10 @@
 			ReferencedProjectIdentifier="{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}"
 			RelativePathToProject=".\Utils\Utils.vcproj"
 		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{31E38DAC-CA22-4C3B-8C14-5A14D3290443}"
+			RelativePathToProject=".\RVO\RVO.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -216,6 +220,10 @@
 			</File>
 			<File
 				RelativePath=".\InterfaceForTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RVOInterface.cpp"
 				>
 			</File>
 			<File
@@ -270,6 +278,10 @@
 			</File>
 			<File
 				RelativePath=".\QuadNavRectMapView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RVOInterface.h"
 				>
 			</File>
 			<File

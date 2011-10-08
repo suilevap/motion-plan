@@ -30,7 +30,6 @@ DllExport char* GetGmPath(double pathIndex);
 DllExport double ConvertToGmPath(double pathIndex, double gmPathId);
 DllExport double DestroyPath(double pathIndex);
 
-
 DllExport double Test();
 
 void OutputPath(double mapObstInd, double path);

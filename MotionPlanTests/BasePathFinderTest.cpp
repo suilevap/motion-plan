@@ -12,7 +12,7 @@ TEST(PathFinder, PathFindPathExsist)
 	AStar::BasePathFinder<Point<float>, int, float>* pathFinder = new AStar::BasePathFinder<Point<float>, int, float>(map);
 
 	AStar::Path<Point<float>>* path = pathFinder->Find(Point<float>(0,0), Point<float>(9,9));
-	ASSERT_EQ(10, path->Count());
+	ASSERT_EQ(10+2, path->Count());
 	delete path;
 	delete pathFinder;
 	delete map;

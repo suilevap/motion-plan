@@ -37,10 +37,10 @@ public:
 	~BidirectionalPathFinder();
 
 	virtual void Init(MapView<PointInfo, CellType, CostInfo>* map);
-	virtual void FindStart(NodeInfo start, NodeInfo goal);
+	virtual void FindStart(PointInfo start, PointInfo goal);
 	virtual NodeInfo FindStep();
 	virtual bool FindIsPathExists(NodeInfo node) ;
-	virtual Path<PointInfo>* FindEnd(NodeInfo curNode);
+	virtual Path<PointInfo>* FindEnd(PointInfo curNode);
 
 	virtual void InitDebug(MapView<PointInfo, CellType, CostInfo>* mapForStateDebug)
 	{

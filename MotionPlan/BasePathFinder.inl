@@ -42,26 +42,24 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-FindStart(NodeInfo start, NodeInfo goal)
+FindStart(PointInfo start, PointInfo goal)
 {
-	_start = start;
-	_goal = goal;
-	//TODO: donot use vector explicitly
-	_mapCost.clear();
+    _start = _map->GetNode(start);
+    _goal = _map->GetNode(goal);
+    _mapCost.clear();
 
-	_mapCost.resize(_map->GetMaxNode(),NodeState<NodeInfo,CostInfo>());
-	
-	_queue->Clear();	
+    _mapCost.resize(_map->GetMaxNode(),NodeState<NodeInfo,CostInfo>());
+
+    _queue->Clear();	
     _pathNodePool.Clear();
-	 //_mapParent[_start] = _start;
+     //_mapParent[_start] = _start;
+    _goalState.Node = 0;
+    _goalState.Rank = 0;
 
-	//PathNode<int,float> pathNode(_start, 0, 0);
-    PathNode<NodeInfo, CostInfo>* pathNode = _pathNodePool.Allocate();
-    pathNode->Node = _start;
-    pathNode->Rank = 0;
-	_mapCost[start] = NodeState<NodeInfo, CostInfo>(_start, 0);
-
-	_queue->Push(pathNode);
+    _map->GetPointNeighbors(start, _neighbors);
+    //parent for first frontier is 0
+    int parentNode = 0;
+    ProcessNeighboors(parentNode);
 }
 
 
@@ -85,7 +83,7 @@ FindStep()
 	{
 		PathNode<NodeInfo, CostInfo>* pathNode = _queue->Pop();
 		node = pathNode->Node;
-		Step(node, _goal);
+		Step(node);
         _pathNodePool.Free(pathNode);
 	}
 	return node;
@@ -121,12 +119,13 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-FindEnd(NodeInfo node)
+FindEnd(PointInfo point)
 {
 	Path<PointInfo>* result;
+    int node = _map->GetNode(point);
 	if (FindIsPathExists(node))
 	{
-		result = ExtractPath(node);
+		result = ExtractPath(point);
 	}
 	else
 	{
@@ -145,10 +144,21 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-Step(NodeInfo node, NodeInfo goal)
+Step(NodeInfo node)
 {
 	_mapCost[node].Status = NodeStatus::Close;
 	_map->GetNeighbors(node, _neighbors);
+    ProcessNeighboors(node);
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo,
+	typename CellQueue>
+inline void BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
+ProcessNeighboors(int parentNode)
+{
 	//for(std::vector<AStar::EdgeInfo<NodeInfo,CostInfo>>::iterator it = _neighbors.begin(); it != _neighbors.end(); ++it)
     int size = _neighbors.size();
     for (int i=0; i < size; ++i)
@@ -157,11 +167,12 @@ Step(NodeInfo node, NodeInfo goal)
         EdgeInfo<NodeInfo,CostInfo>* edge = &(_neighbors[i]);
 		if (_mapCost[edge->To].Status == NodeStatus::Open)
 		{
-			CheckNeighbor(node, *edge, goal);
+			CheckNeighbor(parentNode, *edge);
 			//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
 		}
 	}
 }
+
 
 template<
 	typename PointInfo, 
@@ -169,7 +180,7 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 bool BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo goal)
+CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge)
 {
 	bool result = false;
 	NodeInfo newNode = edge.To;
@@ -185,7 +196,7 @@ CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo goal)
 		CostInfo estimate;
 		if (CellQueue::UseHeuristic)
 		{
-			estimate = GetEstimateDistance(newNode, goal);//*96.0f/128;
+			estimate = GetEstimateDistance(newNode, _goal);//*96.0f/128;
 		}
         else
         {
@@ -232,21 +243,56 @@ template<
 	typename CellType, 	
 	typename CostInfo,
 	typename CellQueue>
-Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-ExtractPath(NodeInfo toPoint)
+int BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
+GetNearestNode(PointInfo toPoint)
 {
-	PointInfo point;
+    int minRankNode;
+    _map->GetPointNeighbors(toPoint, _neighbors);
+    int size = _neighbors.size();
+    if (size > 0)
+    {
+        EdgeInfo<NodeInfo,CostInfo>* edge = &(_neighbors[0]);
+        
+        minRankNode = edge->To;
+        CostInfo minCost = GetDistance(edge->To, (*edge));
+        CostInfo cost;
+        for (int i = 1; i < size; ++i)
+	    {
+		    //TODO: fix C4238: nonstandard extension used : class rvalue used as lvalue	
+            edge = &(_neighbors[i]);
+            cost = GetDistance(edge->To, (*edge));
+		    if (cost < minCost)
+		    {
+                minCost = cost;
+                minRankNode = edge->To;
+		    }
+	    }
+    }
+    return minRankNode;
+}
+
+template<
+	typename PointInfo, 
+	typename CellType, 	
+	typename CostInfo,
+	typename CellQueue>
+Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
+ExtractPath(PointInfo toPoint)
+{
+	PointInfo point = toPoint;
 	
 	std::vector<PointInfo> result;
-	NodeInfo pos = toPoint;
-    result.push_back(_goalP);
-	result.push_back(_map->GetPoint(pos));
-	while (pos != _start)
+	NodeInfo pos = GetNearestNode(point);
+    result.push_back(point);
+
+	do
 	{		
-		pos = _mapCost[pos].ParentNode;
 		point = _map->GetPoint(pos);
 		result.push_back(point);
+		pos = _mapCost[pos].ParentNode;
 	}
+    while (pos != 0);
+
     result.push_back(_startP);
 	
 	reverse(result.begin(), result.end());

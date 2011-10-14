@@ -50,7 +50,7 @@ public:
             return Path<PointInfo>::Empty();
         _goalP = goal;
 
-		FindStart(_start, _goal);
+		FindStart(start, goal);
 
 		NodeInfo curNode = _start;
 
@@ -58,17 +58,17 @@ public:
 		{
 			curNode = FindStep();
 		}
-		Path<PointInfo>* path = FindEnd(curNode);
+		Path<PointInfo>* path = FindEnd(goal);
 
 		return path;
 	}
 
 	virtual ~PathFinder(){};
 	virtual void Init(MapView<PointInfo, CellType, CostInfo>* map) = 0;
-	virtual void FindStart(NodeInfo start, NodeInfo goal) = 0;
+	virtual void FindStart(PointInfo start, PointInfo goal) = 0;
 	virtual NodeInfo FindStep() = 0;
 	virtual bool FindIsPathExists(NodeInfo node) = 0;
-	virtual Path<PointInfo>* FindEnd(NodeInfo node) = 0;
+	virtual Path<PointInfo>* FindEnd(PointInfo node) = 0;
 
 	virtual void InitDebug(MapView<PointInfo, CellType, CostInfo>* mapForStateDebug)
 	{

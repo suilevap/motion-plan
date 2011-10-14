@@ -22,8 +22,16 @@ protected:
 
 public:
 	typedef int NodeInfo;
-
+//TODO: create MapView.inl file and move all implementation to it
 	virtual void GetNeighbors(NodeInfo node, FastVector<EdgeInfo<NodeInfo,CostInfo>>& neighbors) = 0;
+    virtual void GetPointNeighbors(PointInfo point, FastVector<EdgeInfo<NodeInfo,CostInfo>>& neighbors)
+    {
+        int node = GetNode(point);
+        neighbors.clear();
+        neighbors.resize(1);
+        CostInfo cost = 0;
+        neighbors.push_back(EdgeInfo<int,CostInfo>(node, cost));
+    }
 	virtual PointInfo GetPoint(NodeInfo node)= 0;	
 	virtual NodeInfo GetNode(PointInfo& point)= 0;
 	virtual NodeInfo GetNodeWrite(PointInfo& point) {return GetNode(point);};
@@ -32,6 +40,13 @@ public:
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
 	virtual CostInfo GetCost(NodeInfo nodeStart, NodeInfo nodeGoal) = 0;
+    virtual CostInfo GetCostBetweenPoint(PointInfo point1, PointInfo point2)
+    {
+        int node1 = GetNode(point1);
+        int node2 = GetNode(point2);
+        CostInfo cost = GetCost(node1, node2);
+        return cost;
+    }
 	virtual bool OnMap(PointInfo& point) = 0;
 
 	virtual void ToOutput() = 0;

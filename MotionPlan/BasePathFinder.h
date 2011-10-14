@@ -44,14 +44,18 @@ protected:
 
 	CellQueue* _queue;
     Pool<PathNode<NodeInfo, CostInfo>> _pathNodePool;
+    
+    PathNode<NodeInfo, CostInfo> _goalState;
 
-	bool CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge, NodeInfo goal);
+    void ProcessNeighboors(int parentNode);
+	bool CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge);
 	CostInfo GetDistance(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge);
 	CostInfo GetEstimateDistance(NodeInfo node1, NodeInfo node2);
-	Path<PointInfo>* ExtractPath(NodeInfo toPoint);
-	void Step(NodeInfo index, NodeInfo goal);	
+	Path<PointInfo>* ExtractPath(PointInfo toPoint);
+	void Step(NodeInfo node);	
 
 	virtual bool IsGoal(NodeInfo goal);
+    int GetNearestNode(PointInfo toPoint);
 public:
 	BasePathFinder(MapView<PointInfo, CellType, CostInfo>* map);
 	virtual ~BasePathFinder();
@@ -59,10 +63,10 @@ public:
 	//Path<PointInfo>* Find(PointInfo start, PointInfo goal);
 
 	virtual void Init(MapView<PointInfo, CellType, CostInfo>* map);
-	virtual void FindStart(NodeInfo start, NodeInfo goal);
+	virtual void FindStart(PointInfo start, PointInfo goal);
 	virtual NodeInfo FindStep();
 	virtual bool FindIsPathExists(NodeInfo node) ;
-	virtual Path<PointInfo>* FindEnd(NodeInfo curNode);
+	virtual Path<PointInfo>* FindEnd(PointInfo curNode);
 	
 	////only for debug purpose
 	//std::vector<float>* GetMapDist(){ return _mapDist;};

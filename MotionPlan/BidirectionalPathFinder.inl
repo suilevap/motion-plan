@@ -48,7 +48,7 @@ template<
 	typename CellQueueStart,
 	typename CellQueueGoal>
 void BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
-FindStart(NodeInfo start, NodeInfo goal)
+FindStart(PointInfo start, PointInfo goal)
 {
 	_pathFinderStart->FindStart(start, goal);
 	_pathFinderGoal->FindStart(goal, start);
@@ -105,13 +105,13 @@ template<
 	typename CellQueueStart,
 	typename CellQueueGoal>
 Path<PointInfo>* BidirectionalPathFinder<PointInfo, CellType,CostInfo, CellQueueStart, CellQueueGoal>::
-FindEnd(NodeInfo node)
+FindEnd(PointInfo point)
 {
 	Path<PointInfo>* result;
-	if (FindIsPathExists(node))
+	if (FindIsPathExists(_map->GetNode(point)))
 	{
-		Path<PointInfo>* path1 = _pathFinderStart->FindEnd(node);
-		Path<PointInfo>* path2 = _pathFinderGoal->FindEnd(node);
+		Path<PointInfo>* path1 = _pathFinderStart->FindEnd(point);
+		Path<PointInfo>* path2 = _pathFinderGoal->FindEnd(point);
 		std::vector<PointInfo> path2Vector = path2->GetPoints();
 		reverse(path2Vector.begin(), path2Vector.end());
 		path1->AddPoints(path2Vector);

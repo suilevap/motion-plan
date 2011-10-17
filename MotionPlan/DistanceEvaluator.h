@@ -4,6 +4,8 @@
 #define MOTIONPLAN_ASTAR_DISTANCEEVALUATOR_H_
 
 #include <math.h>
+#include "Point.h"
+
 
 namespace AStar
 {

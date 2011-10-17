@@ -51,7 +51,7 @@ public:
     { 
         return _map.size();//-1; 
     }
-	virtual float GetCost(int nodeStart,int nodeGoal);
+	virtual float GetCost(Point<CoordType>& p1, Point<CoordType>& p2);
 	virtual bool OnMap(Point<CoordType>& point)
     {
         return _global.IsInside(point);

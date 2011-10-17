@@ -42,9 +42,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	int w = 40;
 	int h = 100;
     double map = GenMap(w, h, cellSize);
-    double quadMap = CreateQuadMap(map);
-    //double pathFinder = GenPathFinder(map, w, h, cellSize);
-    double pathFinder = GenPathFinder(quadMap, w, h, cellSize);
+    //double quadMap = CreateQuadMap(map);
+    double pathFinder = GenPathFinder(map, w, h, cellSize);
+    //double pathFinder = GenPathFinder(quadMap, w, h, cellSize);
 
 
 	clock_t time0, time1, times;

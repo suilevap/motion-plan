@@ -7,6 +7,7 @@
 #include "FastVector.h"
 #include "EdgeInfo.h"
 //#include "Point.h"
+#include "DistanceEvaluator.h"
 
 namespace AStar
 {
@@ -39,18 +40,20 @@ public:
 	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
-	virtual CostInfo GetCost(NodeInfo nodeStart, NodeInfo nodeGoal) = 0;
-    virtual CostInfo GetCostBetweenPoint(PointInfo point1, PointInfo point2)
+    inline CostInfo GetCostFromNode(NodeInfo node, PointInfo& point)
     {
-        int node1 = GetNode(point1);
-        int node2 = GetNode(point2);
-        CostInfo cost = GetCost(node1, node2);
+        PointInfo nodePoint = GetPoint(node);
+        float cost = GetCost(nodePoint, point);
+        return cost;
+    }
+    virtual CostInfo GetCost(PointInfo& p1, PointInfo& p2)
+    {
+	    float cost = AStar::DistanceEvaluator::EuclideanDistance<float>(p1, p2);
         return cost;
     }
 	virtual bool OnMap(PointInfo& point) = 0;
 
 	virtual void ToOutput() = 0;
-
 	
 	CellType GetCell(NodeInfo node)
 	{
@@ -61,7 +64,6 @@ public:
 	{
 		_map[node] = cell;	
 	}
-
 
 	CellType GetCellPoint(PointInfo& point)
 	{

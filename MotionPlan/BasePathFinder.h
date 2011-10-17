@@ -50,7 +50,7 @@ protected:
     void ProcessNeighboors(int parentNode);
 	bool CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge);
 	CostInfo GetDistance(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge);
-	CostInfo GetEstimateDistance(NodeInfo node1, NodeInfo node2);
+	CostInfo GetEstimateDistance(NodeInfo node1);
 	Path<PointInfo>* ExtractPath(PointInfo toPoint);
 	void Step(NodeInfo node);	
 

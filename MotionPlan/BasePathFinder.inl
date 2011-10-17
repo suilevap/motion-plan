@@ -196,7 +196,7 @@ CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge)
 		CostInfo estimate;
 		if (CellQueue::UseHeuristic)
 		{
-			estimate = GetEstimateDistance(newNode, _goal);//*96.0f/128;
+			estimate = GetEstimateDistance(newNode);//*96.0f/128;
 		}
         else
         {
@@ -233,9 +233,9 @@ template<
 	typename CostInfo,
 	typename CellQueue>
 inline CostInfo BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
-GetEstimateDistance(NodeInfo node1, NodeInfo node2)
+GetEstimateDistance(NodeInfo node1)
 {
-	return _map->GetCost(node1, node2);
+	return _map->GetCostFromNode(node1, _goalP);
 }
 
 template<

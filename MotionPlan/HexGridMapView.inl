@@ -23,16 +23,16 @@ void HexGridMapView<CellType>::GetNeighbors(int node, FastVector<AStar::EdgeInfo
 	neighbors.resize(6);
 	int offset = GetYOffset(node);
 	int secondNeighborOffset = _width * (-1 + offset*2);
-	static float step1 = 1;//_cellSize.X;
+	static float step1 = 1 * _cellSize.Y;
 
-    AddNeighbor( GetNodeDxDy(node, 1, 0), 1, neighbors);
-    AddNeighbor( GetNodeDxDy(node, 1 + secondNeighborOffset, 0) , 1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 1, 0), step1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 1 + secondNeighborOffset, 0) , step1, neighbors);
 
-    AddNeighbor( GetNodeDxDy(node, -1, 0), 1, neighbors);
-    AddNeighbor( GetNodeDxDy(node, -1 + secondNeighborOffset, 0), 1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, -1, 0), step1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, -1 + secondNeighborOffset, 0), step1, neighbors);
 
-    AddNeighbor( GetNodeDxDy(node, 0, 1), 1, neighbors);
-    AddNeighbor( GetNodeDxDy(node, 0, -1), 1, neighbors);	
+    AddNeighbor( GetNodeDxDy(node, 0, 1), step1, neighbors);
+    AddNeighbor( GetNodeDxDy(node, 0, -1), step1, neighbors);	
 }
 
 template<class CellType>
@@ -55,11 +55,13 @@ int HexGridMapView<CellType>::GetNode(Point<float>& point)
 }
 
 template<class CellType>
-float HexGridMapView<CellType>::GetCost(int nodeStart,int nodeGoal)
+float HexGridMapView<CellType>::GetCost(Point<float>& p1,Point<float>& p2)
 {
-	Point<int> p1 = GetMapPoint(nodeStart);
-	Point<int> p2 = GetMapPoint(nodeGoal);
+	//Point<int> p1 = GetMapPoint(nodeStart);
+	//Point<int> p2 = GetMapPoint(nodeGoal);
 	float cost = AStar::DistanceEvaluator::HexShiftByXDistance<float>(p1, p2);
+	//float cost = AStar::DistanceEvaluator::EuclideanDistance<float>(p1, p2);
+
 	return cost;
 }
 

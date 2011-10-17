@@ -11,8 +11,8 @@ void GridMapView<CellType, CoordType>::GetNeighbors(int node, FastVector<AStar::
     neighbors.clear();
 	neighbors.resize(8);
 
-	static float step1 = 1;//_cellSize.X;
-	static float stepD = SQRT_2;//_cellSize.X * SQRT_2;
+	static float step1 = 1 * _cellSize.X;//_cellSize.X;
+	static float stepD = SQRT_2 * _cellSize.X;//_cellSize.X * SQRT_2;
     AddNeighbor( GetNodeDxDy(node, 1, 0) , step1, neighbors);
     AddNeighbor( GetNodeDxDy(node, - 1, 0) , step1, neighbors);
     AddNeighbor( GetNodeDxDy(node, 0, 1) , step1, neighbors);
@@ -78,10 +78,8 @@ Point<CoordType> GridMapView<CellType, CoordType>::GetPoint(int node)
 	return pointWorld;
 }
 template<class CellType, typename CoordType>
-float GridMapView<CellType, CoordType>::GetCost(int nodeStart,int nodeGoal)
+float GridMapView<CellType, CoordType>::GetCost(Point<CoordType>& p1,Point<CoordType>& p2)
 {
-	Point<int> p1 = GetMapPoint(nodeStart);
-	Point<int> p2 = GetMapPoint(nodeGoal);
 	float cost = AStar::DistanceEvaluator::DiagonalDistance<float>(p1, p2);
 	return cost;
 }

@@ -29,7 +29,7 @@ public:
 	virtual void GetNeighbors(int node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
 	virtual Point<float> GetPoint(int node);	
 	virtual int GetNode(Point<float>& point);
-	virtual float GetCost(int nodeStart,int nodeGoal);
+	virtual float GetCost(Point<float>& point1, Point<float>& point2);
 
 	virtual void ToOutput();
 };

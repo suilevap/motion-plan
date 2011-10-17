@@ -30,20 +30,40 @@ template<typename T, typename P>
 inline static T DistanceEvaluator::HexShiftByXDistance(const Point<P>& p1, const Point<P>& p2) 
 {
 
-	P xd = std::abs(p1.X - p2.X)* 2;
-	P yd = std::abs((p1.Y - p2.Y)*2+(p1.X%2-p2.X%2));
+	P xd = std::abs(p1.X - p2.X);
+	P yd = std::abs(p1.Y - p2.Y);
 
 	T result;
 
 	if (xd >= yd * 2)// x more than  needed for diagonal	
 	{
-		result = static_cast<T>(xd/2);
+		result = static_cast<T>(xd);
 	}
 	else //need some vertical movements
 	{
-		result = static_cast<T>((xd/2 + yd)/2);
+		result = static_cast<T>(xd/2 + yd);
 	}
-	return result;
+	return result/2;
 }
+
+//template<typename T, typename P>
+//inline static T DistanceEvaluator::HexShiftByXDistance(const Point<P>& p1, const Point<P>& p2) 
+//{
+//
+//	P xd = std::abs(p1.X - p2.X)* 2;
+//	P yd = std::abs((p1.Y - p2.Y)*2+(p1.X%2-p2.X%2));
+//
+//	T result;
+//
+//	if (xd >= yd * 2)// x more than  needed for diagonal	
+//	{
+//		result = static_cast<T>(xd/2);
+//	}
+//	else //need some vertical movements
+//	{
+//		result = static_cast<T>((xd/2 + yd)/2);
+//	}
+//	return result;
+//}
 
 #endif

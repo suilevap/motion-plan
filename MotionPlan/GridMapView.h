@@ -44,7 +44,7 @@ public:
 	virtual void SetCellRegion(Point<CoordType>& point, CellType cell, Point<CoordType>& size);
 	virtual Point<CoordType> GetMaxPoint();
 	virtual int GetMaxNode();
-	virtual float GetCost(int nodeStart,int nodeGoal);
+	virtual float GetCost(Point<CoordType>& point1, Point<CoordType>& point2);
 	virtual bool OnMap(Point<CoordType>& point);
 
 	Point<CoordType>& GetCellSize() {return _cellSize;}

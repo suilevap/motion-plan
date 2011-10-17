@@ -50,10 +50,8 @@ GetNode(Point<CoordType>& point)
 
 template<class CellType, typename CoordType>
 float NavRectMapView<CellType, CoordType>::
-GetCost(int nodeStart,int nodeGoal)
+GetCost(Point<CoordType>& p1,Point<CoordType>& p2)
 {
-    Point<CoordType> p1 = GetPoint(nodeStart);
-	Point<CoordType> p2 = GetPoint(nodeGoal);
 	float cost = AStar::DistanceEvaluator::EuclideanDistance<float>(p1, p2);
     return cost;
 }

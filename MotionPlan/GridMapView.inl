@@ -28,7 +28,7 @@ void GridMapView<CellType, CoordType>::GetNeighbors(int node, FastVector<AStar::
 template<class CellType, typename CoordType>
 inline void GridMapView<CellType, CoordType>::AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 {
-    if (GetCell(node) != 1)	
+    if (GetCell(node) != ObstacleCellValue)	
     {
         neighbors.push_back(AStar::EdgeInfo<int,float>(node, d));
     }
@@ -142,7 +142,7 @@ void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height
 	int size = _width * _height;
 	//_map = new CellType[size];
     _map.resize(size);
-	Clear(0,1);
+	Clear( FreeCellValue, ObstacleCellValue);
 
 }
 
@@ -317,7 +317,7 @@ GridMapView<int>* GridMapView<CellType, CoordType>::LoadFrom(std::string &data, 
 			char symbol=data[index];
 			if (symbol =='#')
 			{
-				cell = 1;
+				cell = ObstacleCellValue;
 			}
 			else
 			{

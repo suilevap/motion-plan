@@ -37,6 +37,10 @@ protected:
 	void AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
     int GetNodeDxDy(int node, int dx, int dy);
 public:
+
+    static const CellType ObstacleCellValue = 1;
+    static const CellType FreeCellValue = 0;
+
 	virtual void GetNeighbors(int node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
 
 	virtual Point<CoordType> GetPoint(int node);	
@@ -48,7 +52,6 @@ public:
 	virtual bool OnMap(Point<CoordType>& point);
 
 	Point<CoordType>& GetCellSize() {return _cellSize;}
-
 
 	GridMapView(CoordType width, CoordType height);
 	GridMapView(CoordType width, CoordType height, CoordType cellWidth);

@@ -42,7 +42,10 @@ LoadFrom(GridMapView<CellType, CoordType>* map)
                 //border
                 if(k>0 && k<height-1 && i>0 && i<width-1)
                 {
-                    distanceField[id] = min(distanceField[id-1], distanceField[id-width])+1;
+                    distanceField[id] = min(
+                            min(distanceField[id-1], distanceField[id-width]),
+                            min(distanceField[id-1-width],distanceField[id+1-width])
+                        )+1;
                 }
                 else
                 {
@@ -66,8 +69,13 @@ LoadFrom(GridMapView<CellType, CoordType>* map)
             {
                 if(k>0 && k<height-1 && i>0 && i<width-1)
                 {
-                    distanceField[id] = min(distanceField[id],
-                        min(distanceField[id+1],distanceField[id+width])+1);
+                    distanceField[id] = 
+                        min(distanceField[id],
+                            min(
+                                min(distanceField[id+1], distanceField[id+width]), 
+                                min(distanceField[id+1+width], distanceField[id-1+width])
+                            )+1
+                        );
                 }
                 else
                 {

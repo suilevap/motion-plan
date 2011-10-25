@@ -15,7 +15,7 @@
 namespace AStar
 {
 
-template<class CellType, typename CoordType = float>
+template<class CellType, typename CoordType = float, bool UseAdditionalLinks = false>
 class NavRectMapView: 
 	public MapView<Point<CoordType>, CellType, float>
 {
@@ -59,7 +59,7 @@ public:
 
     void ToOutput();
 
-    static NavRectMapView* CreateCustom(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
+    static NavRectMapView<CellType, CoordType>* CreateCustom(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
 
 	virtual ~NavRectMapView();
 

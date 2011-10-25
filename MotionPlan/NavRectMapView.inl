@@ -5,16 +5,16 @@
 #include "DistanceEvaluator.h"
 #include "MathConstants.h"
 
-template<class CellType, typename CoordType>
-void NavRectMapView<CellType, CoordType>:: 
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+void NavRectMapView<CellType, CoordType, UseAdditionalLinks>:: 
 GetNeighbors(int node, FastVector<EdgeInfo<int,float>>& neighbors)
 {
 	NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(node);
     neighbors.set(navRect->GetNeighboors());    
 }
 
-//template<class CellType, typename CoordType>
-//inline void NavRectMapView<CellType, CoordType>::AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
+//template<class CellType, typename CoordType, bool UseAdditionalLinks>
+//inline void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
 //{
 //    //if (GetCell(node) != 1)	
 //    {
@@ -22,15 +22,15 @@ GetNeighbors(int node, FastVector<EdgeInfo<int,float>>& neighbors)
 //    }
 //}
 
-template<class CellType, typename CoordType>
-Point<CoordType> NavRectMapView<CellType, CoordType>::
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+Point<CoordType> NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 GetPoint(int node)
 {
     return GetNavRect(node)->GetCenter();
 }
 
-template<class CellType, typename CoordType>
-int NavRectMapView<CellType, CoordType>::
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+int NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 GetNode(Point<CoordType>& point)
 {
     int result = 0;
@@ -48,16 +48,16 @@ GetNode(Point<CoordType>& point)
     return result;
 }
 
-template<class CellType, typename CoordType>
-float NavRectMapView<CellType, CoordType>::
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+float NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 GetCost(Point<CoordType>& p1,Point<CoordType>& p2)
 {
 	float cost = AStar::DistanceEvaluator::EuclideanDistance<float>(p1, p2);
     return cost;
 }
 
-template<class CellType, typename CoordType>
-NavRectMapView<CellType, CoordType>* NavRectMapView<CellType, CoordType>::
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+NavRectMapView<CellType, CoordType>* NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 CreateCustom(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 {
     NavRectMapView<CellType, CoordType>* result = new NavRectMapView<CellType, CoordType>();
@@ -65,8 +65,8 @@ CreateCustom(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
     return result;
 }
 
-template<class CellType, typename CoordType>
-void NavRectMapView<CellType, CoordType>::
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 {    
     if (rectangles.size() == 0)
@@ -109,8 +109,8 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
     _global = Rectangle<CoordType>(minP, maxP);
 }
 
-template<class CellType, typename CoordType>
-NavRectMapView<CellType, CoordType>::~NavRectMapView()
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+NavRectMapView<CellType, CoordType, UseAdditionalLinks>::~NavRectMapView()
 {
     int count = GetMaxNode();
     for (int i = 1; i < count; ++i)
@@ -120,8 +120,8 @@ NavRectMapView<CellType, CoordType>::~NavRectMapView()
     }
 }
 
-template<class CellType, typename CoordType>
-void NavRectMapView<CellType, CoordType>::
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 ToOutput()
 {
     Point<CoordType> startPoint = _global.GetLeftTopPoint();

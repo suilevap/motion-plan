@@ -129,6 +129,8 @@ inline int GridMapView<CellType, CoordType>::GetBorder()
 template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height, int border, Point<CoordType> cellSize)
 {
+    _distanceField = NULL;
+
 	_cellSize = cellSize;
 	_scale = Point<float>(1.0f / _cellSize.X, 1.0f / _cellSize.Y);
 
@@ -245,6 +247,120 @@ IsCellRegionIsotropic(Point<CoordType>& point1, Point<CoordType>& point2, CellTy
     return true;
 }
 
+template<class CellType, typename CoordType>
+GridMapView<int, CoordType>* GridMapView<CellType, CoordType>::
+GetDistanceField()
+{
+    //TODO: thread unsafe
+    if (_distanceField == NULL)
+    {
+        CreateDistanceField();
+    }
+    return _distanceField;
+}
+
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::
+CreateDistanceField()
+{
+    Point<CoordType> size = GetMaxPoint();
+    GridMapView<int, CoordType>* result = new GridMapView<int, CoordType>(size.X, size.Y, _cellSize.X);
+
+    float width = size.X;
+    float height = size.Y;
+
+    //generate distance field
+    //pass 1
+	for (int k = 0; k < height; k += _cellSize.Y)
+	{
+	    for (int i = 0; i < width; i += _cellSize.X)
+		{
+            Point<CoordType> point(i, k);
+            int id = result->GetNode(point);
+            int value;
+            if (GetCellPoint(point) == GridMapView<CellType, CoordType>::FreeCellValue)
+            {
+                //border
+                if(k>0 && k<height-_cellSize.Y && i>0 && i<width-_cellSize.X)
+                {
+                    value = min(
+                                min(result->GetCell(GetNodeDxDy(id, -1, 0)), result->GetCell(GetNodeDxDy(id, 0, -1))),
+                                min(result->GetCell(GetNodeDxDy(id, -1, -1)), result->GetCell(GetNodeDxDy(id, 1, -1)))
+                            )+1;
+                }
+                else
+                {
+                    value = 1;
+                }
+            }
+            else
+            {
+                value = 0;
+            }
+            result->SetCell(id, value);
+
+        }
+    }
+    //pass 2
+    for (int k = height-1; k >= 0; k--)
+    {
+        for (int i = width-1; i >= 0; i--)
+        {
+            Point<CoordType> point(i, k);
+            int id = result->GetNode(point);
+            int value;
+            if (GetCellPoint(point) == GridMapView<CellType, CoordType>::FreeCellValue)
+            {
+                //border
+                if(k>0 && k<height-_cellSize.Y && i>0 && i<width-_cellSize.X)
+                {
+                    value = min(
+                                min(result->GetCell(GetNodeDxDy(id, 1, 0)), result->GetCell(GetNodeDxDy(id, 0, 1))),
+                                min(result->GetCell(GetNodeDxDy(id, 1, 1)),result->GetCell(GetNodeDxDy(id, -1, 1)))
+                            )+1;
+                    value = min(value, result->GetCell(id));
+                }
+                else
+                {
+                    value = 1;
+                }
+            }
+            else
+            {
+                value = 0;
+            }
+            result->SetCell(id, value);
+        }
+    }
+
+    //TODO: thread unsafe
+    if (_distanceField != NULL)
+    {
+        delete _distanceField;
+    }
+    _distanceField = result;
+}
+
+template<class CellType, typename CoordType>
+int GridMapView<CellType, CoordType>::
+ToVector(std::vector<CellType>* data)
+{
+    Point<CoordType> size = GetMaxPoint();
+    int width = static_cast<int>(size.X /_cellSize.X);
+    int height = static_cast<int>(size.Y / _cellSize.Y);
+    data->resize(width*height);
+	for (int k = 0; k < height; k++)
+	{
+	    for (int i = 0; i < width; i++)
+		{
+            Point<CoordType> point(i * _cellSize.X, k * _cellSize.Y);
+            int id = k*width + i;
+            (*data)[id] = GetCellPoint(point);
+        }
+    } 
+    return width;
+}
+
 
 //only for test!!
 template<class CellType, typename CoordType>
@@ -340,7 +456,7 @@ GridMapView<int>* GridMapView<CellType, CoordType>::LoadFrom(std::string &data, 
 }
 
 template<class CellType, typename CoordType>
-void GridMapView<CellType, CoordType>::LoadFromVector(std::vector<float>& data)
+void GridMapView<CellType, CoordType>::LoadFromVector(std::vector<CoordType>& data)
 {
 	for (int i = 0; i < data.size(); ++i)
 	{

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="Utils"
 	ProjectGUID="{E4F40A5E-1C68-4BD3-9DC4-36D185EEE9F1}"
 	RootNamespace="Utils"
@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Filters.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MathHelper.h"
 				>
 			</File>
@@ -226,6 +230,10 @@
 				RelativePath=".\Transformable.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Vector2D.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Inline Files"
@@ -248,6 +256,10 @@
 			</File>
 			<File
 				RelativePath=".\Transformable.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\Vector2D.inl"
 				>
 			</File>
 		</Filter>

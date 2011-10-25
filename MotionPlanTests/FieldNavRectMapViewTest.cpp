@@ -13,15 +13,14 @@ TEST(FieldNavRectMapView, Create)
 
     map->SetCellPoint(Point<float>(4,5), 1);
 
-
-    FieldNavRectMapView<int>* quadMap = NULL;
-    quadMap = FieldNavRectMapView<int>::Create(map);
+    FieldNavRectMapView<int>* navMap = NULL;
+    navMap = FieldNavRectMapView<int>::Create(map);
     //quadMap
     //.144
     //2344
     //5566
     //5566
-    ASSERT_TRUE(quadMap != NULL);
+    ASSERT_TRUE(navMap != NULL);
     //ASSERT_EQ(quadMap->GetMaxNode(), 7);
 
     //FastVector<AStar::EdgeInfo<int, float>> neighbors;
@@ -39,7 +38,7 @@ TEST(FieldNavRectMapView, Create)
     //EXPECT_EQ(neighbors.size(), 3);
 
     //map->ToOutput();
-    //quadMap->ToOutput();
+    navMap->ToOutput();
 	delete map;
-	delete quadMap;
+	delete navMap;
 }

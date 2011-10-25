@@ -1,8 +1,17 @@
 #include "gtest/gtest.h"
 #include "MathHelper.h"
+#include "Filters.h"
 
 TEST(MathHelper, UpperPowerOfTwoTest)
 {
+    //FilterNEQ<int, 4> filter;
+    //bool a = filter(3);
+    //a = filter(4);
+    
+    //std::binder2nd<std::not_equal_to<int>> f2 = bind2nd(std::not_equal_to<int>(), 4);
+    //bool a = f2(3);
+    //a = f2(4);
+
     EXPECT_EQ(16, MathHelper::UpperPowerOfTwo(10));
     EXPECT_EQ(128, MathHelper::UpperPowerOfTwo(96));
     EXPECT_EQ(256, MathHelper::UpperPowerOfTwo(129));

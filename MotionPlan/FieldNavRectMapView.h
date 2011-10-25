@@ -7,6 +7,8 @@
 #include "NavRectMapView.h"
 #include "GridMapView.h"
 #include "Rectangle.h"
+#include "SortSimpleVector.h"
+#include "Vector2D.h"
 
 template<class CellType, typename CoordType = float>
 class FieldNavRectMapView: 
@@ -18,6 +20,8 @@ protected:
     Point<CoordType> _cellSize;
 
     std::vector<AStar::Rectangle<CoordType>> LoadFrom(GridMapView<CellType, CoordType>* map);
+
+    static AStar::Rectangle<int> FillRect(int x,int y, std::vector<int>& distanceField, int width);
 
     FieldNavRectMapView(){}
 

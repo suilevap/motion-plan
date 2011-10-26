@@ -15,9 +15,9 @@
 #include "GridMapView.h"
 #include "HexGridMapView.h"
 #include "SparseGridMapView.h"
-#include "QuadNavRectMapView.h"
 #include "NavRectMapView.h"
-
+#include "QuadNavRectMapView.h"
+#include "FieldNavRectMapView.h"
 
 
 #include "Interface.h"
@@ -107,17 +107,73 @@ double DrawNavRectMap(double mapIndex)
     AStar::NavRectMapView<int>* map = dynamic_cast<AStar::NavRectMapView<int>*>(map0);
     if (map != NULL)
     {
+        float mapDist = AStar::DistanceEvaluator::EuclideanDistance<float>(
+            Point<float>::Zero(), map->GetMaxPoint());
+        gm::draw_set_color(gm::c_red);
         int count = map->GetMaxNode();
         for (int i = 1; i < count; ++i)
         {
-            AStar::Rectangle<float>* rect = map->GetNavRect(i);
+            AStar::NavigationRectangle<float, int, float>* rect = map->GetNavRect(i);
+            
+            Point<float> size = rect->GetSize();
+            float r = min(size.X, size.Y)/2;
+            float rectDist = AStar::DistanceEvaluator::EuclideanDistance<float>(
+                rect->GetLeftTopPoint(), rect->GetRightBottomPoint()); 
+            gm::draw_set_alpha(rectDist/mapDist);
 
             gm::draw_rectangle_color( rect->GetLeftTopPoint().X+2, rect->GetLeftTopPoint().Y+2,
                 rect->GetRightBottomPoint().X-2, rect->GetRightBottomPoint().Y-2,
                 1, 1, 1, 1, true);
-            
+
+            //gm::draw_circle( rect->GetCenter().X, rect->GetCenter().Y, r, 1);
+            std::vector<AStar::EdgeInfo<int, float>>* edges = rect->GetNeighboors();
+            int count = edges->size();
+            for (int i = 0; i < count; ++i)
+            {
+                AStar::EdgeInfo<int, float> edgeTo1 = edges->at(i);
+                AStar::NavigationRectangle<float, int, float>* rectTo1 = map->GetNavRect(edgeTo1.To);
+                AStar::Rectangle<float> intersectionTo1 = rect->GetIntersection(rectTo1, 4);
+                //Point<float> size = intersectionTo1.GetSize();
+                //float r = max(size.X, size.Y)/2;
+                float r = 4;
+                gm::draw_circle( intersectionTo1.GetCenter().X, intersectionTo1.GetCenter().Y, r, 1);
+                //gm::draw_rectangle_color( 
+                //    intersectionTo1.GetLeftTopPoint().X, intersectionTo1.GetLeftTopPoint().Y,
+                //    intersectionTo1.GetRightBottomPoint().X, intersectionTo1.GetRightBottomPoint().Y,
+                //    1, 1, 1, 1, true);
+                
+                for (int k = i+1; k < count; ++k)
+                {
+                    AStar::EdgeInfo<int, float> edgeTo2 = edges->at(k);
+                    AStar::NavigationRectangle<float, int, float>* rectTo2 = map->GetNavRect(edgeTo2.To);
+                    AStar::Rectangle<float> intersectionTo2 = rect->GetIntersection(rectTo2, 1);
+                    float d = AStar::DistanceEvaluator::EuclideanDistance<float>(
+                        intersectionTo1.GetCenter(), intersectionTo2.GetCenter());
+                    gm::draw_set_alpha(d/rectDist);
+                    gm::draw_line(
+                        intersectionTo1.GetCenter().X, intersectionTo1.GetCenter().Y,
+                        intersectionTo2.GetCenter().X, intersectionTo2.GetCenter().Y);
+                    //gm::draw_line(
+                    //    intersectionTo1.GetLeftTopPoint().X, intersectionTo1.GetLeftTopPoint().Y,
+                    //    intersectionTo2.GetLeftTopPoint().X, intersectionTo2.GetLeftTopPoint().Y);
+                    //gm::draw_line(
+                    //    intersectionTo1.GetLeftTopPoint().X, intersectionTo1.GetLeftTopPoint().Y,
+                    //    intersectionTo2.GetRightBottomPoint().X, intersectionTo2.GetRightBottomPoint().Y);
+                    //gm::draw_line(
+                    //    intersectionTo1.GetRightBottomPoint().X, intersectionTo1.GetRightBottomPoint().Y,
+                    //    intersectionTo2.GetLeftTopPoint().X, intersectionTo2.GetLeftTopPoint().Y);
+                    //gm::draw_line(
+                    //    intersectionTo1.GetRightBottomPoint().X, intersectionTo1.GetRightBottomPoint().Y,
+                    //    intersectionTo2.GetRightBottomPoint().X, intersectionTo2.GetRightBottomPoint().Y);
+
+                }
+
+            }
         }
+        gm::draw_set_alpha(1);
+        gm::draw_set_color(gm::c_black);
     }
+
     return 0;
 }
 
@@ -158,7 +214,8 @@ double CreateQuadMap(double gridMapIndex)
     AStar::MapView<Point<float>, int>* gridMap0 = _maps.Get(static_cast<int>(gridMapIndex));
     GridMapView<int>* gridMap = dynamic_cast<GridMapView<int>*>(gridMap0);
 
-    QuadNavRectMapView<int, float>* map = QuadNavRectMapView<int, float>::Create(gridMap);
+    //QuadNavRectMapView<int, float>* map = QuadNavRectMapView<int, float>::Create(gridMap);
+    FieldNavRectMapView<int, float>* map = FieldNavRectMapView<int, float>::Create(gridMap);
 
 	int result = _maps.Add(map);
 

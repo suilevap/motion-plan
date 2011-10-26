@@ -22,6 +22,8 @@ public:
     Point<CoordType> GetLeftTopPoint() { return _leftTopPoint; }
     Point<CoordType> GetRightBottomPoint() { return _rightBottomPoint; }
     Point<CoordType> GetCenter() {return _center;}
+    Point<CoordType> GetSize() {return (_rightBottomPoint - _leftTopPoint);}
+
 
     bool IsNeighbor(Rectangle<CoordType>* rect, CoordType step);
     Rectangle<CoordType> GetIntersection(Rectangle<CoordType>* rect, CoordType step);

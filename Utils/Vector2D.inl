@@ -73,10 +73,10 @@ void Vector2D<T>::FillRect(int x, int y, Pr predicate, int* px0, int* py0, int* 
     int y0 = y;
     int x1 = x;
     int y1 = y;
-    bool x0free;
-    bool y0free;
-    bool x1free;
-    bool y1free;
+    bool x0free = true;
+    bool y0free = true;
+    bool x1free = true;
+    bool y1free = true;
     //(x0,y0) (x1,y0)
     //(x0,y1) (x1,y1)
     //expand
@@ -84,31 +84,44 @@ void Vector2D<T>::FillRect(int x, int y, Pr predicate, int* px0, int* py0, int* 
     {        
         //(x0,y0)*(x1,y0)
         //(x0,y1)*(x1,y1)
-        x0free = CheckRegion(x0-1, y0, x0-1, y1, predicate);
         if (x0free)
         {
-            x0--;
+            x0free = CheckRegion(x0-1, y0, x0-1, y1, predicate);
+            if (x0free)
+            {
+                x0--;
+            }
         }
+        
         //(x0,y0)*(x1,y0)*
         //(x0,y1) (x1,y1)
-        y0free = CheckRegion(x0, y0-1, x1, y0-1, predicate);
         if (y0free)
         {
-            y0--;
+            y0free = CheckRegion(x0, y0-1, x1, y0-1, predicate);
+            if (y0free)
+            {
+                y0--;
+            }
         }
         //(x0,y0) (x1,y0)*
         //(x0,y1) (x1,y1)*
-        x1free = CheckRegion(x1+1, y0, x1+1, y1, predicate);
         if (x1free)
         {
-            x1++;
+            x1free = CheckRegion(x1+1, y0, x1+1, y1, predicate);
+            if (x1free)
+            {
+                x1++;
+            }
         }
         //(x0,y0) (x1,y0)
         //(x0,y1)*(x1,y1)*
-        y1free = CheckRegion(x0, y1+1, x1, y1+1, predicate);
         if (y1free)
         {
-            y1++;
+            y1free = CheckRegion(x0, y1+1, x1, y1+1, predicate);
+            if (y1free)
+            {
+                y1++;
+            }
         }
 
     } while (x0free || y0free || x1free || y1free );

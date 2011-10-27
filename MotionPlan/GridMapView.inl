@@ -129,6 +129,7 @@ inline int GridMapView<CellType, CoordType>::GetBorder()
 template<class CellType, typename CoordType>
 void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height, int border, Point<CoordType> cellSize)
 {
+
     _distanceField = NULL;
 
 	_cellSize = cellSize;
@@ -150,18 +151,21 @@ void GridMapView<CellType, CoordType>::InitMap(CoordType width, CoordType height
 
 template<class CellType, typename CoordType>
 GridMapView<CellType, CoordType>::GridMapView(CoordType width, CoordType height)
+:ObstacleCellValue(1),FreeCellValue(0)
 {
 	InitMap(width, height, 1, Point<CoordType>(1,1));
 }
 
 template<class CellType, typename CoordType>
 GridMapView<CellType, CoordType>::GridMapView(CoordType width, CoordType height, CoordType cellWidth)
+:ObstacleCellValue(1),FreeCellValue(0)
 {
 	InitMap(width, height, 1, Point<CoordType>(cellWidth, cellWidth));
 }
 
 template<class CellType, typename CoordType>
 GridMapView<CellType, CoordType>::GridMapView()
+:ObstacleCellValue(1),FreeCellValue(0)
 {
 	
 }
@@ -248,7 +252,7 @@ IsCellRegionIsotropic(Point<CoordType>& point1, Point<CoordType>& point2, CellTy
 }
 
 template<class CellType, typename CoordType>
-GridMapView<int, CoordType>* GridMapView<CellType, CoordType>::
+GridMapView<float, CoordType>* GridMapView<CellType, CoordType>::
 GetDistanceField()
 {
     //TODO: thread unsafe
@@ -264,16 +268,17 @@ void GridMapView<CellType, CoordType>::
 CreateDistanceField()
 {
     Point<CoordType> size = GetMaxPoint();
-    GridMapView<int, CoordType>* result = new GridMapView<int, CoordType>(size.X, size.Y, _cellSize.X);
+    GridMapView<float, CoordType>* result = new GridMapView<float, CoordType>(
+        size.X, size.Y, _cellSize.X/2);
 
     float width = size.X;
     float height = size.Y;
-
+    Point<CoordType> fieldCellSize = result->GetCellSize();
     //generate distance field
     //pass 1
-	for (int k = 0; k < height; k += _cellSize.Y)
+	for (int k = 0; k < height; k += fieldCellSize.Y)
 	{
-	    for (int i = 0; i < width; i += _cellSize.X)
+	    for (int i = 0; i < width; i += fieldCellSize.X)
 		{
             Point<CoordType> point(i, k);
             int id = result->GetNode(point);
@@ -281,12 +286,12 @@ CreateDistanceField()
             if (GetCellPoint(point) == GridMapView<CellType, CoordType>::FreeCellValue)
             {
                 //border
-                if(k>0 && k<height-_cellSize.Y && i>0 && i<width-_cellSize.X)
+                if(k>0 && k<height-fieldCellSize.Y && i>0 && i<width-fieldCellSize.X)
                 {
                     value = min(
-                                min(result->GetCell(GetNodeDxDy(id, -1, 0)), result->GetCell(GetNodeDxDy(id, 0, -1))),
-                                min(result->GetCell(GetNodeDxDy(id, -1, -1)), result->GetCell(GetNodeDxDy(id, 1, -1)))
-                            )+1;
+                                min(result->GetCell(GetNodeDxDy(id, -1, 0)), result->GetCell(GetNodeDxDy(id, 0, -1)))+1,
+                                min(result->GetCell(GetNodeDxDy(id, -1, -1)), result->GetCell(GetNodeDxDy(id, 1, -1)))+1.41
+                            );
                 }
                 else
                 {
@@ -302,9 +307,9 @@ CreateDistanceField()
         }
     }
     //pass 2
-    for (int k = height-1; k >= 0; k--)
+    for (int k = height-fieldCellSize.Y/2; k >= 0; k -= fieldCellSize.Y)
     {
-        for (int i = width-1; i >= 0; i--)
+        for (int i = width-fieldCellSize.X/2; i >= 0; i -= fieldCellSize.X)
         {
             Point<CoordType> point(i, k);
             int id = result->GetNode(point);
@@ -312,12 +317,12 @@ CreateDistanceField()
             if (GetCellPoint(point) == GridMapView<CellType, CoordType>::FreeCellValue)
             {
                 //border
-                if(k>0 && k<height-_cellSize.Y && i>0 && i<width-_cellSize.X)
+                if(k>0 && k<height-fieldCellSize.Y && i>0 && i<width-fieldCellSize.X)
                 {
                     value = min(
-                                min(result->GetCell(GetNodeDxDy(id, 1, 0)), result->GetCell(GetNodeDxDy(id, 0, 1))),
-                                min(result->GetCell(GetNodeDxDy(id, 1, 1)),result->GetCell(GetNodeDxDy(id, -1, 1)))
-                            )+1;
+                                min(result->GetCell(GetNodeDxDy(id, 1, 0)), result->GetCell(GetNodeDxDy(id, 0, 1)))+1,
+                                min(result->GetCell(GetNodeDxDy(id, 1, 1)), result->GetCell(GetNodeDxDy(id, -1, 1)))+1.41
+                            );
                     value = min(value, result->GetCell(id));
                 }
                 else
@@ -332,6 +337,16 @@ CreateDistanceField()
             result->SetCell(id, value);
         }
     }
+    ////blur
+    //for (int k = height-fieldCellSize.Y; k > fieldCellSize.Y; k -= fieldCellSize.Y)
+    //{
+    //    for (int i = width-fieldCellSize.X; i > fieldCellSize.X; i -= fieldCellSize.X)
+    //    {
+    //        Point<CoordType> point(i, k);
+    //        float
+    //        result->SetCellPoint(point
+    //    }
+    //}
 
     //TODO: thread unsafe
     if (_distanceField != NULL)

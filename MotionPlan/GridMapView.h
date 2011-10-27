@@ -26,7 +26,7 @@ protected:
 	Point<float> _scale;
 	Point<CoordType> _cellSize;
 
-    GridMapView<int, CoordType>* _distanceField;
+    GridMapView<float, CoordType>* _distanceField;
     void CreateDistanceField();
 
 	virtual void InitMap(CoordType width, CoordType height, int border, Point<CoordType> cellSize);
@@ -42,8 +42,9 @@ protected:
 
 public:
 
-    static const CellType ObstacleCellValue = 1;
-    static const CellType FreeCellValue = 0;
+    const CellType ObstacleCellValue;
+    const CellType FreeCellValue;
+
 
 	virtual void GetNeighbors(int node, FastVector<AStar::EdgeInfo<int,float>>& neighbors);
 
@@ -68,7 +69,7 @@ public:
 	virtual ~GridMapView();
 	void Clear(CellType value, CellType valueBorder);
     bool IsCellRegionIsotropic(Point<CoordType>& point1, Point<CoordType>& point2, CellType* cell);
-    GridMapView<int, CoordType>* GetDistanceField();
+    GridMapView<float, CoordType>* GetDistanceField();
     //return width
 	int ToVector(std::vector<CellType>* data);
 

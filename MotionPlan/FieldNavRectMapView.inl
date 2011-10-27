@@ -22,17 +22,18 @@ FieldNavRectMapView<CellType, CoordType>::
 LoadFrom(GridMapView<CellType, CoordType>* map)
 {
     std::vector<AStar::Rectangle<CoordType>> result;
-    _cellSize = map->GetCellSize();
-    GridMapView<int, CoordType>* distanceFieldMap = map->GetDistanceField();
 
-    std::vector<int> distanceFieldVector;
+    GridMapView<float, CoordType>* distanceFieldMap = map->GetDistanceField();
+    _cellSize = distanceFieldMap->GetCellSize();
+
+    std::vector<float> distanceFieldVector;
     int width = distanceFieldMap->ToVector(&distanceFieldVector);
     int height = distanceFieldVector.size() / width;
     //simple 2d representation
-    Vector2D<int> distanceField(distanceFieldVector, width);
+    Vector2D<float> distanceField(distanceFieldVector, width);
 
     //something similiar to watershed segmentation algorithm
-    SortSimpleVector<int> sortedDistanceField(distanceField.Data);
+    SortSimpleVector<float> sortedDistanceField(distanceField.Data);
     int x,y;
     int x0,y0;
     int x1,y1;
@@ -40,11 +41,11 @@ LoadFrom(GridMapView<CellType, CoordType>* map)
     while (!sortedDistanceField.Empty())
     {
         int id = sortedDistanceField.PopIndexMax();
-        if ( distanceField.Data[id] != 0)
+        if ( distanceField.Data[id] > 0)
         {
             distanceField.GetXY(id, &x, &y);
             
-            distanceField.FillRect(x, y, bind2nd(std::not_equal_to<int>(), 0), &x0, &y0, &x1, &y1);
+            distanceField.FillRect(x, y, bind2nd(std::greater<float>(), 0), &x0, &y0, &x1, &y1);
 
             distanceField.SetRegion(x0, y0, x1, y1, 0);
 

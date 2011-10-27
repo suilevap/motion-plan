@@ -61,7 +61,7 @@ TEST(GridMapViewTest, GetDistanceField)
 //1 2 2 2 2 2 2 2 2 2 2 2 2 1
 //1 1 1 1 1 1 1 1 1 1 1 1 1 1
 //========================
-    GridMapView<int>* distFieldMap = map->GetDistanceField();
+    GridMapView<float>* distFieldMap = map->GetDistanceField();
     ASSERT_TRUE(distFieldMap != NULL);
     EXPECT_EQ(distFieldMap->GetCellPoint(Point<float>(0,0)),0);
     EXPECT_EQ(distFieldMap->GetCellPoint(Point<float>(1,1)),1);

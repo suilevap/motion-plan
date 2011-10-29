@@ -269,16 +269,16 @@ CreateDistanceField()
 {
     Point<CoordType> size = GetMaxPoint();
     GridMapView<float, CoordType>* result = new GridMapView<float, CoordType>(
-        size.X, size.Y, _cellSize.X/2);
+        size.X, size.Y, _cellSize.X);
 
     float width = size.X;
     float height = size.Y;
     Point<CoordType> fieldCellSize = result->GetCellSize();
     //generate distance field
     //pass 1
-	for (int k = 0; k < height; k += fieldCellSize.Y)
+	for (float k = 0; k < height; k += fieldCellSize.Y)
 	{
-	    for (int i = 0; i < width; i += fieldCellSize.X)
+	    for (float i = 0; i < width; i += fieldCellSize.X)
 		{
             Point<CoordType> point(i, k);
             int id = result->GetNode(point);
@@ -289,8 +289,14 @@ CreateDistanceField()
                 if(k>0 && k<height-fieldCellSize.Y && i>0 && i<width-fieldCellSize.X)
                 {
                     value = min(
-                                min(result->GetCell(GetNodeDxDy(id, -1, 0)), result->GetCell(GetNodeDxDy(id, 0, -1)))+1,
-                                min(result->GetCell(GetNodeDxDy(id, -1, -1)), result->GetCell(GetNodeDxDy(id, 1, -1)))+1.41
+                                min(
+                                    result->GetCell(result->GetNodeDxDy(id, -1, 0)), 
+                                    result->GetCell(result->GetNodeDxDy(id, 0, -1)))
+                                +1,
+                                min(
+                                    result->GetCell(result->GetNodeDxDy(id, -1, -1)), 
+                                    result->GetCell(result->GetNodeDxDy(id, 1, -1)))
+                                +SQRT_2
                             );
                 }
                 else
@@ -307,9 +313,9 @@ CreateDistanceField()
         }
     }
     //pass 2
-    for (int k = height-fieldCellSize.Y/2; k >= 0; k -= fieldCellSize.Y)
+    for (float k = height-fieldCellSize.Y/2; k >= 0; k -= fieldCellSize.Y)
     {
-        for (int i = width-fieldCellSize.X/2; i >= 0; i -= fieldCellSize.X)
+        for (float i = width-fieldCellSize.X/2; i >= 0; i -= fieldCellSize.X)
         {
             Point<CoordType> point(i, k);
             int id = result->GetNode(point);
@@ -320,8 +326,14 @@ CreateDistanceField()
                 if(k>0 && k<height-fieldCellSize.Y && i>0 && i<width-fieldCellSize.X)
                 {
                     value = min(
-                                min(result->GetCell(GetNodeDxDy(id, 1, 0)), result->GetCell(GetNodeDxDy(id, 0, 1)))+1,
-                                min(result->GetCell(GetNodeDxDy(id, 1, 1)), result->GetCell(GetNodeDxDy(id, -1, 1)))+1.41
+                                min(
+                                    result->GetCell(result->GetNodeDxDy(id, 1, 0)), 
+                                    result->GetCell(result->GetNodeDxDy(id, 0, 1)))
+                                +1,
+                                min(
+                                    result->GetCell(result->GetNodeDxDy(id, 1, 1)), 
+                                    result->GetCell(result->GetNodeDxDy(id, -1, 1)))
+                                +SQRT_2
                             );
                     value = min(value, result->GetCell(id));
                 }

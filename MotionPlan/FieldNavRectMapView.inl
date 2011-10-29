@@ -31,7 +31,8 @@ LoadFrom(GridMapView<CellType, CoordType>* map)
     int height = distanceFieldVector.size() / width;
     //simple 2d representation
     Vector2D<float> distanceField(distanceFieldVector, width);
-
+    
+    distanceField.Blur(0.5, bind2nd(std::greater<float>(), 0));
     //something similiar to watershed segmentation algorithm
     SortSimpleVector<float> sortedDistanceField(distanceField.Data);
     int x,y;

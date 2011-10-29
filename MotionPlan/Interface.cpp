@@ -152,20 +152,7 @@ double DrawNavRectMap(double mapIndex)
                     gm::draw_set_alpha(d/rectDist);
                     gm::draw_line(
                         intersectionTo1.GetCenter().X, intersectionTo1.GetCenter().Y,
-                        intersectionTo2.GetCenter().X, intersectionTo2.GetCenter().Y);
-                    //gm::draw_line(
-                    //    intersectionTo1.GetLeftTopPoint().X, intersectionTo1.GetLeftTopPoint().Y,
-                    //    intersectionTo2.GetLeftTopPoint().X, intersectionTo2.GetLeftTopPoint().Y);
-                    //gm::draw_line(
-                    //    intersectionTo1.GetLeftTopPoint().X, intersectionTo1.GetLeftTopPoint().Y,
-                    //    intersectionTo2.GetRightBottomPoint().X, intersectionTo2.GetRightBottomPoint().Y);
-                    //gm::draw_line(
-                    //    intersectionTo1.GetRightBottomPoint().X, intersectionTo1.GetRightBottomPoint().Y,
-                    //    intersectionTo2.GetLeftTopPoint().X, intersectionTo2.GetLeftTopPoint().Y);
-                    //gm::draw_line(
-                    //    intersectionTo1.GetRightBottomPoint().X, intersectionTo1.GetRightBottomPoint().Y,
-                    //    intersectionTo2.GetRightBottomPoint().X, intersectionTo2.GetRightBottomPoint().Y);
-
+                        intersectionTo2.GetCenter().X, intersectionTo2.GetCenter().Y);                   
                 }
 
             }

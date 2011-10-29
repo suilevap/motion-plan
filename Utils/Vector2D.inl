@@ -41,6 +41,28 @@ bool Vector2D<T>::CheckRegion(int x0, int y0, int x1, int y1, Pr predicate)
 }
 
 template<typename T>
+template<class Pr>
+void Vector2D<T>::Blur(float a, Pr predicate)
+{
+    float ra = 1 - a;
+    for (int x = 0; x < Width; ++x)
+    {
+        for (int y = 0; y < Height; ++y)
+        {
+            T value = GetData(x,y);
+            if (predicate(value))
+            {
+                T sum = GetDataSafe(x-1, y-1) + GetDataSafe(x, y-1) + GetDataSafe(x+1, y-1) +
+                    GetDataSafe(x-1, y) + GetDataSafe(x+1, y) +
+                    GetDataSafe(x-1, y+1) + GetDataSafe(x, y+1) + GetDataSafe(x+1, y+1);
+                value = a * value + ra * sum / 8;
+                SetData(x, y, value);
+            }
+        }
+    }
+}
+
+template<typename T>
 void Vector2D<T>::SetRegion(int x0, int y0, int x1, int y1, T val)
 {
     for (int x = x0; x <= x1; ++x)
@@ -59,10 +81,37 @@ int Vector2D<T>::GetId(int x, int y)
     return x + y * Width;
 }
 template<typename T>
+int Vector2D<T>::GetIdSafe(int x, int y)
+{
+    x = MathHelper::Clamp(x, 0, Width-1);
+    y = MathHelper::Clamp(y, 0, Height-1);
+    return x + y * Width;
+}
+template<typename T>
 void Vector2D<T>::GetXY(int id, int* x, int* y)
 {
     *x = id % Width;
     *y = id / Width;
+}
+template<typename T>
+T Vector2D<T>::GetData(int x, int y)
+{
+    return Data[GetId(x, y)];
+}
+template<typename T>
+void Vector2D<T>::SetData(int x, int y, T value)
+{
+    Data[GetId(x, y)] = value;
+}
+template<typename T>
+T Vector2D<T>::GetDataSafe(int x, int y)
+{
+    return Data[GetIdSafe(x, y)];
+}
+template<typename T>
+void Vector2D<T>::SetDataSafe(int x, int y, T value)
+{
+    Data[GetIdSafe(x, y)] = value;
 }
 
 template<typename T>

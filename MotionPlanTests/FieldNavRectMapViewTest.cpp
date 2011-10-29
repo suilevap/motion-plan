@@ -38,6 +38,26 @@ TEST(FieldNavRectMapView, Create)
     //EXPECT_EQ(neighbors.size(), 3);
 
     //map->ToOutput();
+    //navMap->ToOutput();
+	delete map;
+	delete navMap;
+}
+
+TEST(FieldNavRectMapView, Corridor2)
+{
+	GridMapView<int>* map = new GridMapView<int>(4, 2);
+	//map->SetCellRegion(Point<float>(2,2), 12, Point<float>(2.5, 2.5));
+    map->SetCellPoint(Point<float>(0,1), 1);
+    map->SetCellPoint(Point<float>(3,0), 1);
+
+
+    FieldNavRectMapView<int>* navMap = NULL;
+    navMap = FieldNavRectMapView<int>::Create(map);
+
+    ASSERT_TRUE(navMap != NULL);
+ 
+
+    //map->ToOutput();
     navMap->ToOutput();
 	delete map;
 	delete navMap;

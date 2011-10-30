@@ -33,6 +33,16 @@ template<
 	typename CellType, 
 	typename CostInfo> 
 void NavigationRectangle<CoordType, CellType, CostInfo>::
+AddEdge(EdgeInfo<int, CostInfo> edge)
+{
+    _links.push_back(edge);
+}
+
+template<
+	typename CoordType, 
+	typename CellType, 
+	typename CostInfo> 
+void NavigationRectangle<CoordType, CellType, CostInfo>::
 FindNeighbors(std::vector<NavigationRectangle<CoordType, CellType, CostInfo>*> navRects, CoordType step)
 {
     for (

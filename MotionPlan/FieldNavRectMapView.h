@@ -12,7 +12,7 @@
 
 template<class CellType, typename CoordType = float>
 class FieldNavRectMapView: 
-    public AStar::NavRectMapView<CellType, CoordType>
+    public AStar::NavRectMapView<CellType, CoordType, true>
 {
 private:
 

@@ -249,25 +249,27 @@ GetNearestNode(PointInfo toPoint)
     int minRankNode;
     _map->GetPointNeighbors(toPoint, _neighbors);
     int size = _neighbors.size();
-    if (size > 0)
+
+    EdgeInfo<NodeInfo,CostInfo>* edge;
+    
+    minRankNode = 0;
+    CostInfo minCost = 0;
+    CostInfo cost;
+    for (int i = 0; i < size; ++i)
     {
-        EdgeInfo<NodeInfo,CostInfo>* edge = &(_neighbors[0]);
-        
-        minRankNode = edge->To;
-        CostInfo minCost = GetDistance(edge->To, (*edge));
-        CostInfo cost;
-        for (int i = 1; i < size; ++i)
-	    {
-		    //TODO: fix C4238: nonstandard extension used : class rvalue used as lvalue	
-            edge = &(_neighbors[i]);
+	    //TODO: fix C4238: nonstandard extension used : class rvalue used as lvalue	
+        edge = &(_neighbors[i]);
+        if (edge->To != 0)
+        {
             cost = GetDistance(edge->To, (*edge));
-		    if (cost < minCost)
-		    {
+	        if ((minRankNode==0) || (cost < minCost))
+	        {
                 minCost = cost;
                 minRankNode = edge->To;
-		    }
-	    }
+	        }
+        }
     }
+    
     return minRankNode;
 }
 

@@ -4,6 +4,8 @@
 #include "Point.h"
 #include "FastVector.h"
 #include "EdgeInfo.h"
+#include "BasePathFinder.h"
+
 
 TEST(FieldNavRectMapView, Create)
 {
@@ -16,12 +18,13 @@ TEST(FieldNavRectMapView, Create)
     FieldNavRectMapView<int>* navMap = NULL;
     navMap = FieldNavRectMapView<int>::Create(map);
     //quadMap
-    //.144
-    //2344
-    //5566
-    //5566
+    //.111122
+    //5111122
+    //4444.22
+    //3333322
+    //3333322
     ASSERT_TRUE(navMap != NULL);
-    //ASSERT_EQ(quadMap->GetMaxNode(), 7);
+    EXPECT_EQ(navMap->GetMaxNode(), 6);
 
     //FastVector<AStar::EdgeInfo<int, float>> neighbors;
     //quadMap->GetNeighbors(1, neighbors);
@@ -56,6 +59,41 @@ TEST(FieldNavRectMapView, Corridor2)
 
     ASSERT_TRUE(navMap != NULL);
  
+
+    //map->ToOutput();
+    navMap->ToOutput();
+	delete map;
+	delete navMap;
+}
+
+TEST(FieldNavRectMapView, FindPath)
+{
+	GridMapView<int>* map = new GridMapView<int>(5, 4);
+	//map->SetCellRegion(Point<float>(2,2), 12, Point<float>(2.5, 2.5));
+    //11.11
+    //11.11
+    //22222
+    //22222
+    map->SetCellPoint(Point<float>(2,0), 1);
+    map->SetCellPoint(Point<float>(2,1), 1);
+
+
+    FieldNavRectMapView<int>* navMap = NULL;
+    navMap = FieldNavRectMapView<int>::Create(map);
+
+    ASSERT_TRUE(navMap != NULL);
+    navMap->ToOutput();
+    
+    AStar::BasePathFinder<Point<float>, int, float>* pathFinder = 
+        new AStar::BasePathFinder<Point<float>, int, float>(navMap);
+
+	AStar::Path<Point<float>>* path;
+
+    path = pathFinder->Find(Point<float>(0,0), Point<float>(4,0));
+	ASSERT_EQ(4, path->Count());
+	delete path;
+
+	delete pathFinder;
 
     //map->ToOutput();
     navMap->ToOutput();

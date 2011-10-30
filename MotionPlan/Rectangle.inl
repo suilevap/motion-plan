@@ -46,8 +46,8 @@ GetIntersection(Rectangle<CoordType>* rect, CoordType step)
 
     Point<CoordType> rect1Start = GetLeftTopPoint();
     Point<CoordType> rect2Start = rect->GetLeftTopPoint();
-    Point<CoordType> rect1End = GetRightBottomPoint()+step;
-    Point<CoordType> rect2End = rect->GetRightBottomPoint()+step;
+    Point<CoordType> rect1End = GetRightBottomPoint();
+    Point<CoordType> rect2End = rect->GetRightBottomPoint();
     bool isIntersect = !(rect2Start.X > rect1End.X || rect2End.X+step < rect1Start.X 
         || rect2Start.Y > rect1End.Y+step || rect2End.Y < rect1Start.Y); 
     if (isIntersect)

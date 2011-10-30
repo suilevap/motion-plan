@@ -32,6 +32,7 @@ public:
     int GetId() { return _index;}
 
     void FindNeighbors(std::vector<NavigationRectangle<CoordType, CellType, CostInfo>*> navRects, CoordType step);
+    void AddEdge(EdgeInfo<int, CostInfo> edge);
 
     NavigationRectangle(Point<CoordType> point1, Point<CoordType> point2, int index, CellType value);
     NavigationRectangle(Rectangle<CoordType>& rect, int index, CellType value);

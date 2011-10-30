@@ -25,17 +25,28 @@ protected:
     Rectangle<CoordType> _global;
     CoordType _stepSize;
     std::vector<NavigationRectangle<CoordType, CellType, float>*> _navRects;
+    int _areasCount;
     
     //use static method Create instead constructor
     NavRectMapView() {}
     void Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
 
+    int AddNavRect(Rectangle<CoordType> rect, CellType value);
 public:
+    inline int GetAreasCount()
+    {
+        return _areasCount;
+    }
+    inline bool IsArea(int node)
+    {
+        return (node > 0 && node < GetAreasCount());
+    }
     inline NavigationRectangle<CoordType, CellType, float>* GetNavRect(int index)
     {
         return _navRects[index];
     }
 	virtual void GetNeighbors(int node, FastVector<EdgeInfo<int,float>>& neighbors);
+    virtual void GetPointNeighbors(Point<CoordType> point, FastVector<EdgeInfo<int,float>>& neighbors);
 
 	virtual Point<CoordType> GetPoint(int node);	
 	virtual int GetNode(Point<CoordType>& point);

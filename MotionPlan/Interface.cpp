@@ -104,57 +104,58 @@ double DrawMap(double mapIndex)
 double DrawNavRectMap(double mapIndex)
 {
     AStar::MapView<Point<float>, int>* map0 = _maps.Get(static_cast<int>(mapIndex));
-    AStar::NavRectMapView<int>* map = dynamic_cast<AStar::NavRectMapView<int>*>(map0);
+    AStar::NavRectMapView<int, float, true>* map = 
+        dynamic_cast<AStar::NavRectMapView<int, float, true>*>(map0);
+
     if (map != NULL)
     {
         float mapDist = AStar::DistanceEvaluator::EuclideanDistance<float>(
             Point<float>::Zero(), map->GetMaxPoint());
         gm::draw_set_color(gm::c_red);
         int count = map->GetMaxNode();
+        int startI = map->GetAreasCount();
         for (int i = 1; i < count; ++i)
         {
             AStar::NavigationRectangle<float, int, float>* rect = map->GetNavRect(i);
             
-            Point<float> size = rect->GetSize();
-            float r = min(size.X, size.Y)/2;
-            float rectDist = AStar::DistanceEvaluator::EuclideanDistance<float>(
-                rect->GetLeftTopPoint(), rect->GetRightBottomPoint()); 
-            gm::draw_set_alpha(rectDist/mapDist);
-
-            gm::draw_rectangle_color( rect->GetLeftTopPoint().X+2, rect->GetLeftTopPoint().Y+2,
-                rect->GetRightBottomPoint().X-2, rect->GetRightBottomPoint().Y-2,
-                1, 1, 1, 1, true);
-
-            //gm::draw_circle( rect->GetCenter().X, rect->GetCenter().Y, r, 1);
-            std::vector<AStar::EdgeInfo<int, float>>* edges = rect->GetNeighboors();
-            int count = edges->size();
-            for (int i = 0; i < count; ++i)
+            if (map->IsArea(i))
             {
-                AStar::EdgeInfo<int, float> edgeTo1 = edges->at(i);
-                AStar::NavigationRectangle<float, int, float>* rectTo1 = map->GetNavRect(edgeTo1.To);
-                AStar::Rectangle<float> intersectionTo1 = rect->GetIntersection(rectTo1, 4);
-                //Point<float> size = intersectionTo1.GetSize();
-                //float r = max(size.X, size.Y)/2;
-                float r = 4;
-                gm::draw_circle( intersectionTo1.GetCenter().X, intersectionTo1.GetCenter().Y, r, 1);
-                //gm::draw_rectangle_color( 
-                //    intersectionTo1.GetLeftTopPoint().X, intersectionTo1.GetLeftTopPoint().Y,
-                //    intersectionTo1.GetRightBottomPoint().X, intersectionTo1.GetRightBottomPoint().Y,
-                //    1, 1, 1, 1, true);
-                
-                for (int k = i+1; k < count; ++k)
-                {
-                    AStar::EdgeInfo<int, float> edgeTo2 = edges->at(k);
-                    AStar::NavigationRectangle<float, int, float>* rectTo2 = map->GetNavRect(edgeTo2.To);
-                    AStar::Rectangle<float> intersectionTo2 = rect->GetIntersection(rectTo2, 1);
-                    float d = AStar::DistanceEvaluator::EuclideanDistance<float>(
-                        intersectionTo1.GetCenter(), intersectionTo2.GetCenter());
-                    gm::draw_set_alpha(d/rectDist);
-                    gm::draw_line(
-                        intersectionTo1.GetCenter().X, intersectionTo1.GetCenter().Y,
-                        intersectionTo2.GetCenter().X, intersectionTo2.GetCenter().Y);                   
-                }
+                Point<float> size = rect->GetSize();
+                float r = min(size.X, size.Y)/2;
+                //float rectDist = AStar::DistanceEvaluator::EuclideanDistance<float>(
+                //    rect->GetLeftTopPoint(), rect->GetRightBottomPoint()); 
+                //gm::draw_set_alpha(rectDist/mapDist);
 
+                gm::draw_rectangle_color( rect->GetLeftTopPoint().X+2, rect->GetLeftTopPoint().Y+2,
+                    rect->GetRightBottomPoint().X-2, rect->GetRightBottomPoint().Y-2,
+                    1, 1, 1, 1, true);
+            }
+            else
+            {
+                std::vector<AStar::EdgeInfo<int, float>>* edges = rect->GetNeighboors();
+                int count = edges->size();
+                for (int k = 0; k < count; ++k)
+                {
+                    AStar::EdgeInfo<int, float> edgeTo1 = edges->at(k);
+                    if ((edgeTo1.To > i) && !map->IsArea(edgeTo1.To))
+                    {
+                        AStar::NavigationRectangle<float, int, float>* rectTo1 = 
+                            map->GetNavRect(edgeTo1.To);
+                        //Point<float> size = intersectionTo1.GetSize();
+                        //float r = max(size.X, size.Y)/2;
+                        float r = 4;
+                        gm::draw_circle( rectTo1->GetCenter().X, rectTo1->GetCenter().Y, r, 1);
+                        gm::draw_circle( rect->GetCenter().X, rect->GetCenter().Y, r, 1);
+                        
+                        //float d = AStar::DistanceEvaluator::EuclideanDistance<float>(
+                        //        rect->GetCenter(), rectTo1->GetCenter());
+                        //gm::draw_set_alpha(d/rectDist);
+                        gm::draw_line(
+                            rect->GetCenter().X, rect->GetCenter().Y,
+                            rectTo1->GetCenter().X, rectTo1->GetCenter().Y);
+                    }
+
+                }
             }
         }
         gm::draw_set_alpha(1);

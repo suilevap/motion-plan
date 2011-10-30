@@ -9,6 +9,7 @@
 #include "Point.h"
 
 
+
 TEST(NavRectMapView, Init)
 {
     std::vector<AStar::Rectangle<int>> rects;

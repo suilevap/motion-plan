@@ -19,14 +19,21 @@ GetPointNeighbors(Point<CoordType> point, FastVector<EdgeInfo<int,float>>& neigh
 {
     
     int node = GetNode(point);
-    GetNeighbors(node, neighbors);
-    int count = neighbors.size();
+    FastVector<EdgeInfo<int,float>> neighborsNode;
+    GetNeighbors(node, neighborsNode);
+    int count = neighborsNode.size();
+    neighbors.resize(count+1);
+    neighbors.clear();
+
     for (int i=0; i < count; ++i)
     {
-        EdgeInfo<int,float>& edge = neighbors[i];
+        EdgeInfo<int,float>& edge = neighborsNode[i];
         float cost = GetCost(point, GetNavRect(edge.To)->GetCenter());
-        neighbors[i] = EdgeInfo<int,float>(edge.To, cost);
+        neighbors.push_back(EdgeInfo<int,float>(edge.To, cost));
     }    
+    //add area node
+    float cost = GetCost(point, GetNavRect(node)->GetCenter());
+    neighbors.push_back(EdgeInfo<int,float>(node, cost));
 }
 
 //template<class CellType, typename CoordType, bool UseAdditionalLinks>

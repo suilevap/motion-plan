@@ -57,9 +57,8 @@ FindStart(PointInfo start, PointInfo goal)
     _goalState.Rank = 0;
 
     _map->GetPointNeighbors(start, _neighbors);
-    //parent for first frontier is 0
-    int parentNode = 0;
-    ProcessNeighboors(parentNode);
+    //parent for first frontier is StartNodeIndex
+    ProcessNeighboors(StartNodeIndex);
 }
 
 
@@ -165,7 +164,7 @@ ProcessNeighboors(int parentNode)
 	{
 		//TODO: fix C4238: nonstandard extension used : class rvalue used as lvalue	
         EdgeInfo<NodeInfo,CostInfo>* edge = &(_neighbors[i]);
-		if (_mapCost[edge->To].Status == NodeStatus::Open)
+		if (_mapCost[edge->To].Status != NodeStatus::Close)
 		{
 			CheckNeighbor(parentNode, *edge);
 			//_mapCost[it->To].Status = it->InitStatus;//NodeStatus::Open;
@@ -189,7 +188,7 @@ CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge)
 	NodeState<NodeInfo,CostInfo>* bestResult = &(_mapCost[newNode]);
 
 	CostInfo cost = GetDistance(node, edge);
-	if ((bestResult->ParentNode == 0) 
+	if ((bestResult->Status == NodeStatus::Free) 
 		|| (bestResult->Cost > cost))
 	{
 		//TODO: fix hardcoded _mapDist for NodeInfo == int
@@ -210,6 +209,8 @@ CheckNeighbor(NodeInfo node, EdgeInfo<NodeInfo, CostInfo>& edge)
 
         bestResult->ParentNode = node;
         bestResult->Cost = cost;
+        bestResult->Status = NodeStatus::Open;
+
 		result = true;
 	}
 
@@ -292,8 +293,8 @@ ExtractPath(PointInfo toPoint)
 		point = _map->GetPoint(pos);
 		result.push_back(point);
 		pos = _mapCost[pos].ParentNode;
-	}
-    while (pos != 0);
+	}    
+    while (pos != StartNodeIndex);
 
     result.push_back(_startP);
 	

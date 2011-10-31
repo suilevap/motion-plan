@@ -33,6 +33,7 @@ public:
 	typedef int NodeInfo;
 
 protected:	
+    static const int StartNodeIndex = 0;
 	//MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
 
 	std::vector<NodeState<NodeInfo,CostInfo>> _mapCost;
@@ -57,6 +58,7 @@ protected:
 	virtual bool IsGoal(NodeInfo goal);
     int GetNearestNode(PointInfo toPoint);
 public:
+
 	BasePathFinder(MapView<PointInfo, CellType, CostInfo>* map);
 	virtual ~BasePathFinder();
 

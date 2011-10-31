@@ -53,11 +53,12 @@ public:
 		FindStart(start, goal);
 
 		NodeInfo curNode = _start;
-
-		while (!IsGoal(curNode) && (curNode != NULL))
-		{
+		do
+        {
 			curNode = FindStep();
 		}
+		while (!IsGoal(curNode) && (curNode != NULL));
+        
 		Path<PointInfo>* path = FindEnd(goal);
 
 		return path;

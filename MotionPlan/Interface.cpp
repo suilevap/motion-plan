@@ -32,6 +32,9 @@ ObjectIdPool<AStar::MapView<Point<float>,int, float>> _maps;
 ObjectIdPool<AStar::PathFinder<Point<float>, int, float>> _pathFinders;
 ObjectIdPool<AStar::Path<Point<float>>> _paths;
 
+int navRectPathFinder;
+
+
 char* ConvertToGmPath(AStar::Path<Point<float>>* p);
 
 #ifdef USE_GMAPI
@@ -107,6 +110,10 @@ double DrawNavRectMap(double mapIndex)
     AStar::NavRectMapView<int, float, true>* map = 
         dynamic_cast<AStar::NavRectMapView<int, float, true>*>(map0);
 
+    AStar::PathFinder<Point<float>, int, float>* pathF0 = _pathFinders.Get(navRectPathFinder);
+    AStar::BasePathFinder<Point<float>, int, float>* pathF =
+        dynamic_cast<AStar::BasePathFinder<Point<float>, int, float>*>(pathF0);
+
     if (map != NULL)
     {
         float mapDist = AStar::DistanceEvaluator::EuclideanDistance<float>(
@@ -117,7 +124,7 @@ double DrawNavRectMap(double mapIndex)
         for (int i = 1; i < count; ++i)
         {
             AStar::NavigationRectangle<float, int, float>* rect = map->GetNavRect(i);
-            
+
             if (map->IsArea(i))
             {
                 Point<float> size = rect->GetSize();
@@ -157,6 +164,29 @@ double DrawNavRectMap(double mapIndex)
 
                 }
             }
+
+            int parent = pathF->_mapCost[rect->GetId()].ParentNode;
+            if (parent>0)
+            {
+                AStar::NavigationRectangle<float, int, float>* rectParent = map->GetNavRect(parent);
+                if (pathF->_mapCost[rect->GetId()].Status == AStar::NodeStatus::Close)
+                {
+                    gm::draw_set_color(gm::c_blue);
+                }
+                else
+                {
+                    gm::draw_set_color(gm::c_green);
+                }
+                
+                gm::draw_arrow(
+                    rectParent->GetCenter().X, rectParent->GetCenter().Y, 
+                    rect->GetCenter().X, rect->GetCenter().Y, 8);
+                gm::draw_circle(rect->GetCenter().X, rect->GetCenter().Y, 
+                    4, 0);
+                gm::draw_set_color(gm::c_red);
+
+            }
+
         }
         gm::draw_set_alpha(1);
         gm::draw_set_color(gm::c_black);
@@ -196,7 +226,7 @@ double CreateSparseMap(double width, double height, double cellSize)
 
 	return static_cast<double>(result);
 }
-
+int navRectMap;
 double CreateQuadMap(double gridMapIndex)
 {
     AStar::MapView<Point<float>, int>* gridMap0 = _maps.Get(static_cast<int>(gridMapIndex));
@@ -206,7 +236,7 @@ double CreateQuadMap(double gridMapIndex)
     FieldNavRectMapView<int, float>* map = FieldNavRectMapView<int, float>::Create(gridMap);
 
 	int result = _maps.Add(map);
-
+    navRectMap = result;
 	return static_cast<double>(result);
 }
 
@@ -282,10 +312,11 @@ double CreatePathFinder(double mapIndex)
 			new AStar::BidirectionalPathFinder<Point<float>, int, float>(map);*/
 
 		result = _pathFinders.Add(pathFinder);
+        if (int(mapIndex) == navRectMap)
+            navRectPathFinder = result;
 	}
 	return static_cast<double>(result);
 }
-
 double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
 {
 	int mapIndex2 = static_cast<int>(mapIndex);
@@ -305,6 +336,7 @@ double CreatePathFinderDebug(double mapIndex, double mapDebugIndex)
 		pathFinder->InitDebug(mapDebug);
 #endif
 		result = pathFinderIndex;
+
 	}
 	return static_cast<double>(result);
 }

@@ -10,8 +10,9 @@ namespace AStar
 	{
 		enum Status
 		{
-			Open=0,
-			Close
+            Free=0,
+			Open=1,
+			Close=2
 		};
 	}
 
@@ -30,14 +31,14 @@ public:
 	NodeState(const NodeInfo parent,const CostInfo& cost):
 		ParentNode(parent),
 		Cost(cost),
-		Status(NodeStatus::Open)
+		Status(NodeStatus::Free)
 	{
 	}
 
 	NodeState():
 		ParentNode(0),
 		Cost(0),
-		Status(NodeStatus::Open)
+		Status(NodeStatus::Free)
 	{
 	}
 };

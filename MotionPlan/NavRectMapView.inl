@@ -36,15 +36,6 @@ GetPointNeighbors(Point<CoordType> point, FastVector<EdgeInfo<int,float>>& neigh
     neighbors.push_back(EdgeInfo<int,float>(node, cost));
 }
 
-//template<class CellType, typename CoordType, bool UseAdditionalLinks>
-//inline void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::AddNeighbor(int node, float d, FastVector<AStar::EdgeInfo<int,float>>& neighbors)
-//{
-//    //if (GetCell(node) != 1)	
-//    {
-//        neighbors.push_back(AStar::EdgeInfo<int,float>(node, d));
-//    }
-//}
-
 template<class CellType, typename CoordType, bool UseAdditionalLinks>
 Point<CoordType> NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 GetPoint(int node)

@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "EdgeInfo.h"
 #include "FastVector.h"
+#include "Vector2D.h"
 
 #include <valarray>
 
@@ -77,7 +78,8 @@ public:
 	virtual void ToOutput();
 	void ToOutputField();
 	static GridMapView<int>* LoadFrom(std::string &data, std::vector<Point<CoordType>>* specialPoints);
-	void LoadFromVector(std::vector<CoordType>& data);
+	void LoadFromVector(const std::vector<CellType>& data);
+    void LoadFromVector2D(Vector2D<CellType>& data);
 	void ToOtputDebugStep();
 };
 

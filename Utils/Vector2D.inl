@@ -11,6 +11,14 @@ Vector2D<T>::Vector2D(std::vector<T> data, int width)
 }
 
 template<typename T>
+Vector2D<T>::Vector2D(int width, int height)
+{
+    Width = width;
+    Height = height;
+    Data.resize(Width * Height);
+}
+
+template<typename T>
 bool Vector2D<T>::On(int x, int y)
 {
     return (x >= 0 && x < Width && y >= 0 && y < Height);

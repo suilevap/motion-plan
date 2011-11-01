@@ -7,7 +7,8 @@ DllExport double CreateMap(double width, double height, double cellSize);
 DllExport double CreateHexMap(double width, double height, double cellSize);
 DllExport double CreateSparseMap(double width, double height, double cellSize);
 DllExport double CreateQuadMap(double gridMapIndex);
-
+DllExport double CreateNavRectMap(double gridMapIndex);
+DllExport double CreateMapFromSurface(double sufaceId, double scale);
 
 DllExport double SetCellMap(double mapIndex, double x, double y, double cell);
 DllExport double SetCellMapRegion(double mapIndex, double x, double y, double w, double h, double cell);
@@ -15,6 +16,9 @@ DllExport double GetCellMap(double mapIndex, double x, double y);
 DllExport double DestroyMap(double mapIndex);
 DllExport double DrawMap(double mapIndex);
 DllExport double DrawNavRectMap(double mapIndex);
+DllExport double DrawPathFinder(double pathFinderIndex);
+
+
 
 
 DllExport double CreatePathFinder(double mapIndex);

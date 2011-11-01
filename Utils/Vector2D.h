@@ -15,6 +15,8 @@ public:
     int Height;
 
     Vector2D(std::vector<T> data, int width);
+    Vector2D(int width, int height);
+
     
     template<class Pr>
     bool CheckRegion(int x0, int y0, int x1, int y1, Pr predicate);

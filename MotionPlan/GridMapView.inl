@@ -483,12 +483,29 @@ GridMapView<int>* GridMapView<CellType, CoordType>::LoadFrom(std::string &data, 
 }
 
 template<class CellType, typename CoordType>
-void GridMapView<CellType, CoordType>::LoadFromVector(std::vector<CoordType>& data)
+void GridMapView<CellType, CoordType>::LoadFromVector(const std::vector<CellType>& data)
 {
 	for (int i = 0; i < data.size(); ++i)
 	{
 		SetCell(i, data[i]);
 	}
+}
+
+template<class CellType, typename CoordType>
+void GridMapView<CellType, CoordType>::LoadFromVector2D(Vector2D<CellType>& data)
+{
+    int width = data.Width;
+    int height = data.Height;
+
+	for (int x = 0; x < width; ++x)
+    {
+	    for (int y = 0; y < height; ++y)
+	    {
+            int node = GetNodeFromMapPoint(Point<int>(x, y));
+            CellType value= data.GetData(x,y);
+		    SetCell(node, value);
+	    }
+    }
 }
 
 #endif

@@ -36,7 +36,7 @@ protected:
     static const int StartNodeIndex = 0;
 	//MapView<PointInfo, CellType, NodeInfo, CostInfo>* _map;
 
-	//std::vector<NodeState<NodeInfo,CostInfo>> _mapCost;
+	std::vector<NodeState<NodeInfo,CostInfo>> _mapCost;
 
 	FastVector<EdgeInfo<NodeInfo,CostInfo>> _neighbors;
 	
@@ -58,7 +58,8 @@ protected:
 	virtual bool IsGoal(NodeInfo goal);
     int GetNearestNode(PointInfo toPoint);
 public:
-	std::vector<NodeState<NodeInfo,CostInfo>> _mapCost;
+    //for debug only
+    std::vector<NodeState<NodeInfo,CostInfo>> GetMapCost(){ return _mapCost; }
 
 	BasePathFinder(MapView<PointInfo, CellType, CostInfo>* map);
 	virtual ~BasePathFinder();

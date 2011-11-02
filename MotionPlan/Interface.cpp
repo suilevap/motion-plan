@@ -210,9 +210,20 @@ double DrawPathFinder(double pathFinderIndex)
         for (int i = 1; i < count; ++i)
         {
             int parent = mapCost[i].ParentNode;
-            if (parent>0)
+                        
+            if (mapCost[i].Status != AStar::NodeStatus::Free)
             {
                 Point<float> curPoint = map->GetPoint(i);
+
+                Point<float> parentPoint;
+                if (parent>0)
+                {
+                    parentPoint = map->GetPoint(parent);
+                }
+                else
+                {
+                    parentPoint = pathF->GetStartPoint();
+                }
                 if (mapCost[i].Status == AStar::NodeStatus::Close)
                 {
                     gm::draw_set_color(gm::c_blue);
@@ -224,7 +235,7 @@ double DrawPathFinder(double pathFinderIndex)
                 }
                 
                 gm::draw_arrow(
-                    map->GetPoint(parent).X, map->GetPoint(parent).Y, 
+                    parentPoint.X, parentPoint.Y, 
                     curPoint.X, curPoint.Y, 8);
                 
             }

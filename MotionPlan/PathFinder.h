@@ -30,6 +30,10 @@ protected:
 	
 	virtual bool IsGoal(NodeInfo goal) = 0;	
 public:
+    inline PointInfo GetStartPoint(){ return _startP;}
+    inline PointInfo GetGoalPoint(){ return _goalP;}
+    
+
     inline MapView<PointInfo, CellType, CostInfo>* GetMap(){return _map;}
 
 	Path<PointInfo>* Find(PointInfo start, PointInfo goal)

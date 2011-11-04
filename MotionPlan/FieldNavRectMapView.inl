@@ -6,20 +6,29 @@
 template<class CellType, typename CoordType>
 FieldNavRectMapView<CellType, CoordType>* 
 FieldNavRectMapView<CellType, CoordType>::
-Create(GridMapView<CellType, CoordType>* fromMap)
+Create(GridMapView<CellType, CoordType>* fromMap, CoordType minRectSize)
 {
     FieldNavRectMapView<CellType, CoordType>* result = new FieldNavRectMapView<CellType, CoordType>();
 
-    std::vector<AStar::Rectangle<CoordType>> rectangles = result->LoadFrom(fromMap);
+    std::vector<AStar::Rectangle<CoordType>> rectangles = result->LoadFrom(fromMap, minRectSize);
     CoordType stepSize = fromMap->GetCellSize().X/2;
     result->Init(rectangles, stepSize);
     return result;
 }
 
 template<class CellType, typename CoordType>
+FieldNavRectMapView<CellType, CoordType>* 
+FieldNavRectMapView<CellType, CoordType>::
+Create(GridMapView<CellType, CoordType>* fromMap)
+{
+    return Create(fromMap, fromMap->GetCellSize().X);
+}
+
+
+template<class CellType, typename CoordType>
 std::vector<AStar::Rectangle<CoordType>> 
 FieldNavRectMapView<CellType, CoordType>::
-LoadFrom(GridMapView<CellType, CoordType>* map)
+LoadFrom(GridMapView<CellType, CoordType>* map, CoordType minRectSize)
 {
     std::vector<AStar::Rectangle<CoordType>> result;
 
@@ -53,7 +62,11 @@ LoadFrom(GridMapView<CellType, CoordType>* map)
             AStar::Rectangle<CoordType> rect(
                 Point<CoordType>( x0*_cellSize.X, y0*_cellSize.Y),
                 Point<CoordType>( (x1+1)*_cellSize.X, (y1+1)*_cellSize.Y));
-            result.push_back(rect);
+            Point<CoordType> size = rect.GetSize();
+            if (size.X >= minRectSize && size.Y >= minRectSize)
+            {
+                result.push_back(rect);
+            }
         }
     }
 

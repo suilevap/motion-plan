@@ -8,6 +8,8 @@ DllExport double CreateHexMap(double width, double height, double cellSize);
 DllExport double CreateSparseMap(double width, double height, double cellSize);
 DllExport double CreateQuadMap(double gridMapIndex);
 DllExport double CreateNavRectMap(double gridMapIndex);
+DllExport double CreateNavRectMapWithMinSize(double gridMapIndex, double minRectSize);
+
 DllExport double CreateMapFromSurface(double sufaceId, double scale);
 
 DllExport double SetCellMap(double mapIndex, double x, double y, double cell);

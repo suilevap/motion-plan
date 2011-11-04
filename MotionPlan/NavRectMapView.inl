@@ -9,8 +9,16 @@ template<class CellType, typename CoordType, bool UseAdditionalLinks>
 void NavRectMapView<CellType, CoordType, UseAdditionalLinks>:: 
 GetNeighbors(int node, FastVector<EdgeInfo<int,float>>& neighbors)
 {
-	NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(node);
-    neighbors.set(navRect->GetNeighboors());    
+    if (UseAdditionalLinks && IsArea(node))
+    {
+        //area node can be part of optimal path and can be final point
+        neighbors.clear();    
+    }
+    else
+    {
+	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(node);
+        neighbors.set(navRect->GetNeighboors());    
+    }
 }
 
 template<class CellType, typename CoordType, bool UseAdditionalLinks>
@@ -19,15 +27,17 @@ GetPointNeighbors(Point<CoordType> point, FastVector<EdgeInfo<int,float>>& neigh
 {
     
     int node = GetNode(point);
-    FastVector<EdgeInfo<int,float>> neighborsNode;
-    GetNeighbors(node, neighborsNode);
-    int count = neighborsNode.size();
+    
+    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(node);
+    std::vector<EdgeInfo<int, float>>* neighborsNode = navRect->GetNeighboors();   
+
+    int count = neighborsNode->size();
     neighbors.resize(count+1);
     neighbors.clear();
 
-    for (int i=0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
     {
-        EdgeInfo<int,float>& edge = neighborsNode[i];
+        EdgeInfo<int,float>& edge = (*neighborsNode)[i];
         float cost = GetCost(point, GetNavRect(edge.To)->GetCenter());
         neighbors.push_back(EdgeInfo<int,float>(edge.To, cost));
     }    
@@ -141,16 +151,27 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
                 else
                 {                
                     Rectangle<CoordType> intesetionRect = navRect->GetIntersection(navRect2, _stepSize);
+
                     int index = AddNavRect(intesetionRect, 0);
                     NavigationRectangle<CoordType, CellType, float>* endgeNavRect = GetNavRect(index);
 
                     float d1 = GetCost(navRect->GetCenter(), endgeNavRect->GetCenter());
                     navRect->AddEdge(EdgeInfo<int, float>(endgeNavRect->GetId(),d1));
                     endgeNavRect->AddEdge(EdgeInfo<int, float>(navRect->GetId(),d1));
+
                     //symmetric                    
-                    float d2 = GetCost(navRect2->GetCenter(), endgeNavRect->GetCenter());
-                    navRect2->AddEdge(EdgeInfo<int, float>(endgeNavRect->GetId(),d2)); 
-                    endgeNavRect->AddEdge(EdgeInfo<int, float>(navRect2->GetId(),d2));
+                    Rectangle<CoordType> intesetionRect2 = navRect2->GetIntersection(navRect, _stepSize);
+                    int index2 = AddNavRect(intesetionRect2, 0);
+                    NavigationRectangle<CoordType, CellType, float>* endgeNavRect2 = GetNavRect(index2);
+
+                    float d2 = GetCost(navRect2->GetCenter(), endgeNavRect2->GetCenter());
+                    navRect2->AddEdge(EdgeInfo<int, float>(endgeNavRect2->GetId(),d2)); 
+                    endgeNavRect2->AddEdge(EdgeInfo<int, float>(navRect2->GetId(),d2));
+
+                    //link between edge nodes
+                    float dEdges = GetCost(endgeNavRect->GetCenter(), endgeNavRect2->GetCenter());
+                    endgeNavRect->AddEdge(EdgeInfo<int, float>(endgeNavRect2->GetId(),dEdges)); 
+                    endgeNavRect2->AddEdge(EdgeInfo<int, float>(endgeNavRect->GetId(),dEdges)); 
 
                 }
                 /*float d = GetCost(GetCenter(), navRect->GetCenter());

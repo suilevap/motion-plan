@@ -159,6 +159,9 @@ double DrawNavRectMap(double mapIndex)
             }
             else
             {
+                /*gm::draw_rectangle_color( rect->GetLeftTopPoint().X, rect->GetLeftTopPoint().Y,
+                    rect->GetRightBottomPoint().X, rect->GetRightBottomPoint().Y,
+                    1, 1, 1, 1, true);*/
                 std::vector<AStar::EdgeInfo<int, float>>* edges = rect->GetNeighboors();
                 int count = edges->size();
                 for (int k = 0; k < count; ++k)
@@ -227,7 +230,7 @@ double DrawPathFinder(double pathFinderIndex)
                 if (mapCost[i].Status == AStar::NodeStatus::Close)
                 {
                     gm::draw_set_color(gm::c_blue);
-                    gm::draw_circle( curPoint.X, curPoint.Y, 4, 1);
+                    gm::draw_circle( curPoint.X, curPoint.Y, 4, 0);
                 }
                 else
                 {
@@ -299,6 +302,18 @@ double CreateNavRectMap(double gridMapIndex)
 	int result = _maps.Add(map);
 	return static_cast<double>(result);
 }
+
+double CreateNavRectMapWithMinSize(double gridMapIndex, double minRectSize)
+{
+    AStar::MapView<Point<float>, int>* gridMap0 = _maps.Get(static_cast<int>(gridMapIndex));
+    GridMapView<int>* gridMap = dynamic_cast<GridMapView<int>*>(gridMap0);
+
+    FieldNavRectMapView<int, float>* map = FieldNavRectMapView<int, float>::Create(gridMap, minRectSize);
+
+	int result = _maps.Add(map);
+	return static_cast<double>(result);
+}
+
 
 
 double SetCellMap(double mapIndex, double x, double y, double cell)

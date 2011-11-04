@@ -19,7 +19,7 @@ private:
 protected:
     Point<CoordType> _cellSize;
 
-    std::vector<AStar::Rectangle<CoordType>> LoadFrom(GridMapView<CellType, CoordType>* map);
+    std::vector<AStar::Rectangle<CoordType>> LoadFrom(GridMapView<CellType, CoordType>* map, CoordType minRectSize);
 
     static AStar::Rectangle<int> FillRect(int x,int y, std::vector<int>& distanceField, int width);
 
@@ -29,6 +29,7 @@ public:
     virtual ~FieldNavRectMapView(){}
     
     static FieldNavRectMapView<CellType, CoordType>* Create(GridMapView<CellType, CoordType>* fromMap);
+    static FieldNavRectMapView<CellType, CoordType>* Create(GridMapView<CellType, CoordType>* fromMap, CoordType minRectSize);
 };
 
 #include "FieldNavRectMapView.inl"

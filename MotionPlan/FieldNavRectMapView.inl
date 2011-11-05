@@ -12,7 +12,7 @@ Create(GridMapView<CellType, CoordType>* fromMap, CoordType minRectSize)
 
     std::vector<AStar::Rectangle<CoordType>> rectangles = result->LoadFrom(fromMap, minRectSize);
     CoordType stepSize = fromMap->GetCellSize().X/2;
-    result->Init(rectangles, stepSize);
+    result->Init(rectangles, stepSize, minRectSize);
     return result;
 }
 
@@ -63,7 +63,7 @@ LoadFrom(GridMapView<CellType, CoordType>* map, CoordType minRectSize)
                 Point<CoordType>( x0*_cellSize.X, y0*_cellSize.Y),
                 Point<CoordType>( (x1+1)*_cellSize.X, (y1+1)*_cellSize.Y));
             Point<CoordType> size = rect.GetSize();
-            if (size.X >= minRectSize && size.Y >= minRectSize)
+            if (size.X >= minRectSize || size.Y >= minRectSize)
             {
                 result.push_back(rect);
             }

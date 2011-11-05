@@ -99,11 +99,37 @@ AddNavRect(Rectangle<CoordType> rect, CellType value)
     return index;
 }
 
-//TODO: need refactoring
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
+LinkNavRect(int navRectNode1, int navRectNode2)
+{
+    LinkNavRect(GetNavRect(navRectNode1), GetNavRect(navRectNode2));
+}
+
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
+LinkNavRect(NavigationRectangle<CoordType, CellType, float>* navRect1, 
+            NavigationRectangle<CoordType, CellType, float>* navRect2)
+{
+    float d = GetCost(navRect1->GetCenter(), navRect2->GetCenter());
+    navRect1->AddEdge(EdgeInfo<int, float>(navRect2->GetId(),d));
+    //symmetric
+    navRect2->AddEdge(EdgeInfo<int, float>(navRect1->GetId(),d));
+}
+
 template<class CellType, typename CoordType, bool UseAdditionalLinks>
 void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
+{
+    Init(rectangles, step, step);
+}
+
+//TODO: need refactoring
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
+void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
+Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType minRectSize)
 {    
+
     if (rectangles.size() == 0)
         return;
     _stepSize = step;
@@ -113,11 +139,25 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 
     _navRects.push_back(NULL);
 
+    std::vector<NavigationRectangle<CoordType, CellType, float>*> _navRectsSmall;
+
+
     for (std::vector<Rectangle<CoordType>>::iterator it = rectangles.begin(); 
         it != rectangles.end(); 
         ++it)
     {
-        AddNavRect(*it, 0);    
+
+        Point<CoordType> size = it->GetSize();
+        if (size.X >= minRectSize && size.Y >= minRectSize)
+        {
+            AddNavRect(*it, 0); 
+        }
+        else
+        {
+            int index = _navRectsSmall.size();
+            _navRectsSmall.push_back( 
+                new NavigationRectangle<CoordType, CellType, float>(*it, index, 0)); 
+        }
 
         //TODO: need refactoring
         minP.X = min(minP.X, it->GetLeftTopPoint().X);
@@ -143,10 +183,7 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
             {
                 if (!UseAdditionalLinks)
                 {
-                    float d = GetCost(navRect->GetCenter(), navRect2->GetCenter());
-                    navRect->AddEdge(EdgeInfo<int, float>(navRect2->GetId(),d));
-                    //symmetric
-                    navRect2->AddEdge(EdgeInfo<int, float>(navRect->GetId(),d));
+                    LinkNavRect(navRect, navRect2);
                 }
                 else
                 {                
@@ -154,24 +191,18 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 
                     int index = AddNavRect(intesetionRect, 0);
                     NavigationRectangle<CoordType, CellType, float>* endgeNavRect = GetNavRect(index);
-
-                    float d1 = GetCost(navRect->GetCenter(), endgeNavRect->GetCenter());
-                    navRect->AddEdge(EdgeInfo<int, float>(endgeNavRect->GetId(),d1));
-                    endgeNavRect->AddEdge(EdgeInfo<int, float>(navRect->GetId(),d1));
+                    
+                    LinkNavRect(navRect, endgeNavRect);
 
                     //symmetric                    
                     Rectangle<CoordType> intesetionRect2 = navRect2->GetIntersection(navRect, _stepSize);
                     int index2 = AddNavRect(intesetionRect2, 0);
                     NavigationRectangle<CoordType, CellType, float>* endgeNavRect2 = GetNavRect(index2);
-
-                    float d2 = GetCost(navRect2->GetCenter(), endgeNavRect2->GetCenter());
-                    navRect2->AddEdge(EdgeInfo<int, float>(endgeNavRect2->GetId(),d2)); 
-                    endgeNavRect2->AddEdge(EdgeInfo<int, float>(navRect2->GetId(),d2));
+                    
+                    LinkNavRect(navRect2, endgeNavRect2);
 
                     //link between edge nodes
-                    float dEdges = GetCost(endgeNavRect->GetCenter(), endgeNavRect2->GetCenter());
-                    endgeNavRect->AddEdge(EdgeInfo<int, float>(endgeNavRect2->GetId(),dEdges)); 
-                    endgeNavRect2->AddEdge(EdgeInfo<int, float>(endgeNavRect->GetId(),dEdges)); 
+                    LinkNavRect(endgeNavRect, endgeNavRect2);
 
                 }
                 /*float d = GetCost(GetCenter(), navRect->GetCenter());
@@ -191,10 +222,8 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
                 {
                     int edgeIndex2 = edges->at(k2).To;
                     NavigationRectangle<CoordType, CellType, float>* navRectEdge2 = GetNavRect(edgeIndex2);
-                    float d = GetCost(navRectEdge1->GetCenter(), navRectEdge2->GetCenter());
-                    navRectEdge1->AddEdge(EdgeInfo<int, float>(navRectEdge2->GetId(),d)); 
-                    //symmetric
-                    navRectEdge2->AddEdge(EdgeInfo<int, float>(navRectEdge1->GetId(),d)); 
+
+                    LinkNavRect(navRectEdge1, navRectEdge2);
 
                 }
             }
@@ -204,6 +233,29 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step)
 
     _global = Rectangle<CoordType>(minP, maxP);
 }
+
+//template<class CellType, typename CoordType, bool UseAdditionalLinks>
+//bool NavRectMapView<CellType, CoordType, UseAdditionalLinks>::RemoveArea(int node)
+//{
+//    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(node);
+//    if (UseAdditionalLinks)
+//    {
+//        std::vector<EdgeInfo<int, float>>* edges = navRect->GetNeighboors();
+//        int edgesCount = edges->size();
+//        for (int k1 = 0; k1 < edgesCount; ++k1 )
+//        {
+//            NavigationRectangle<CoordType, CellType, float>* neigbor1 = GetNavRect(edges[k1]->To);
+//            for (int k2 = k1+1; k2 < edgesCount; ++k2 )
+//            {
+//                NavigationRectangle<CoordType, CellType, float>* neigbor2 = GetNavRect(edges[k2]->To);
+//                float d = GetCost(neigbor1->GetCenter(), neigbor2->GetCenter());
+//                navRectEdge1->AddEdge(EdgeInfo<int, float>(navRectEdge2->GetId(),d)); 
+//                //symmetric
+//                navRectEdge2->AddEdge(EdgeInfo<int, float>(navRectEdge1->GetId(),d)); 
+//            }
+//        }
+//    }
+//}
 
 template<class CellType, typename CoordType, bool UseAdditionalLinks>
 NavRectMapView<CellType, CoordType, UseAdditionalLinks>::~NavRectMapView()

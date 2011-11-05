@@ -29,9 +29,14 @@ protected:
     
     //use static method Create instead constructor
     NavRectMapView() {}
-    void Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
+    void Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType minRectSize);
+    inline void Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step);
 
     int AddNavRect(Rectangle<CoordType> rect, CellType value);
+
+    void LinkNavRect(NavigationRectangle<CoordType, CellType, float>* navRect1, NavigationRectangle<CoordType, CellType, float>* navrect2);
+    void LinkNavRect(int navRectNode1, int navRectNode2);
+
 public:
     inline int GetAreasCount()
     {

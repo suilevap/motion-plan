@@ -139,13 +139,14 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
 
     _navRects.push_back(NULL);
 
-    std::vector<NavigationRectangle<CoordType, CellType, float>*> _navRectsSmall;
-
+    std::vector<Rectangle<CoordType>> navRectsSmall;
 
     for (std::vector<Rectangle<CoordType>>::iterator it = rectangles.begin(); 
         it != rectangles.end(); 
         ++it)
     {
+
+        //AddNavRect(*it, 0); 
 
         Point<CoordType> size = it->GetSize();
         if (size.X >= minRectSize && size.Y >= minRectSize)
@@ -154,9 +155,7 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
         }
         else
         {
-            int index = _navRectsSmall.size();
-            _navRectsSmall.push_back( 
-                new NavigationRectangle<CoordType, CellType, float>(*it, index, 0)); 
+            navRectsSmall.push_back(*it); 
         }
 
         //TODO: need refactoring
@@ -168,15 +167,60 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
     }
     _areasCount = _navRects.size();
 
+
     //TODO: implement smth clever than that simple brut force
     int count = _areasCount;
-    for (int i = 1; i < count; ++i)
+
+    //add weak links (from small rects)
+    int countSmall = navRectsSmall.size();
+    for (int i = 0; i < countSmall; ++i)
+    {
+        Rectangle<CoordType> rect = navRectsSmall[i];
+        std::vector<int> possibleNeighbors;
+        for (int k = 1; k < _areasCount; ++k)
+        {
+            NavigationRectangle<CoordType, CellType, float>* navRect2 = GetNavRect(k);
+            if (rect.IsNeighbor(navRect2, _stepSize))
+            {
+                possibleNeighbors.push_back(k);
+            }
+        }
+        //not a leaf
+        //HACK: optimization for small rects
+        if (possibleNeighbors.size()>1)
+        {
+            int index = AddNavRect(rect, 0);
+            NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(index);        
+               
+            count = possibleNeighbors.size();
+            for (int k = 0; k < count; ++k)
+            {
+                int index = possibleNeighbors[k];
+                NavigationRectangle<CoordType, CellType, float>* navRect2 = GetNavRect(index);
+              
+                if (!UseAdditionalLinks)
+                {
+                    LinkNavRect(navRect, navRect2);
+                }
+                else
+                {                
+                    Rectangle<CoordType> intesetionRect = navRect->GetIntersection(navRect2, minRectSize);
+
+                    int index = AddNavRect(intesetionRect, 0);
+                    NavigationRectangle<CoordType, CellType, float>* endgeNavRect = GetNavRect(index);          
+                    LinkNavRect(navRect, endgeNavRect);
+                    LinkNavRect(navRect2, endgeNavRect);
+                }
+            }
+        }
+    }
+
+
+    for (int i = 1; i < _areasCount; ++i)
     {
 	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
         
-        //navRect->FindNeighbors(_navRects, _stepSize);
-
-        for (int k = i+1; k < count; ++k)
+        for (int k = i+1; k < _areasCount; ++k)
         {
             NavigationRectangle<CoordType, CellType, float>* navRect2 = GetNavRect(k);
             if (navRect->IsNeighbor(navRect2, _stepSize))
@@ -187,28 +231,25 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
                 }
                 else
                 {                
-                    Rectangle<CoordType> intesetionRect = navRect->GetIntersection(navRect2, _stepSize);
+                    Rectangle<CoordType> intesetionRect = navRect->GetIntersection(navRect2, minRectSize);
 
                     int index = AddNavRect(intesetionRect, 0);
-                    NavigationRectangle<CoordType, CellType, float>* endgeNavRect = GetNavRect(index);
-                    
+                    NavigationRectangle<CoordType, CellType, float>* endgeNavRect = GetNavRect(index);          
                     LinkNavRect(navRect, endgeNavRect);
+                    LinkNavRect(navRect2, endgeNavRect);
 
-                    //symmetric                    
-                    Rectangle<CoordType> intesetionRect2 = navRect2->GetIntersection(navRect, _stepSize);
-                    int index2 = AddNavRect(intesetionRect2, 0);
-                    NavigationRectangle<CoordType, CellType, float>* endgeNavRect2 = GetNavRect(index2);
-                    
-                    LinkNavRect(navRect2, endgeNavRect2);
+                    ////symmetric                    
+                    //Rectangle<CoordType> intesetionRect2 = navRect2->GetIntersection(navRect, minRectSize);
+                    //int index2 = AddNavRect(intesetionRect2, 0);
+                    //NavigationRectangle<CoordType, CellType, float>* endgeNavRect2 = GetNavRect(index2);
+                    //LinkNavRect(navRect2, endgeNavRect2);
 
                     //link between edge nodes
-                    LinkNavRect(endgeNavRect, endgeNavRect2);
-
+                    //LinkNavRect(endgeNavRect, endgeNavRect2);
                 }
-                /*float d = GetCost(GetCenter(), navRect->GetCenter());
-                _links.push_back(EdgeInfo<int, float>(navRect->GetId(),d));*/
             }
         }
+
         if (UseAdditionalLinks)
         {
             //link all portal of
@@ -222,7 +263,6 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
                 {
                     int edgeIndex2 = edges->at(k2).To;
                     NavigationRectangle<CoordType, CellType, float>* navRectEdge2 = GetNavRect(edgeIndex2);
-
                     LinkNavRect(navRectEdge1, navRectEdge2);
 
                 }

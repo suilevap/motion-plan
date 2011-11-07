@@ -39,10 +39,10 @@ TEST(NavRectMapView, OnePath)
 	AStar::Path<Point<int>>* path;
 
     path = pathFinder->Find(Point<int>(2,2), Point<int>(2,6));
-	ASSERT_EQ(5+2, path->Count());
+	ASSERT_EQ(5, path->Count());
 	delete path;
     path = pathFinder->Find(Point<int>(2,6), Point<int>(2,2));
-	ASSERT_EQ(5+2, path->Count());
+	ASSERT_EQ(5, path->Count());
 	delete pathFinder;
 	delete map;
 

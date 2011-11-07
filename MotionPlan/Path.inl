@@ -3,9 +3,9 @@
 #else
 
 template<typename PointInfo>
-Path<PointInfo>::Path(std::vector<PointInfo> points)
+Path<PointInfo>::Path()
 {
-	_points = points;
+
 }
 
 template<typename PointInfo>
@@ -23,29 +23,28 @@ template<typename PointInfo>
 Path<PointInfo>* Path<PointInfo>::Empty()
 {
 	//TODO: optimaze
-	return  new Path<PointInfo>(std::vector<PointInfo>());
+	return new Path<PointInfo>();
 }
 
 template<typename PointInfo>
 PointInfo Path<PointInfo>::GetPoint(int index)
 {
-	PointInfo result;
-	if ((index<_points.size()) && (index >= 0))
-	{
-		result = _points[index];
-	}
-	else
-	{
-		if (index<0)
-		{
-			result = _points[0];
-		}
-		else
-		{
-			result = _points.back();
-		}
+    index = MathHelper::Clamp<int>(index, 0, _points.size()-1);
+	PointInfo result = _points[index];
+	return result;
+}
+template<typename PointInfo>
+void Path<PointInfo>::SetPoint(int index, PointInfo point)
+{
+    index = MathHelper::Clamp<int>(index, 0, _points.size()-1);
+	_points[index] = point;
+}
 
-	}
+template<typename PointInfo>
+typename Path<PointInfo>::NodeInfo Path<PointInfo>::GetNode(int index)
+{
+    index = MathHelper::Clamp<int>(index, 0, _points.size()-1);
+	NodeInfo result = _nodes[index];
 	return result;
 }
 
@@ -56,14 +55,31 @@ int Path<PointInfo>::Count()
 }
 
 template<typename PointInfo>
-void Path<PointInfo>::AddPoints(std::vector<PointInfo>& points)
+void Path<PointInfo>::Reverse()
+{
+	reverse(_points.begin(), _points.end());
+	reverse(_nodes.begin(), _nodes.end());
+}
+
+
+template<typename PointInfo>
+void Path<PointInfo>::AddNodes(std::vector<NodeInfo>& nodes)
 {
 	//_points.resize(_points.size() + points.size()+1);
-	for (std::vector<PointInfo>::iterator it = points.begin(); it != points.end(); ++it)
+	for (std::vector<NodeInfo>::iterator it = nodes.begin(); it != nodes.end(); ++it)
 	{
-		_points.push_back(*it);
+		_nodes.push_back(*it);
 	}
+    
+    _points.resize(_nodes.size());
 
+}
+
+template<typename PointInfo>
+void Path<PointInfo>::Add(PointInfo point, NodeInfo node)
+{
+    _nodes.push_back(node);
+    _points.push_back(point);
 }
 
 #endif

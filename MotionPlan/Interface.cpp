@@ -23,8 +23,6 @@
 #include "Interface.h"
 
 #include "ObjectIdPool.h"
-//#include "Transformable.h"
-//#include "Scalable.h"
 
 #pragma warning( disable : 4244 )
 
@@ -41,7 +39,7 @@ gm::CGMAPI* _gmapi;
 double InitGM()
 {
 	unsigned long gmInit;
-	_gmapi = gm::CGMAPI::Create( &gmInit );;
+	_gmapi = gm::CGMAPI::Create( &gmInit );
 	return static_cast<double>(gmInit);
 }
 
@@ -90,6 +88,9 @@ double CreateMapFromSurface(double sufaceId, double scale)
     int surfHeight = gm::surface_get_height(sufaceId0);
 
     Vector2D<int> data(surfWidth, surfHeight);
+    //gm::ISurface surf = _gmapi->Surfaces[sufaceId0];
+    //IDirect3DTexture8* texture = surf.GetTexture();
+
     for (int x = 0; x < surfWidth; ++x)
     {
 	    for (int y = 0; y < surfHeight; ++y)
@@ -159,9 +160,9 @@ double DrawNavRectMap(double mapIndex)
             }
             else
             {
-                /*gm::draw_rectangle_color( rect->GetLeftTopPoint().X, rect->GetLeftTopPoint().Y,
+                gm::draw_rectangle_color( rect->GetLeftTopPoint().X, rect->GetLeftTopPoint().Y,
                     rect->GetRightBottomPoint().X, rect->GetRightBottomPoint().Y,
-                    1, 1, 1, 1, true);*/
+                    1, 1, 1, 1, true);
                 std::vector<AStar::EdgeInfo<int, float>>* edges = rect->GetNeighboors();
                 int count = edges->size();
                 for (int k = 0; k < count; ++k)

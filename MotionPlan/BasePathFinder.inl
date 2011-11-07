@@ -282,24 +282,27 @@ template<
 Path<PointInfo>* BasePathFinder<PointInfo, CellType, CostInfo, CellQueue>::
 ExtractPath(PointInfo toPoint)
 {
+	Path<PointInfo>* path = new Path<PointInfo>();
+
 	PointInfo point = toPoint;
+    path->Add(toPoint, -1);
 	
-	std::vector<PointInfo> result;
+	std::vector<int> result;
 	NodeInfo pos = GetNearestNode(point);
-    result.push_back(point);
 
 	do
 	{		
 		point = _map->GetPoint(pos);
-		result.push_back(point);
+        path->Add(point, pos);
+
 		pos = _mapCost[pos].ParentNode;
 	}    
     while (pos != StartNodeIndex);
 
-    result.push_back(_startP);
-	
-	reverse(result.begin(), result.end());
-	Path<PointInfo>* path = new Path<PointInfo>(result);
+    path->Add(_startP, -1);
+
+    path->Reverse();
+    path = _map->AdjustPath(path);
 	return path;
 }
 

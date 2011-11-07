@@ -44,14 +44,14 @@ GetIntersection(Rectangle<CoordType>* rect, CoordType step)
     if ((rect == NULL)||(rect == this))
         return Rectangle<CoordType>();
 
-    Point<CoordType> rect1Start = GetLeftTopPoint()-step;    
-    Point<CoordType> rect1End = GetRightBottomPoint()+step;
+    Point<CoordType> rect1Start = GetLeftTopPoint()-step*0;    
+    Point<CoordType> rect1End = GetRightBottomPoint()+step*0;
 
-    Point<CoordType> rect2Start = rect->GetLeftTopPoint()-step;
-    Point<CoordType> rect2End = rect->GetRightBottomPoint()+step;
+    Point<CoordType> rect2Start = rect->GetLeftTopPoint()-step*0;
+    Point<CoordType> rect2End = rect->GetRightBottomPoint()+step*0;
 
-    bool isIntersect = !(rect2Start.X > rect1End.X || rect2End.X < rect1Start.X 
-        || rect2Start.Y > rect1End.Y || rect2End.Y < rect1Start.Y); 
+    bool isIntersect = !(rect2Start.X > rect1End.X+step || rect2End.X+step < rect1Start.X 
+        || rect2Start.Y > rect1End.Y+step || rect2End.Y+step < rect1Start.Y); 
     if (isIntersect)
     {
         std::vector<CoordType> xarr(4);
@@ -71,15 +71,15 @@ GetIntersection(Rectangle<CoordType>* rect, CoordType step)
         Point<CoordType> lt(xarr[1], yarr[1]);
         Point<CoordType> rb(xarr[2], yarr[2]);
         Point<CoordType> size = rb - lt;
-        if (size.X > 2*step)
+        if (size.X > step)
         {
-            lt.X += step;
-            rb.X -= step;
+            lt.X += step/2;
+            rb.X -= step/2;
         }
-        if (size.Y > 2*step)
+        if (size.Y > step)
         {
-            lt.Y += step;
-            rb.Y -= step;
+            lt.Y += step/2;
+            rb.Y -= step/2;
         }
         return Rectangle<CoordType>(lt,rb);
     }

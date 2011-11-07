@@ -18,6 +18,11 @@ public:
     Vector2D(int width, int height);
 
     
+    inline T operator[](int i)
+    {
+        return (Data[i]);
+    }
+    
     template<class Pr>
     bool CheckRegion(int x0, int y0, int x1, int y1, Pr predicate);
 

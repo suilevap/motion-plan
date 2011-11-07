@@ -309,6 +309,113 @@ NavRectMapView<CellType, CoordType, UseAdditionalLinks>::~NavRectMapView()
 }
 
 template<class CellType, typename CoordType, bool UseAdditionalLinks>
+Path<Point<CoordType>>* NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
+AdjustPath(Path<Point<CoordType>>* path)
+{
+    int count = path->Count();
+    //2 points is straight line
+    if (count <= 2)
+        return path;
+
+    Path<Point<CoordType>>* result = new Path<Point<CoordType>>();
+    result->Add(path->GetPoint(0), path->GetNode(0));
+
+    Point<CoordType> portalApex = path->GetPoint(0);
+    Point<CoordType> portalRight = path->GetPoint(0);
+    Point<CoordType> portalLeft = path->GetPoint(0);
+    Point<CoordType> point = path->GetPoint(0);
+    int portalApexIndex = 0;
+    int portalLeftIndex = portalApexIndex;
+    int portalRightIndex = portalApexIndex;
+
+    int i = 1;
+    //for (int i = 1; i < count; ++i)
+    while (i < count)
+    {
+        //right
+        if (i != portalRightIndex)
+        {
+            int node = path->GetNode(i);
+            if (node>0)
+            {
+                point = GetNavRect(node)->GetRightRot(portalRight);
+            }
+            else
+            {
+                point = path->GetPoint(i);
+            }
+
+            if (point.TriArea(portalApex, portalRight) >= 0.0f)
+            {
+                if ((portalRightIndex == portalApexIndex) || (point.TriArea(portalApex, portalLeft)<0.0f))
+                {
+                    portalRight = point;
+                    portalRightIndex = i;
+                }
+                else
+                {
+                    portalApex = portalLeft;
+                    portalApexIndex = portalLeftIndex;
+
+                    result->Add(portalApex, path->GetNode(portalApexIndex));
+
+                    portalLeft = portalApex;
+                    portalLeftIndex = portalApexIndex;
+                    portalRight = portalApex;
+                    portalRightIndex = portalApexIndex;
+                    
+                    //restart
+                    i = portalApexIndex;
+                }
+            }
+        }
+
+        //left
+        if (i != portalLeftIndex)
+        {
+            int node = path->GetNode(i);
+            if (node>0)
+            {
+                point = GetNavRect(node)->GetLeftRot(portalLeft);
+            }
+            else
+            {
+                point = path->GetPoint(i);
+            }
+
+            if (point.TriArea(portalApex, portalLeft) <= 0.0f)
+            {
+                if ((portalLeftIndex == portalApexIndex) || (point.TriArea(portalApex, portalRight)>0.0f))
+                {
+                    portalLeft = point;
+                    portalLeftIndex = i;
+                }
+                else
+                {
+                    portalApex = portalRight;
+                    portalApexIndex = portalRightIndex;
+
+                    result->Add(portalApex, path->GetNode(portalApexIndex));
+
+                    portalLeft = portalApex;
+                    portalLeftIndex = portalApexIndex;
+                    portalRight = portalApex;
+                    portalRightIndex = portalApexIndex;
+                    
+                    //restart
+                    i = portalApexIndex;
+                }
+            }
+        }
+        i++;
+    }
+    result->Add(path->GetPoint(count-1), path->GetNode(count-1));
+
+    return result;
+}
+
+
+template<class CellType, typename CoordType, bool UseAdditionalLinks>
 void NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 ToOutput()
 {

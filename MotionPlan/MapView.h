@@ -6,6 +6,7 @@
 #include <vector>
 #include "FastVector.h"
 #include "EdgeInfo.h"
+#include "Path.h"
 //#include "Point.h"
 #include "DistanceEvaluator.h"
 
@@ -40,6 +41,12 @@ public:
 	virtual void SetCellRegion(PointInfo& point, CellType cell, PointInfo& size)= 0;
 	virtual PointInfo GetMaxPoint()= 0;
 	virtual NodeInfo GetMaxNode()= 0;
+	
+    virtual Path<PointInfo>* AdjustPath(Path<PointInfo>* path)
+    {
+        return path;
+    }
+
     inline CostInfo GetCostFromNode(NodeInfo node, PointInfo& point)
     {
         PointInfo nodePoint = GetPoint(node);

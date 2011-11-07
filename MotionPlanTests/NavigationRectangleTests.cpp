@@ -55,8 +55,8 @@ TEST(NavigationRectangle, CheckIntersect)
     result = rect1.GetIntersection(&rect2, step);
     EXPECT_EQ(5, result.GetLeftTopPoint().X);
     EXPECT_EQ(6, result.GetLeftTopPoint().Y);
-    EXPECT_EQ(7, result.GetRightBottomPoint().X);
-    EXPECT_EQ(9, result.GetRightBottomPoint().Y);
+    EXPECT_EQ(6, result.GetRightBottomPoint().X);
+    EXPECT_EQ(8, result.GetRightBottomPoint().Y);
 
     
 

@@ -40,6 +40,38 @@ public:
 
     bool IsInside(const Point<CoordType>& point);
 
+    //TODO: better move to ...somewhere
+    Point<CoordType> GetLeftRot(Point<CoordType> x)
+    {
+        Point<CoordType> result;
+        Point<CoordType>& lt = GetLeftTopPoint();
+        CoordType triArea = lt.TriArea(x, GetRightBottomPoint());
+        if (triArea >= 0)
+        {
+            result = GetLeftTopPoint();
+        }
+        else
+        {
+            result = GetRightBottomPoint();
+        }
+        return result;
+    }
+    Point<CoordType> GetRightRot(Point<CoordType> x)
+    {
+        Point<CoordType> result;
+        Point<CoordType>& lt = GetLeftTopPoint();
+        CoordType triArea = lt.TriArea(x, GetRightBottomPoint());
+        if (triArea < 0)
+        {
+            result = GetLeftTopPoint();
+        }
+        else
+        {
+            result = GetRightBottomPoint();
+        }
+        return result;
+    }
+
 };
 
 #include "Rectangle.inl"

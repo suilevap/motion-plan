@@ -73,6 +73,9 @@ public:
         return _global.IsInside(point);
     }
 
+    virtual Path<Point<CoordType>>* AdjustPath(Path<Point<CoordType>>* path);
+
+
     void ToOutput();
 
     static NavRectMapView<CellType, CoordType>* CreateCustom(std::vector<Rectangle<CoordType>> rectangles, CoordType step);

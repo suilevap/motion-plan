@@ -24,7 +24,7 @@ TEST(FieldNavRectMapView, Create)
     //3333322
     //3333322
     ASSERT_TRUE(navMap != NULL);
-    EXPECT_EQ(navMap->GetMaxNode(), 6);
+    EXPECT_EQ(navMap->GetMaxNode(), 12);
 
     //FastVector<AStar::EdgeInfo<int, float>> neighbors;
     //quadMap->GetNeighbors(1, neighbors);

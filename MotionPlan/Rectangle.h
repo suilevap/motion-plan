@@ -27,6 +27,8 @@ public:
 
     bool IsNeighbor(Rectangle<CoordType>* rect, CoordType step);
     Rectangle<CoordType> GetIntersection(Rectangle<CoordType>* rect, CoordType step);
+    Rectangle<CoordType> GetUnion(Rectangle<CoordType>* rect);
+
     Rectangle(Point<CoordType> point1, Point<CoordType> point2);
 
     bool IsEmpty(CoordType stepSize);

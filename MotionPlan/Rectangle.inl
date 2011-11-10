@@ -100,4 +100,19 @@ IsEmpty(CoordType stepSize)
         ((rect1Start.Y+stepSize > rect1End.Y)));
 }
 
+template<typename CoordType>
+Rectangle<CoordType> Rectangle<CoordType>::
+GetUnion(Rectangle<CoordType>* rect)
+{
+    Point<CoordType> lt(
+        min(GetLeftTopPoint().X, rect->GetLeftTopPoint().X),
+        min(GetLeftTopPoint().Y, rect->GetLeftTopPoint().Y));
+    Point<CoordType> rb(
+        max(GetRightBottomPoint().X, rect->GetRightBottomPoint().X),
+        max(GetRightBottomPoint().Y, rect->GetRightBottomPoint().Y));
+    Rectangle<CoordType> result(lt,rb);
+    return result;
+}
+
+
 #endif

@@ -172,8 +172,8 @@ private:
                 rightStartPoint.Y = _area.GetCenter().Y;
             }
 
-            _areaLeft= Rectangle<CoordType>( _area.GetLeftTopPoint(),leftEndPoint);
-            _left = new KDTreeNode(_areaLeft);
+            _areaLeft = Rectangle<CoordType>( _area.GetLeftTopPoint(),leftEndPoint);
+            _left = new KDTreeNode(&_areaLeft);
 
             _areaRight = Rectangle<CoordType>( rightStartPoint, _area.GetRightBottomPoint());
             _right = new KDTreeNode(&_areaRight);

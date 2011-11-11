@@ -38,12 +38,12 @@ private:
     protected:
         void AddRecursivly(Rectangle<CoordType>& rect, int id)
         {
-            if (_areaLeft.IsNeighbor(&rect,0))
+            if (_areaLeft.IsIntersect(&rect))
             {
                 _left->Add(rect, id);
             }
             //its possibler that 1 rect will be in 2 leafs
-            if (_areaRight.IsNeighbor(&rect,0))
+            if (_areaRight.IsIntersect(&rect))
             {
                 _right->Add(rect, id);
             }
@@ -64,7 +64,7 @@ private:
             KDTreeNode* result = this;
             if (!_leaf)
             {
-                if (_areaLeft->On(point))
+                if (_areaLeft.IsInside(point))
                 {
                     result = _left;
                 }
@@ -78,7 +78,7 @@ private:
 
         bool On(Rectangle<CoordType> rect)
         {
-            return _area.IsNeighbor(&rect,0);
+            return _area.IsIntersect(&rect);
         }
 
         bool On(Point<CoordType> point)
@@ -109,7 +109,10 @@ private:
                 delete _right;
             }
         }    
-
+        Rectangle<CoordType> GetArea()
+        {
+            return _area;
+        }
         void Add(Rectangle<CoordType> rect, int id)
         {
             //if (!_leaf)
@@ -134,7 +137,7 @@ private:
         
         int GetId(const Point<CoordType>& point)
         {
-            int result;
+            int result = -1;
             KDTreeNode* node = GetKDTreeNodeRecursivly(point);
             int count = node->_childIds.size();
             for (int i = 0; i < count; ++i)
@@ -148,7 +151,7 @@ private:
             return result;
         }
 
-        void Build()
+        void Build(CoordType minSize)
         {
             //already done
             if (_left!=NULL || _right != NULL)
@@ -158,6 +161,9 @@ private:
                 return;
 
             Point<CoordType> size = _area.GetSize();
+            if (size.X < minSize || size.Y < minSize)
+                return;
+
             Point<CoordType> leftEndPoint = _area.GetRightBottomPoint();
             Point<CoordType> rightStartPoint = _area.GetLeftTopPoint();
             //split vertical
@@ -184,8 +190,8 @@ private:
             {
                 AddRecursivly(_childAreas[i], _childIds[i]);
             }
-            _left->Build();
-            _right->Build();
+            _left->Build(minSize);
+            _right->Build(minSize);
 
             _childIds.clear();
             _childAreas.clear();
@@ -213,11 +219,18 @@ public:
     }
     int GetId(const Point<CoordType>& point)
     {
-        _root->GetId(point);
+        return _root->GetId(point);
+    }
+    void Build(CoordType minSize)
+    {
+        _root->Build(minSize);
     }
     void Build()
     {
-        _root->Build();
+        CoordType minSize;
+        Point<CoordType> size = _root->GetArea().GetSize();
+        minSize = max(size.X, size.Y)/(2<<8);
+        Build(minSize);
     }
 
 

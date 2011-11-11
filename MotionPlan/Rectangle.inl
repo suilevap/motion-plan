@@ -36,6 +36,23 @@ IsNeighbor(Rectangle<CoordType>* navRect, CoordType step)
 
     return result;
 }
+template<typename CoordType>
+bool Rectangle<CoordType>::
+IsIntersect(Rectangle<CoordType>* navRect)
+{
+    if ((navRect == NULL)||(navRect == this))
+        return false;
+
+    bool result = false;
+    Point<CoordType> rect1Start = GetLeftTopPoint();
+    Point<CoordType> rect2Start = navRect->GetLeftTopPoint();
+    Point<CoordType> rect1End = GetRightBottomPoint();
+    Point<CoordType> rect2End = navRect->GetRightBottomPoint();
+    result = !(rect2Start.X >= rect1End.X || rect2End.X <= rect1Start.X 
+        || rect2Start.Y >= rect1End.Y || rect2End.Y <= rect1Start.Y); 
+
+    return result;
+}
 
 template<typename CoordType>
 Rectangle<CoordType> Rectangle<CoordType>::
@@ -104,12 +121,30 @@ template<typename CoordType>
 Rectangle<CoordType> Rectangle<CoordType>::
 GetUnion(Rectangle<CoordType>* rect)
 {
-    Point<CoordType> lt(
-        min(GetLeftTopPoint().X, rect->GetLeftTopPoint().X),
-        min(GetLeftTopPoint().Y, rect->GetLeftTopPoint().Y));
-    Point<CoordType> rb(
-        max(GetRightBottomPoint().X, rect->GetRightBottomPoint().X),
-        max(GetRightBottomPoint().Y, rect->GetRightBottomPoint().Y));
+    Point<CoordType> lt;
+    Point<CoordType> rb;
+    Point<CoordType> size1 = GetSize();
+    Point<CoordType> size2 = rect->GetSize();
+
+    if (size1.X==0 && size1.Y==0)
+    {
+        lt = rect->GetLeftTopPoint();
+        rb = rect->GetRightBottomPoint();
+    }
+    else if (size2.X==0 && size2.Y==0)
+    {
+        lt = GetLeftTopPoint();
+        rb = GetRightBottomPoint();
+    }
+    else
+    {
+        lt = Point<CoordType>(
+            min(GetLeftTopPoint().X, rect->GetLeftTopPoint().X),
+            min(GetLeftTopPoint().Y, rect->GetLeftTopPoint().Y));
+        rb = Point<CoordType>(
+            max(GetRightBottomPoint().X, rect->GetRightBottomPoint().X),
+            max(GetRightBottomPoint().Y, rect->GetRightBottomPoint().Y));
+    }
     Rectangle<CoordType> result(lt,rb);
     return result;
 }

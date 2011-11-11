@@ -58,17 +58,22 @@ int NavRectMapView<CellType, CoordType, UseAdditionalLinks>::
 GetNode(Point<CoordType>& point)
 {
     int result = 0;
-    //TODO: implement smth clever than that simple brut force (for example KD-tree)   
-    int count = _areasCount;
-    for (int i = 1; i < count; ++i)
+    result = _kdTree.GetId(point);
+    if (result<0)
     {
-	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
-        if (navRect->IsInside(point))
-        {
-            result = i;
-            break;
-        }
+        result = 0;
     }
+    ////TODO: implement smth clever than that simple brut force (for example KD-tree)   
+    //int count = _areasCount;
+    //for (int i = 1; i < count; ++i)
+    //{
+	   // NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
+    //    if (navRect->IsInside(point))
+    //    {
+    //        result = i;
+    //        break;
+    //    }
+    //}
     return result;
 }
 
@@ -134,8 +139,8 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
         return;
     _stepSize = step;
 
-    Point<CoordType> minP = rectangles[0].GetLeftTopPoint();
-    Point<CoordType> maxP = rectangles[0].GetRightBottomPoint();
+    //Point<CoordType> minP = rectangles[0].GetLeftTopPoint();
+    //Point<CoordType> maxP = rectangles[0].GetRightBottomPoint();
 
     _navRects.push_back(NULL);
 
@@ -146,27 +151,20 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
         ++it)
     {
 
-        //AddNavRect(*it, 0); 
-
         Point<CoordType> size = it->GetSize();
         if (size.X >= minRectSize && size.Y >= minRectSize)
         {
-            AddNavRect(*it, 0); 
+            int id = AddNavRect(*it, 0); 
+            _kdTree.Add(*it, id);
         }
         else
         {
             navRectsSmall.push_back(*it); 
         }
-
-        //TODO: need refactoring
-        minP.X = min(minP.X, it->GetLeftTopPoint().X);
-        minP.Y = min(minP.Y, it->GetLeftTopPoint().Y);
-
-        maxP.X = max(maxP.X, it->GetRightBottomPoint().X);
-        maxP.Y = max(maxP.Y, it->GetRightBottomPoint().Y);
+        _global = _global.GetUnion(&(*it));
     }
     _areasCount = _navRects.size();
-
+    _kdTree.Build(minRectSize);
 
     //TODO: implement smth clever than that simple brut force
     int count = _areasCount;
@@ -215,7 +213,7 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
         }
     }
 
-
+    //add strong link
     for (int i = 1; i < _areasCount; ++i)
     {
 	    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(i);
@@ -237,15 +235,6 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
                     NavigationRectangle<CoordType, CellType, float>* endgeNavRect = GetNavRect(index);          
                     LinkNavRect(navRect, endgeNavRect);
                     LinkNavRect(navRect2, endgeNavRect);
-
-                    ////symmetric                    
-                    //Rectangle<CoordType> intesetionRect2 = navRect2->GetIntersection(navRect, minRectSize);
-                    //int index2 = AddNavRect(intesetionRect2, 0);
-                    //NavigationRectangle<CoordType, CellType, float>* endgeNavRect2 = GetNavRect(index2);
-                    //LinkNavRect(navRect2, endgeNavRect2);
-
-                    //link between edge nodes
-                    //LinkNavRect(endgeNavRect, endgeNavRect2);
                 }
             }
         }
@@ -271,31 +260,7 @@ Init(std::vector<Rectangle<CoordType>> rectangles, CoordType step, CoordType min
     }
     _map.resize(_navRects.size());
 
-    _global = Rectangle<CoordType>(minP, maxP);
 }
-
-//template<class CellType, typename CoordType, bool UseAdditionalLinks>
-//bool NavRectMapView<CellType, CoordType, UseAdditionalLinks>::RemoveArea(int node)
-//{
-//    NavigationRectangle<CoordType, CellType, float>* navRect = GetNavRect(node);
-//    if (UseAdditionalLinks)
-//    {
-//        std::vector<EdgeInfo<int, float>>* edges = navRect->GetNeighboors();
-//        int edgesCount = edges->size();
-//        for (int k1 = 0; k1 < edgesCount; ++k1 )
-//        {
-//            NavigationRectangle<CoordType, CellType, float>* neigbor1 = GetNavRect(edges[k1]->To);
-//            for (int k2 = k1+1; k2 < edgesCount; ++k2 )
-//            {
-//                NavigationRectangle<CoordType, CellType, float>* neigbor2 = GetNavRect(edges[k2]->To);
-//                float d = GetCost(neigbor1->GetCenter(), neigbor2->GetCenter());
-//                navRectEdge1->AddEdge(EdgeInfo<int, float>(navRectEdge2->GetId(),d)); 
-//                //symmetric
-//                navRectEdge2->AddEdge(EdgeInfo<int, float>(navRectEdge1->GetId(),d)); 
-//            }
-//        }
-//    }
-//}
 
 template<class CellType, typename CoordType, bool UseAdditionalLinks>
 NavRectMapView<CellType, CoordType, UseAdditionalLinks>::~NavRectMapView()

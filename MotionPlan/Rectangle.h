@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Point.h"
+#include "MathConstants.h"
 
 namespace AStar
 {
@@ -26,6 +27,7 @@ public:
 
 
     bool IsNeighbor(Rectangle<CoordType>* rect, CoordType step);
+    bool IsIntersect(Rectangle<CoordType>* navRect);
     Rectangle<CoordType> GetIntersection(Rectangle<CoordType>* rect, CoordType step);
     Rectangle<CoordType> GetUnion(Rectangle<CoordType>* rect);
 

@@ -11,6 +11,8 @@
 #include "EdgeInfo.h"
 #include "FastVector.h"
 #include "NavigationRectangle.h"
+#include "KDTree.h"
+
 
 namespace AStar
 {
@@ -25,6 +27,8 @@ protected:
     Rectangle<CoordType> _global;
     CoordType _stepSize;
     std::vector<NavigationRectangle<CoordType, CellType, float>*> _navRects;
+    KDTree<CoordType> _kdTree;
+
     int _areasCount;
     
     //use static method Create instead constructor

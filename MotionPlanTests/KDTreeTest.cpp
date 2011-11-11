@@ -1,6 +1,12 @@
+#include <time.h>
+
 #include "gtest/gtest.h"
+#include "GridMapView.h"
+#include "FieldNavRectMapView.h"
+#include "Point.h"
 #include "KDTree.h"
 #include "Rectangle.h"
+
 
 
 TEST(KDTree, Get)
@@ -35,4 +41,48 @@ TEST(KDTree, Get)
     EXPECT_EQ(id, -1);
     id = tree.GetId(Point<float>(7,2));
     EXPECT_EQ(id, -1);
+}
+
+TEST(KDTree, Performance)
+{
+	GridMapView<int>* map = new GridMapView<int>(100, 100);
+	//map->SetCellRegion(Point<float>(2,2), 12, Point<float>(2.5, 2.5));
+    map->SetCellPoint(Point<float>(0,0), 1);
+    map->SetCellPoint(Point<float>(4,5), 1);
+    map->SetCellPoint(Point<float>(40,5), 1);
+    map->SetCellPoint(Point<float>(4,50), 1);
+    map->SetCellRegion(Point<float>(50,0), 1, Point<float>(10,2));
+    map->SetCellRegion(Point<float>(25,40), 1, Point<float>(2,10));
+    map->SetCellRegion(Point<float>(5,10), 1, Point<float>(10,10));
+
+    FieldNavRectMapView<int>* navMap = NULL;
+    navMap = FieldNavRectMapView<int>::Create(map);
+	
+    clock_t time0, time1, times;
+
+    ASSERT_TRUE(navMap != NULL);
+
+    times = clock();
+	time0 = times;
+    for (int r=1; r<10000;++r)
+    {
+        for (int i=0;i<100;++i)
+        {
+            for (int k=0;k<100;++k)
+            {
+                Point<float> p(i,k);
+                navMap->GetNode(p);
+            }
+        }
+        if (r%1000 == 0)
+		{
+            time1 = clock();
+		    printf("%3dk time: %4d, avg time: %4d\n",r/1000, (time1 - time0), (time1 - times)/(r/1000) );
+		    time0 = clock();
+        }
+    }
+
+
+	delete map;
+	delete navMap;
 }

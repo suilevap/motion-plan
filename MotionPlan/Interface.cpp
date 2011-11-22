@@ -129,6 +129,46 @@ double DrawMap(double mapIndex)
     }
     return 0;
 }
+void DrawShadow(AStar::NavRectMapView<int, float, true>* map, float x, float y)
+{
+    Point<float> center(x,y);
+    gm::draw_set_alpha(1);
+    int count = map->GetAreasCount();
+    for (int i = 1; i < count; ++i)
+    {
+        AStar::NavigationRectangle<float, int, float>* rect = map->GetNavRect(i);
+        std::vector<Point<float>> data = rect->GetPoints();
+        int lineCount = data.size();
+        for (int k=0; k<lineCount; ++k)
+        {
+            Point<float> p1 = data[k];
+            int nextK = (k+1)%lineCount;
+            Point<float> p2 = data[nextK];
+
+            if (center.TriArea(p1, p2)>=0)
+            {
+                float kof = 800/min(std::abs(p1.X-center.X), std::abs(p1.Y-center.Y));
+                gm::draw_primitive_begin(gm::pr_trianglefan);
+
+                gm::draw_vertex(data[k].X, data[k].Y);
+                float x1 = p1.X+(p1.X-center.X)*kof;
+                float y1 = p1.Y+(p1.Y-center.Y)*kof;
+                gm::draw_vertex(x1, y1);
+
+                float x2 = p2.X+(p2.X-center.X)*kof;
+                float y2 = p2.Y+(p2.Y-center.Y)*kof;
+                gm::draw_vertex(x2, y2);
+
+                gm::draw_vertex(data[nextK].X, data[nextK].Y);
+
+                gm::draw_primitive_end();
+            }
+            
+        }
+    }
+    gm::draw_set_alpha(1);
+}
+
 double DrawNavRectMap(double mapIndex)
 {
     AStar::MapView<Point<float>, int>* map0 = _maps.Get(static_cast<int>(mapIndex));
@@ -137,6 +177,11 @@ double DrawNavRectMap(double mapIndex)
 
     if (map != NULL)
     {
+        float x = gm::window_mouse_get_x();
+        float y = gm::window_mouse_get_y();
+
+        DrawShadow(map, x, y);
+        return 0;
         float mapDist = AStar::DistanceEvaluator::EuclideanDistance<float>(
             Point<float>::Zero(), map->GetMaxPoint());
         gm::draw_set_color(gm::c_red);

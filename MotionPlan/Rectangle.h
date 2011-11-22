@@ -44,6 +44,16 @@ public:
 
     bool IsInside(const Point<CoordType>& point);
 
+    std::vector<Point<CoordType>> GetPoints()
+    {
+        std::vector<Point<CoordType>> result;
+        result.push_back(GetLeftTopPoint());
+        result.push_back(Point<CoordType>(GetRightBottomPoint().X, GetLeftTopPoint().Y));
+        result.push_back(GetRightBottomPoint());
+        result.push_back(Point<CoordType>(GetLeftTopPoint().X, GetRightBottomPoint().Y));
+        return result;
+    }
+
     //TODO: better move to ...somewhere
     Point<CoordType> GetLeftRot(Point<CoordType> x)
     {

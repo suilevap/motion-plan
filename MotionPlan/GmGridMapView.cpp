@@ -14,13 +14,13 @@ void GmGridMapView::SetGmGridId(int gmGridIdBase, int gmGridIdCost)
 double GmGridMapView::GetCellCost(int node)
 {
     Point<int> p = GetPoint(node);
-    double result = gm::ds_grid_get(_gmGridIdBase, p.X, p.Y);
+    double result = gm::ds_grid_get(_gmGridIdCost, p.X, p.Y);
     return result;
 }
 bool GmGridMapView::IsCellTraversable(int node)
 {
     Point<int> p = GetPoint(node);
-    bool result = (gm::ds_grid_get(_gmGridIdCost, p.X, p.Y) != 0);
+    bool result = (gm::ds_grid_get(_gmGridIdBase, p.X, p.Y) == 0);
     return result;
 }
 

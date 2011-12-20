@@ -517,8 +517,10 @@ double FindPathGM(double pathFinderIndex, double x, double y, double goalX, doub
 	return static_cast<double>(result);
 }
 
-DllExport double FindPathGMGrid(double gmGridBase, double gmGridCost, double cellSize, double x, double y, double goalX, double goalY, double gmPathId)
+double FindPathGMGrid(double gmGridBase, double gmGridCost, double cellSize, 
+                      double x, double y, double goalX, double goalY, double gmPathId)
 {
+
     if (cellSize <= 0)
         return 0;
 

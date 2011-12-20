@@ -36,6 +36,8 @@ DllExport char* GetGmPath(double pathIndex);
 DllExport double ConvertToGmPath(double pathIndex, double gmPathId);
 DllExport double DestroyPath(double pathIndex);
 
+DllExport double FindPathGMGrid(double gmGridBase, double gmGridCost, double cellSize, double x, double y, double goalX, double goalY, double gmPathId);
+
 
 DllExport double Test();
 

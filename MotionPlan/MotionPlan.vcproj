@@ -211,6 +211,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\GmGridMapView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Interface.cpp"
 				>
 			</File>
@@ -250,6 +254,10 @@
 			</File>
 			<File
 				RelativePath=".\FieldNavRectMapView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GmGridMapView.h"
 				>
 			</File>
 			<File

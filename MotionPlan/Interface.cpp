@@ -18,7 +18,7 @@
 #include "NavRectMapView.h"
 #include "QuadNavRectMapView.h"
 #include "FieldNavRectMapView.h"
-
+#include "GmGridMapView.h"
 
 #include "Interface.h"
 
@@ -30,16 +30,20 @@ ObjectIdPool<AStar::MapView<Point<float>,int, float>> _maps;
 ObjectIdPool<AStar::PathFinder<Point<float>, int, float>> _pathFinders;
 ObjectIdPool<AStar::Path<Point<float>>> _paths;
 
-
 char* ConvertToGmPath(AStar::Path<Point<float>>* p);
 
 #ifdef USE_GMAPI
+
+GmGridMapView* _mapGmGrid = new GmGridMapView();
+AStar::PathFinder<Point<int>, float, float>* _pathFinderGmGrid = new AStar::BasePathFinder<Point<int>, float, float>(_mapGmGrid);
+
 gm::CGMAPI* _gmapi;
+
 
 double InitGM()
 {
 	unsigned long gmInit;
-	_gmapi = gm::CGMAPI::Create( &gmInit );
+	_gmapi = gm::CGMAPI::Create( &gmInit );    
 	return static_cast<double>(gmInit);
 }
 
@@ -65,6 +69,20 @@ double ConvertPathToGmPath(AStar::Path<Point<float>>* path, int gmPathId)
 	{
 		x = it->X;
 		y = it->Y;
+		gm::path_add_point(gmPathId, x, y, 100);		
+	}
+	return path->Count();
+}
+
+double ConvertPathToGmPathWithScale(AStar::Path<Point<int>>* path, int gmPathId, double cellSize)
+{
+	std::vector<Point<int>>& points = path->GetPoints();
+	double x;
+	double y;
+	for (std::vector<Point<int>>::iterator it = points.begin(); it != points.end(); ++it)
+	{
+		x = (it->X+0.5f)*cellSize;
+		y = (it->Y+0.5f)*cellSize;
 		gm::path_add_point(gmPathId, x, y, 100);		
 	}
 	return path->Count();
@@ -131,6 +149,7 @@ double DrawMap(double mapIndex)
 }
 void DrawShadow(AStar::NavRectMapView<int, float, true>* map, float x, float y)
 {
+    float width = 800;
     Point<float> center(x,y);
     gm::draw_set_alpha(1);
     int count = map->GetAreasCount();
@@ -147,23 +166,24 @@ void DrawShadow(AStar::NavRectMapView<int, float, true>* map, float x, float y)
 
             if (center.TriArea(p1, p2)>=0)
             {
-                float kof = 800/min(std::abs(p1.X-center.X), std::abs(p1.Y-center.Y));
+                float kof = width/min(std::abs(p1.X-center.X), std::abs(p1.Y-center.Y));
                 gm::draw_primitive_begin(gm::pr_trianglefan);
 
                 gm::draw_vertex(data[k].X, data[k].Y);
                 float x1 = p1.X+(p1.X-center.X)*kof;
                 float y1 = p1.Y+(p1.Y-center.Y)*kof;
-                gm::draw_vertex(x1, y1);
-
+                gm::draw_vertex_color(x1+kof*8, y1+kof*8,0,0.2);
+                gm::draw_vertex(x1-kof*8, y1-kof*8);
                 float x2 = p2.X+(p2.X-center.X)*kof;
                 float y2 = p2.Y+(p2.Y-center.Y)*kof;
-                gm::draw_vertex(x2, y2);
+                gm::draw_vertex(x2-kof*8, y2-kof*8);
+                gm::draw_vertex_color(x2+kof*8, y2+kof*8,0,0.2);
+
 
                 gm::draw_vertex(data[nextK].X, data[nextK].Y);
 
                 gm::draw_primitive_end();
-            }
-            
+            }            
         }
     }
     gm::draw_set_alpha(1);
@@ -494,6 +514,26 @@ double FindPathGM(double pathFinderIndex, double x, double y, double goalX, doub
 		result = ConvertPathToGmPath(path, static_cast<int>(gmPath));
         delete path;
 	}
+	return static_cast<double>(result);
+}
+
+DllExport double FindPathGMGrid(double gmGridBase, double gmGridCost, double cellSize, double x, double y, double goalX, double goalY, double gmPathId)
+{
+    if (cellSize <= 0)
+        return 0;
+
+    _mapGmGrid->SetGmGridId(static_cast<int>(gmGridBase), 
+        static_cast<int>(gmGridCost));
+
+	double result = -1;
+	AStar::Path<Point<int>>* path = _pathFinderGmGrid->Find(
+        Point<int>(static_cast<int>(x/cellSize), static_cast<int>(y/cellSize)), 
+        Point<int>(static_cast<int>(goalX/cellSize), static_cast<int>(goalY/cellSize)));
+
+    gm::path_clear_points(gmPathId);
+	result = ConvertPathToGmPathWithScale(path, static_cast<int>(gmPathId), cellSize);
+    delete path;
+	
 	return static_cast<double>(result);
 }
 
